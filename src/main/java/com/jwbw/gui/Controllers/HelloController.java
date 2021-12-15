@@ -1,4 +1,4 @@
-package com.jwbw.Controllers;
+package com.jwbw.gui.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

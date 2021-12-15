@@ -6,13 +6,13 @@ public class ConnectionHandler extends Thread{
     private final String databaseUrl;
     private final String databaseUser;
     private final String databasePassword;
-    private final ServerLogger logger;
+    private final ApplicationLogger logger;
 
     protected DatabaseHandler databaseHandler;
     private boolean isDatabaseConnected = false;
     boolean errPromptShown = false;
 
-    public ConnectionHandler(String databaseUrl, String databaseUser, String databasePassword, ServerLogger logger) {
+    public ConnectionHandler(String databaseUrl, String databaseUser, String databasePassword, ApplicationLogger logger) {
         this.logger = logger;
         this.databaseUrl = databaseUrl;
         this.databaseUser = databaseUser;

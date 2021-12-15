@@ -3,13 +3,13 @@ package com.jwbw;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ServerLogger {
+public class ApplicationLogger {
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yy-MM-dd HH:mm:ss] ");
 
     //INFORMATION
     public void activeProfile(String profile){
-        System.out.println(getDate() + "Server started with \"" + profile + "\" profile activated");
+        System.out.println(getDate() + "Application started with \"" + profile + "\" profile activated");
     }
 
     public void databaseConnect(){
