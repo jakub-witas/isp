@@ -4,20 +4,23 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum Cennik_uslug {
-    Diagnoza(0),
-    Czyszczenie(1),
-    WymianaCzesci(2),
-    Przelutowanie(3);
+    Diagnoza(0, 50),
+    Czyszczenie(1, 30),
+    WymianaCzesci(2, 60),
+    Przelutowanie(3, 100);
 
     private final int value;
+    private final int price;
 
-    Cennik_uslug(int value){
+    Cennik_uslug(int value, int price){
         this.value = value;
+        this.price = price;
     }
 
     public int getValue() {
         return value;
     }
+    public int getPrice() {return price;}
 
     public static Optional<Cennik_uslug> valueOf(int value){
         return Arrays.stream(values())

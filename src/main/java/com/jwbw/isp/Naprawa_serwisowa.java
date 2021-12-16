@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Naprawa_serwisowa extends Zlecenie {
     private Urzadzenie urzadzenie_naprawiane;
-    private List<Czesc_komputerowa> czesci;
+    private Zamowienie zamowienie;
     private List<Cennik_uslug> wykonane_uslugi;
     private float koszt;
     private Klient wlasciciel;
@@ -17,12 +17,12 @@ public class Naprawa_serwisowa extends Zlecenie {
         this.urzadzenie_naprawiane = urzadzenie_naprawiane;
     }
 
-    public List<Czesc_komputerowa> getCzesci() {
-        return czesci;
+    public Zamowienie getZamowienie() {
+        return zamowienie;
     }
 
-    public void setCzesci(List<Czesc_komputerowa> czesci) {
-        this.czesci = czesci;
+    public void setZamowienie(Zamowienie zamowienie) {
+        this.zamowienie = zamowienie;
     }
 
     public List<Cennik_uslug> getWykonane_uslugi() {

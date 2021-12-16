@@ -49,6 +49,19 @@ public class DatabaseHandler extends Thread{
         }
     }
 
+//    public static int insertFaktura() {
+//        Statement statement = this.connection.createStatement();
+//        String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
+//        ResultSet resultSet = statement.executeQuery(str);
+//
+//        boolean authenticate = resultSet.isBeforeFirst();
+//
+//        statement.close();
+//        resultSet.close();
+//
+//        return authenticate;
+//    }
+
     public boolean authenticateUser(String username, String password) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
