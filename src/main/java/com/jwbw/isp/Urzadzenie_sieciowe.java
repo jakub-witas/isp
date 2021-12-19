@@ -1,10 +1,24 @@
 package com.jwbw.isp;
 
+import java.sql.SQLException;
+
 public class Urzadzenie_sieciowe extends Urzadzenie {
     private boolean wlan;
     private String przepustowosc;
     private boolean czy_dostepne;
     private Klient wlasciciel;
+
+    public Urzadzenie_sieciowe(String nazwa, String producent, String sn, String przepustowosc, boolean wlan) throws SQLException {
+        super(new BuilderImpl());
+        this.setNazwa(nazwa);
+        this.setProducent(producent);
+        this.setSn(sn);
+        this.setCzy_dostepne(true);
+        this.setPrzepustowosc(przepustowosc);
+        this.setWlan(wlan);
+        this.setWlasciciel(null);
+        //this.setId(DatabaseHandler.sendUrzadzenieSiecioweGetId(this));
+    }
 
     public boolean isWlan() {
         return wlan;

@@ -1,12 +1,13 @@
 package com.jwbw.isp;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Dokument {
     protected int id;
     protected String nr_dokumentu;
-    protected Date data_utworzenia;
-    protected Date data_wygasniecia;
+    protected Timestamp data_utworzenia;
+    protected Timestamp data_wygasniecia;
 
     public int getId() { return id; }
 
@@ -16,11 +17,15 @@ public class Dokument {
 
     public void setNr_dokumentu(String nr_dokumentu) { this.nr_dokumentu = nr_dokumentu; }
 
-    public void setData_utworzenia(Date data_utworzenia) { this.data_utworzenia = data_utworzenia; }
-
     public Date getData_wygasniecia() { return data_wygasniecia; }
 
-    public void setData_wygasniecia(Date data_wygasniecia) { this.data_wygasniecia = data_wygasniecia; }
+    public void setData_utworzenia(Timestamp data_utworzenia) {
+        this.data_utworzenia = data_utworzenia;
+    }
+
+    public void setData_wygasniecia(Timestamp data_wygasniecia) {
+        this.data_wygasniecia = data_wygasniecia;
+    }
 
     public Date getData_utworzenia() { return data_utworzenia; }
 

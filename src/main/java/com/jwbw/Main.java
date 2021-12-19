@@ -1,7 +1,12 @@
 package com.jwbw;
 
 
+import com.jwbw.gui.Controllers.InterfaceMain;
+
 public class Main {
+
+    public static ConnectionHandler connection;
+
     public static void main(String[] args) {
         ApplicationLogger logger = new ApplicationLogger();
         String activeProfile = "local";
@@ -14,11 +19,11 @@ public class Main {
 
         Configuration configuration = new Configuration(activeProfile);
 
-        new ConnectionHandler(configuration.getDatabaseUrl(),
+        connection = new ConnectionHandler(configuration.getDatabaseUrl(),
                 configuration.getDatabaseUser(),
                 configuration.getDatabasePassword(),
                 logger);
 
-       // InterfaceMain.Interface(args);
+        InterfaceMain.Interface(args);
     }
 }

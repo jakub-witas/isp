@@ -1,6 +1,9 @@
 package com.jwbw;
 
+import com.jwbw.isp.*;
+
 import java.sql.*;
+import java.util.List;
 
 public class DatabaseHandler extends Thread{
     private final String databaseUrl;
@@ -49,18 +52,111 @@ public class DatabaseHandler extends Thread{
         }
     }
 
-//    public static int insertFaktura() {
-//        Statement statement = this.connection.createStatement();
-//        String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
-//        ResultSet resultSet = statement.executeQuery(str);
-//
-//        boolean authenticate = resultSet.isBeforeFirst();
-//
-//        statement.close();
-//        resultSet.close();
-//
-//        return authenticate;
-//    }
+    public int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException {
+        StringBuilder czesci = null;
+        List<Czesc_komputerowa> lista = zamowienie.getCzesci();
+        assert false;
+
+        for(Czesc_komputerowa czesc : lista) {
+            czesci.append(czesc.getId() + ',');
+        }
+
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO ZAMOWIENIE(id, creation_date, dueto_date, kwota, czesci) VALUES (nextval('zamowienie_seq'), '"
+                + zamowienie.getData_utworzenia() + "', '" + zamowienie.getData_wygasniecia() + "', '"
+                + zamowienie.getKwota() + "', '"+ czesci.toString() + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM ZAMOWIENIE WHERE creation_date = '" + zamowienie.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String id = resultSet.getString("max");
+
+        return Integer.parseInt(id);
+    }
+
+    public int sendNaprawaGetId(Naprawa_serwisowa naprawa) throws SQLException {
+        StringBuilder uslugi = null;
+        List<Cennik_uslug> lista = naprawa.getWykonane_uslugi();
+        assert false;
+
+        for(Cennik_uslug usluga : lista) {
+            uslugi.append(usluga.getValue() + ',');
+        }
+
+        StringBuilder wpisy = null;
+        List<Wpis> lista_wpisow = naprawa.getWpisy();
+        assert false;
+
+        for(Wpis wpis : lista_wpisow) {
+            wpisy.append(wpis.getId() + ',');
+        }
+
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO ZLECENIE_NAPRAWA(id, creation_date, close_date, wpisy, uslugi, kwota, wlasciciel, urzadzenie, zamowienie) " +
+                "VALUES (nextval('zlecenie_naprawa_seq'), '" + naprawa.getData_utworzenia() + "', null, '"
+                + wpisy + "', '" + uslugi + "', '" + 0 + "', '" + naprawa.getWlasciciel().getId() + "', '" + naprawa.getUrzadzenie_naprawiane().getId()
+                + "', null )";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM ZLECENIE_NAPRAWA WHERE creation_date = '" + naprawa.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String id = resultSet.getString("max");
+
+        return Integer.parseInt(id);
+    }
+
+    public int sendUrzadzenieGetId(Urzadzenie urzadzenie) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO URZADZENIE(id, nazwa, producent, sn) VALUES (nextval('urzadzenie_seq'), '"
+                + urzadzenie.getNazwa() + "', '" + urzadzenie.getProducent() + "', '" + urzadzenie.getSn() + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM URZADZENIE WHERE sn = '" + urzadzenie.getSn() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String id = resultSet.getString("max");
+
+        return Integer.parseInt(id);
+    }
+
+    public int sendWpisGetId(Wpis wpis) throws SQLException {
+        int id;
+        Object obj = wpis.getAutor();
+        if (obj.getClass() == Klient.class) {
+            id = ((Klient) obj).getId();
+        } else {
+            id = ((Pracownik)obj).getId();
+        }
+
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO WPIS(id, data_utworzenia, opis, autor) VALUES (nextval('wpis_seq'), '"
+                + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', '" + id + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM WPIS WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String identyfikator = resultSet.getString("max");
+
+        return Integer.parseInt(identyfikator);
+    }
+
+    public int sendFakturaGetId(Faktura faktura) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO FAKTURY(id, creation_date, dueto_date, kwota, nabywca) VALUES (nextval('faktury_seq'), '"
+                + faktura.getData_utworzenia() + "', '" + faktura.getData_wygasniecia() + "', '" + faktura.getKwota() + "','"
+                + faktura.getNabywca().getId() + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM FAKTURY WHERE creation_date = '" + faktura.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String id = resultSet.getString("max");
+
+        return Integer.parseInt(id);
+    }
 
     public boolean authenticateUser(String username, String password) throws SQLException {
         Statement statement = this.connection.createStatement();

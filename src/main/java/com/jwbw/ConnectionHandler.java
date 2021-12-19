@@ -8,7 +8,7 @@ public class ConnectionHandler extends Thread{
     private final String databasePassword;
     private final ApplicationLogger logger;
 
-    protected DatabaseHandler databaseHandler;
+    public DatabaseHandler databaseHandler;
     private boolean isDatabaseConnected = false;
     boolean errPromptShown = false;
 

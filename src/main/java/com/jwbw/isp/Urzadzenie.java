@@ -1,10 +1,21 @@
 package com.jwbw.isp;
 
-public abstract class Urzadzenie {
+import com.jwbw.Main;
+
+import java.sql.SQLException;
+
+public class Urzadzenie {
     protected int id;
     protected String nazwa;
     protected String producent;
     protected String sn;
+
+    public Urzadzenie (String nazwa, String producent, String sn) throws SQLException {
+        this.setNazwa(nazwa);
+        this.setProducent(producent);
+        this.setSn(sn);
+        this.setId(Main.connection.databaseHandler.sendUrzadzenieGetId(this));
+    }
 
     public int getId() {
         return id;

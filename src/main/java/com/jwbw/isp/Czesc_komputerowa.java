@@ -1,9 +1,15 @@
 package com.jwbw.isp;
 
+import java.sql.SQLException;
+
 public class Czesc_komputerowa extends Urzadzenie {
     private String port;
     private String przeznaczenie;
     private float koszt;
+
+    public Czesc_komputerowa() throws SQLException {
+        super(new BuilderImpl());
+    }
 
     public String getPort() {
         return port;

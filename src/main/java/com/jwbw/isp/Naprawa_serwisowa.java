@@ -1,5 +1,14 @@
 package com.jwbw.isp;
 
+
+import com.jwbw.DatabaseHandler;
+import com.jwbw.Main;
+import com.jwbw.gui.Controllers.InterfaceMain;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class Naprawa_serwisowa extends Zlecenie {
@@ -8,6 +17,23 @@ public class Naprawa_serwisowa extends Zlecenie {
     private List<Cennik_uslug> wykonane_uslugi;
     private float koszt;
     private Klient wlasciciel;
+
+    public void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, Klient klient) throws SQLException {
+        Naprawa_serwisowa naprawa = new Naprawa_serwisowa();
+        naprawa.setKoszt(0);
+        if (urzadzenie != null) naprawa.setUrzadzenie_naprawiane(urzadzenie);
+        else {
+            Urzadzenie urzadzenie_nowe = new UrzadzenieBuilder(nazwa, producent, sn).build();
+            naprawa.setUrzadzenie_naprawiane(urzadzenie_nowe);
+        }
+        naprawa.setZamowienie(null);
+        naprawa.setWlasciciel(klient);
+        naprawa.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
+        Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
+        naprawa.wpisy.add(pierwszy_wpis);
+        naprawa.setId(Main.connection.databaseHandler.sendNaprawaGetId(naprawa));
+        InterfaceMain.naprawy.addAll(naprawa);
+    }
 
     public Urzadzenie getUrzadzenie_naprawiane() {
         return urzadzenie_naprawiane;
