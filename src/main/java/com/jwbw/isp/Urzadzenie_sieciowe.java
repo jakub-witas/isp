@@ -4,6 +4,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
     private boolean wlan;
     private String przepustowosc;
     private boolean czy_dostepne;
+    private Klient wlasciciel;
 
     public boolean isWlan() {
         return wlan;
@@ -27,5 +28,13 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
 
     public void setCzy_dostepne(boolean czy_dostepne) {
         this.czy_dostepne = czy_dostepne;
+    }
+
+    public Klient getWlasciciel() {
+        return wlasciciel;
+    }
+
+    public void setWlasciciel(Klient wlasciciel) {
+        this.wlasciciel = wlasciciel;
     }
 }
