@@ -7,9 +7,10 @@ public class Czesc_komputerowa extends Urzadzenie {
     private String przeznaczenie;
     private float koszt;
 
-    public Czesc_komputerowa() throws SQLException {
-        super(new BuilderImpl());
+    public Czesc_komputerowa(String nazwa, String producent, String sn) throws SQLException {
+        super(nazwa, producent, sn);
     }
+
 
     public String getPort() {
         return port;

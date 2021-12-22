@@ -1,7 +1,6 @@
 package com.jwbw.isp;
 
-import com.jwbw.DatabaseHandler;
-
+import com.jwbw.Main;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,14 +9,43 @@ public class Wpis {
     private int id;
     private Timestamp data_utworzenia;
     private Object autor;
+    private Object odbiorca;
+    private boolean wasRead;
     private String opis;
+
+    public Object getOdbiorca() {
+        return odbiorca;
+    }
+
+    public void setOdbiorca(Object odbiorca) {
+        this.odbiorca = odbiorca;
+    }
+
+    public boolean isWasRead() {
+        return wasRead;
+    }
+
+    public void setWasRead(boolean wasRead) {
+        this.wasRead = wasRead;
+    }
 
     public Wpis (Object autor, String opis) throws SQLException {
         this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
         this.setAutor(autor);
         this.setOpis(opis);
-        this.setId(DatabaseHandler.sendWpisGetId(this));
+        this.setId(Main.connection.databaseHandler.sendWpisGetId(this));
+    }
 
+    public Wpis() {}
+
+    public static Wpis wyslijPowiadomienie(Object autor, Object odbiorca, String description) throws SQLException {
+        Wpis nowy = new Wpis();
+        nowy.setAutor(autor);
+        nowy.setOpis(description);
+        nowy.setOdbiorca(odbiorca);
+        nowy.setWasRead(false);
+        nowy.setId(Main.connection.databaseHandler.sendPowiadomienieGetId(nowy));
+        return nowy;
     }
 
     public int getId() {

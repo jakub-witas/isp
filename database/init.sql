@@ -110,6 +110,15 @@ CREATE TABLE isp.WPIS (
     autor INTEGER REFERENCES isp.USERS(id)
 );
 
+CREATE TABLE isp.POWIADOMIENIE (
+    id INTEGER PRIMARY KEY,
+    data_utworzenia TIMESTAMP,
+    opis VARCHAR(100),
+    przeczytane boolean NOT NULL,
+    autor INTEGER REFERENCES isp.USERS(id),
+    odbiorca INTEGER REFERENCES isp.USERS(id)
+);
+
 
 CREATE SEQUENCE isp.user_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.address_seq INCREMENT BY 1 MINVALUE 1;
@@ -119,6 +128,7 @@ CREATE SEQUENCE isp.urzadzenie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.wpis_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zamowienie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_naprawa_seq INCREMENT BY 1 MINVALUE 1;
+CREATE SEQUENCE isp.powiadomienie_seq INCREMENT BY 1 MINVALUE 1;
 
 
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'Panstwa polskiego', '15/609', '25-109');

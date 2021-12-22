@@ -17,6 +17,8 @@ public class Urzadzenie {
         this.setId(Main.connection.databaseHandler.sendUrzadzenieGetId(this));
     }
 
+    public Urzadzenie() {}
+
     public int getId() {
         return id;
     }

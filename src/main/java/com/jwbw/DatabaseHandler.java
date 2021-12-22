@@ -122,13 +122,7 @@ public class DatabaseHandler extends Thread{
     }
 
     public int sendWpisGetId(Wpis wpis) throws SQLException {
-        int id;
-        Object obj = wpis.getAutor();
-        if (obj.getClass() == Klient.class) {
-            id = ((Klient) obj).getId();
-        } else {
-            id = ((Pracownik)obj).getId();
-        }
+        int id = getObjectId(wpis.getAutor());
 
         Statement statement = this.connection.createStatement();
         String str = "INSERT INTO WPIS(id, data_utworzenia, opis, autor) VALUES (nextval('wpis_seq'), '"
@@ -141,6 +135,34 @@ public class DatabaseHandler extends Thread{
         String identyfikator = resultSet.getString("max");
 
         return Integer.parseInt(identyfikator);
+    }
+
+    public int sendPowiadomienieGetId(Wpis wpis) throws SQLException {
+        int idAutor, idOdbiorca;
+        idAutor = getObjectId(wpis.getAutor());
+        idOdbiorca = getObjectId(wpis.getOdbiorca());
+
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO POWIADOMIENIE(id, data_utworzenia, opis, przeczytane, autor, odbiorca) VALUES (nextval('wpis_seq'), '"
+                + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', '" + wpis.isWasRead() + "', '" + idAutor + "', '" + idOdbiorca + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM POWIADOMIENIE WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String identyfikator = resultSet.getString("max");
+
+        return Integer.parseInt(identyfikator);
+    }
+
+    private int getObjectId(Object obj) {
+        int id;
+        if (obj.getClass() == Klient.class) {
+            id = ((Klient) obj).getId();
+        } else {
+            id = ((Pracownik)obj).getId();
+        }
+        return id;
     }
 
     public int sendFakturaGetId(Faktura faktura) throws SQLException {

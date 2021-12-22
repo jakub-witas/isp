@@ -14,6 +14,7 @@ import java.util.List;
 public class InterfaceMain extends Application {
 
     public static ObservableList<Naprawa_serwisowa> naprawy;
+    public static Object loggedUser;
 
     @Override
     public void start(Stage stage) throws IOException {

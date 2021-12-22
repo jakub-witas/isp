@@ -1,7 +1,10 @@
 package com.jwbw.isp;
 
 import com.jwbw.DatabaseHandler;
+import com.jwbw.Main;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -12,23 +15,20 @@ public class Faktura extends Dokument {
     private Klient nabywca;
     private List<Object> obiekty;
 
-    public Faktura(Object nabywca, Object sprzedawca, List<Object> obiekty) {
-        //this.nabywca = nabywca;
-        //this.sprzedawca = sprzedawca;
-        this.obiekty = obiekty;
-        //this.data_utworzenia = new Date(System.currentTimeMillis());
-        LocalDateTime tmp = LocalDateTime.now();
-        LocalDateTime tmp2 = tmp.plusDays(14);
-        //this.data_wygasniecia = Date.from(tmp2.atZone(ZoneId.systemDefault()).toInstant());
-        this.kwota = obliczKwote(obiekty);
-        //this.id = setId(DatabaseHandler.insertFaktura());
+    public Faktura(Klient nabywca, List<Object> obiekty) throws SQLException {
+        this.setNabywca(nabywca);
+        this.setObiekty(obiekty);
+        this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
+        this.setData_wygasniecia(Timestamp.valueOf(this.data_utworzenia.toLocalDateTime().plusDays(14)));
+        this.setKwota(obliczKwote(this.getObiekty()));
+        this.setId(Main.connection.databaseHandler.sendFakturaGetId(this));
     }
 
     private float obliczKwote(List<Object> obiekty) {
         float kwota = 0;
         for (Object obiekt: obiekty) {
             if(obiekt.getClass() == Zamowienie.class) {
-                kwota += ((Zamowienie) obiekt).getKwota();
+                kwota += ((Zamowienie) obiekt).getKwota()* 1.2;
             } else {
                 kwota += ((Cennik_uslug) obiekt).getPrice();
             }

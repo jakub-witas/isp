@@ -1,5 +1,8 @@
 package com.jwbw.isp;
 
+import com.jwbw.DatabaseHandler;
+import com.jwbw.Main;
+
 import java.sql.SQLException;
 
 public class Urzadzenie_sieciowe extends Urzadzenie {
@@ -9,7 +12,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
     private Klient wlasciciel;
 
     public Urzadzenie_sieciowe(String nazwa, String producent, String sn, String przepustowosc, boolean wlan) throws SQLException {
-        super(new BuilderImpl());
+        super();
         this.setNazwa(nazwa);
         this.setProducent(producent);
         this.setSn(sn);
@@ -17,7 +20,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.setPrzepustowosc(przepustowosc);
         this.setWlan(wlan);
         this.setWlasciciel(null);
-        //this.setId(DatabaseHandler.sendUrzadzenieSiecioweGetId(this));
+        //this.setId(Main.connection.databaseHandler.sendUrzadzenieSiecioweGetId(this));
     }
 
     public boolean isWlan() {

@@ -1,6 +1,5 @@
 package com.jwbw.isp;
 
-import com.jwbw.Main;
 
 import java.sql.SQLException;
 
