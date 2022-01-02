@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Wlasciciel">
+   <children>
+      <Text layoutX="118.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WWNet - Dostawca internetu wraz z serwisem PC">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Line endX="1050.0" endY="-6.0" layoutX="131.0" layoutY="85.0" startX="-118.0" startY="-6.0" />
+      <Button layoutX="13.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonDodajogloszenie" prefHeight="51.0" prefWidth="575.0" style="-fx-background-color: #99CCFF;" text="Dodaj ogłoszenie">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="1066.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#handleButtonWyl" text="Wyloguj">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../pictures/obr1.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="606.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonUstawcennik" prefHeight="51.0" prefWidth="585.0" style="-fx-background-color: #99CCFF;" text="Ustaw cennik">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Line endX="-10.0" endY="-70.0" layoutX="606.0" layoutY="156.0" startX="-10.0" startY="-10.0" />
+      <Pane fx:id="paneWlasciciel" layoutX="11.0" layoutY="153.0" prefHeight="540.0" prefWidth="1170.0" />
+   </children>
+</AnchorPane>
