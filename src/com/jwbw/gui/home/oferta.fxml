@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1150.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="45.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do wyboru internet światłowodowy lub bezprzewodowy" wrappingWidth="133.359375">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="484.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ponad 200 kanałów w tym conajmniej 100 w jakości HD" wrappingWidth="143.279296875">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font></Text>
+      <Text layoutX="951.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Najlepsza jakość połączeń oraz pakiet dobrany do twoich potrzeb" wrappingWidth="161.2353515625">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font></Text>
+      <Text layoutX="45.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Text>
+      <Text layoutX="476.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telewizja">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Text>
+      <Text layoutX="953.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Text>
+      <Line endX="118.0" endY="0.5" layoutX="136.0" layoutY="14.0" startX="-121.5" startY="0.5" />
+      <Line endX="-100.0" endY="-253.0" layoutX="115.0" layoutY="268.0" startX="-100.0" startY="-44.0" />
+      <Line endX="977.0" endY="-4.5" layoutX="147.0" layoutY="230.0" startX="-131.5" startY="-5.5" />
+      <Line endX="111.5" endY="-86.0" layoutX="1012.0" layoutY="311.0" startX="111.5" startY="-295.0" />
+      <Line endX="287.0" endY="-11.5" layoutX="836.0" layoutY="27.0" startX="-400.0" startY="-11.5" />
+      <Text layoutX="264.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pakiety pojedyncze">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Text>
+      <Line endX="138.0" endY="-13.0" layoutX="115.0" layoutY="259.0" startX="-98.0" startY="-13.0" />
+      <Line endX="-119.5" endY="125.0" layoutX="134.0" layoutY="338.0" startX="-117.5" startY="-91.5" />
+      <Line endX="944.0" endY="13.5" layoutX="179.0" layoutY="450.0" startX="-164.0" startY="13.5" />
+      <Line endX="137.0" endY="-85.5" layoutX="987.0" layoutY="332.0" startX="-595.0" startY="-85.0" />
+      <Line endX="88.5" endY="123.0" layoutX="1035.0" layoutY="340.0" startX="88.5" startY="-93.0" />
+      <Text layoutX="264.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multi pakiety">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="23.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet + Telewizja">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="769.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet + Telewizja + Telefon">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="436.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telewizja + Telefon">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="29.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Predkość 300 Mb/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="36.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ponad 100 kanałów ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="169.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="50zł/miesiąc" wrappingWidth="79.48046875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="29.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Predkość 600 Mb/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="36.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ponad 150 kanałów ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="169.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80zł/miesiąc" wrappingWidth="79.48046875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="29.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Predkość 1 Gb/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="36.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ponad 150 kanałów ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="166.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100zł/miesiąc" wrappingWidth="91.48046875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="801.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Predkość do 300 Mb/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="829.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100 kanałów ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="978.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80zł/miesiąc" wrappingWidth="81.59375">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="801.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Predkość do 600 Mb/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="815.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="148 kanałów ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="974.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="120zł/miesiąc" wrappingWidth="100.2900390625">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="464.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="78 kanałów">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="436.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 3 GB pakietu danych" wrappingWidth="127.86328125">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="575.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60zł/miesiąc" wrappingWidth="79.48046875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="456.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="145 kanałów">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="436.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 6 GB pakietu danych" wrappingWidth="127.86328125">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="575.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="90zł/miesiąc" wrappingWidth="79.48046875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="43.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet 300 Mb/s - 40zł/mies.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="43.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet 600 Mb/s - 60zł/mies.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="43.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internet 1 Gb/s - 70zł/mies.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="482.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="99 kanałów - 45zł/mies.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="478.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="189 kanałów - 80zł/mies.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="803.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 5 GB" wrappingWidth="133.359375">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="803.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 12 GB" wrappingWidth="133.359375">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="951.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 5 GB - 30zł/mies." wrappingWidth="145.9404296875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="951.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bez limitu rozmowy, sms, 20 GB - 50zł/mies." wrappingWidth="145.9404296875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>
