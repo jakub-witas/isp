@@ -72,6 +72,8 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String id = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(id);
     }
 
@@ -104,6 +106,8 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String id = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(id);
     }
 
@@ -118,6 +122,8 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String id = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(id);
     }
 
@@ -134,6 +140,8 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String identyfikator = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(identyfikator);
     }
 
@@ -152,6 +160,8 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String identyfikator = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(identyfikator);
     }
 
@@ -177,7 +187,78 @@ public class DatabaseHandler extends Thread{
         resultSet.next();
         String id = resultSet.getString("max");
 
+        statement.close();
+        resultSet.close();
         return Integer.parseInt(id);
+    }
+
+    private boolean checkForAddress(Klient user) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM ADDRESS WHERE CITY = '" + user.getCity() + "' AND STREET = '" + user.getStreet() +
+                "' AND HOUSE_NUMBER = '" + user.getHome_number() + "' AND CODE = '" + user.getCode()  + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+
+        boolean authenticate = resultSet.isBeforeFirst();
+
+        statement.close();
+        resultSet.close();
+
+        return authenticate;
+    }
+
+    private int registerNewAdress(Klient user) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO ADDRESS VALUES (nextval('address_seq'), '"
+                + user.getCity() + "', '" + user.getStreet() + "', '" + user.getHome_number() + "','"
+                + user.getCode() + "')";
+
+        statement.executeUpdate(str);
+        str = "SELECT MAX(ID) FROM ADDRESS WHERE street = '" + user.getStreet() + "' AND house_number = '" + user.getHome_number() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String id = resultSet.getString("max");
+
+        statement.close();
+        resultSet.close();
+        return Integer.parseInt(id);
+    }
+
+    private int getAddressId(Klient user) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT id FROM ADDRESS WHERE CITY = '" + user.getCity() + "' AND STREET = '" + user.getStreet() +
+                "' AND HOUSE_NUMBER = '" + user.getHome_number() + "' AND CODE = '" + user.getCode()  + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+
+        int id = resultSet.getInt("id");
+
+        statement.close();
+        resultSet.close();
+
+        return id;
+    }
+
+    public int registerNewUser(Klient user, String username, String password) throws SQLException {
+        int addressId;
+        if(!checkForAddress(user)) {
+            addressId = this.registerNewAdress(user);
+        } else {
+            addressId = this.getAddressId(user);
+        }
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO USERS VALUES (nextval('user_seq'), " + username + "', '" + password +  "', '" +
+                user.getName() + "', '" + user.getSurname() + "', '" + user.getPhone() + "', '" + user.getMail() + "', '" +
+                user.getPesel() + "', '" + user.getId_card() + "', 2, '" + addressId + ");";
+       statement.executeUpdate(str);
+
+        str = "SELECT MAX(ID) FROM USERS WHERE username = '" + username + "' AND password = '" + password + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("max");
+
+        statement.close();
+        resultSet.close();
+        return id;
     }
 
     public Object fetchUserData(String username, String password) throws SQLException {
