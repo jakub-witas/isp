@@ -133,3 +133,6 @@ CREATE SEQUENCE isp.powiadomienie_seq INCREMENT BY 1 MINVALUE 1;
 
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'Panstwa polskiego', '15/609', '25-109');
 INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678909', '123456789', 0, 1);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin2', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678902', '123456789', 1, 1);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin3', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678903', '123456789', 2, 1);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678904', '123456789', 3, 1);

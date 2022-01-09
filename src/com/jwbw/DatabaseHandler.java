@@ -200,6 +200,7 @@ public class DatabaseHandler extends Thread{
 
             statement.close();
             resultSet.close();
+            logger.userLoggedIn(user.getId());
             return user;
         } else {
             Pracownik user = new Pracownik();
@@ -215,6 +216,7 @@ public class DatabaseHandler extends Thread{
 
             statement.close();
             resultSet.close();
+            logger.userLoggedIn(user.getId());
             return user;
         }
     }

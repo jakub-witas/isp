@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
+import java.beans.EventHandler;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -54,8 +55,8 @@ public class Controller implements Initializable {
     }
 
     // logowanie
-    public void handleButtonZal(MouseEvent event) throws SQLException {
-        logIn(event);
+    public void handleButtonZal() throws SQLException {
+        logIn();
 
     }
 
@@ -105,8 +106,15 @@ public class Controller implements Initializable {
         }
     }
 
-
-private void logIn(MouseEvent event) throws SQLException {
+private void logIn() throws SQLException {
+        if(Main.connection == null || Main.connection.databaseHandler == null) {
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Błąd połączenia");
+            alert.setContentText("Brak połączenia z bazą danych.");
+            alert.showAndWait();
+            return;
+        }
     String log = logi.getText();
     String pass = passw.getText();
 
@@ -115,15 +123,14 @@ private void logIn(MouseEvent event) throws SQLException {
         InterfaceMain.loggedUser = user;
         Role rola;
 
-        if (Klient.class.equals(user.getClass())) {
-            rola = Role.CLIENT;
+        if (user.getClass() == Pracownik.class) {
+            rola = ((Pracownik)user).getRole();
         } else {
-          rola = ((Pracownik)user).getRole();
+            rola = Role.CLIENT;
         }
         assert rola != null;
         try {
-            Node node = (Node) event.getSource();
-            Stage stage = (Stage) node.getScene().getWindow();
+            Stage stage = (Stage) this.passw.getScene().getWindow();
             Scene scene;
             switch(rola) {
                 case OWNER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../wlasciciel/wlasciciel.fxml")));

@@ -1,5 +1,7 @@
 package com.jwbw.gui.Controllers;
 
+import com.jwbw.Main;
+import com.jwbw.gui.InterfaceMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,10 +20,10 @@ public class Klient {
     //wylogowanie
     public void handleButtonWyl(MouseEvent mouseEvent) {
         try {
+            Main.connection.userLoggedOff(InterfaceMain.loggedUser);
+            InterfaceMain.loggedUser = null;
             Node node = (Node) mouseEvent.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
-            //stage.setMaximized(true);
-            // stage.close();
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("../login/login.fxml")));
             stage.setScene(scene);
             stage.show();
