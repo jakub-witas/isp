@@ -180,6 +180,84 @@ public class DatabaseHandler extends Thread{
         return Integer.parseInt(id);
     }
 
+    public Object fetchUserData(String username, String password) throws SQLException {
+        int role = this.getUserRole(username, password);
+
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        if(role == 2)  {
+            Klient user = new Klient();
+            user.setId(resultSet.getInt("id"));
+            user.setName(resultSet.getString("name"));
+            user.setSurname(resultSet.getString("surname"));
+            user.setId_card(resultSet.getString("ID_card"));
+            user.setMail(resultSet.getString("mail"));
+            user.setPesel(resultSet.getString("pesel"));
+            user.setPhone(resultSet.getString("phone"));
+            user = (Klient) this.getUserAddresInfo(resultSet.getInt("address"), user);
+
+            statement.close();
+            resultSet.close();
+            return user;
+        } else {
+            Pracownik user = new Pracownik();
+            user.setId(resultSet.getInt("id"));
+            user.setName(resultSet.getString("name"));
+            user.setSurname(resultSet.getString("surname"));
+            user.setId_card(resultSet.getString("ID_card"));
+            user.setMail(resultSet.getString("mail"));
+            user.setPesel(resultSet.getString("pesel"));
+            user.setPhone(resultSet.getString("phone"));
+            user.setRole(Role.getRole(resultSet.getInt("role")));
+            user = (Pracownik) this.getUserAddresInfo(resultSet.getInt("address"), user);
+
+            statement.close();
+            resultSet.close();
+            return user;
+        }
+    }
+
+    private Object getUserAddresInfo(int id, Object user) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM ADDRESS WHERE ID = '" + id + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        switch(user.getClass().toString()) {
+            case "Pracownik" ->  {
+                ((Pracownik)user).setCity(resultSet.getString("city"));
+                ((Pracownik)user).setStreet(resultSet.getString("street"));
+                ((Pracownik)user).setCode(resultSet.getString("code"));
+                ((Pracownik)user).setHome_number(resultSet.getString("house_number"));
+            }
+            case "Klient" -> {
+                ((Klient)user).setCity(resultSet.getString("city"));
+                ((Klient)user).setStreet(resultSet.getString("street"));
+                ((Klient)user).setCode(resultSet.getString("code"));
+                ((Klient)user).setHome_number(resultSet.getString("house_number"));
+            }
+        }
+
+        statement.close();
+        resultSet.close();
+
+        return user;
+    }
+
+    private int getUserRole(String username, String password) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT role FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int role = resultSet.getInt("role");
+
+        statement.close();
+        resultSet.close();
+
+        return role;
+    }
+
     public boolean authenticateUser(String username, String password) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";

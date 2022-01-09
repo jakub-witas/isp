@@ -20,6 +20,28 @@ public enum Role {
         return value;
     }
 
+    public static Role getRole(int value){
+        switch (value) {
+            case 0 -> {
+                return Role.OWNER;
+            }
+            case 1 -> {
+                return Role.SPECIALIST;
+            }
+            case 2 -> {
+                return Role.CLIENT;
+            }
+            case 3 -> {
+                return Role.ACCOUNTANT;
+            }
+            case 4 -> {
+                return Role.OFFICE_WORKER;
+            }
+            default -> {
+                return null;
+            }
+    }}
+
     public static Optional<Role> valueOf(int value){
         return Arrays.stream(values())
                 .filter(role -> role.value == value)
