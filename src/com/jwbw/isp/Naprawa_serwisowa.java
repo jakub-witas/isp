@@ -19,7 +19,7 @@ public class Naprawa_serwisowa extends Zlecenie {
         naprawa.setKoszt(0);
         if (urzadzenie != null) naprawa.setUrzadzenie_naprawiane(urzadzenie);
         else {
-            Urzadzenie urzadzenie_nowe = new UrzadzenieBuilder(nazwa, producent, sn).build();
+            Urzadzenie urzadzenie_nowe = new UrzadzenieBuilder().setNazwa(nazwa).setProducent(producent).setSn(sn).build();
             naprawa.setUrzadzenie_naprawiane(urzadzenie_nowe);
         }
         naprawa.setZamowienie(null);

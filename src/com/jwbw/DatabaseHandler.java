@@ -277,7 +277,7 @@ public class DatabaseHandler extends Thread{
             user.setMail(resultSet.getString("mail"));
             user.setPesel(resultSet.getString("pesel"));
             user.setPhone(resultSet.getString("phone"));
-            user = (Klient) this.getUserAddresInfo(resultSet.getInt("address"), user);
+            user = (Klient) getUserAddresInfo(resultSet.getInt("address"), user);
 
             statement.close();
             resultSet.close();

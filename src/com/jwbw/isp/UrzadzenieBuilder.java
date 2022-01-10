@@ -4,32 +4,32 @@ package com.jwbw.isp;
 import java.sql.SQLException;
 
 public class UrzadzenieBuilder {
-    private String nazwa;
-    private String producent;
-    private String sn;
+    private Urzadzenie urzadzenie;
 
     public Urzadzenie build() throws SQLException {
-        return new Urzadzenie(nazwa, producent, sn);
+        return urzadzenie;
     }
 
-    public UrzadzenieBuilder(String nazwa, String producent, String sn) {
-        this.nazwa = nazwa;
-        this.producent = producent;
-        this.sn = sn;
+    public UrzadzenieBuilder() {
+        this.reset();
+    }
+
+    private void reset() {
+        this.urzadzenie = new Urzadzenie();
     }
 
     public UrzadzenieBuilder setNazwa(String nazwa) {
-        this.nazwa = nazwa;
+        this.urzadzenie.setNazwa(nazwa);
         return this;
     }
 
     public UrzadzenieBuilder setProducent(String producent) {
-        this.producent = producent;
+        this.urzadzenie.setProducent(producent);
         return this;
     }
 
     public UrzadzenieBuilder setSn(String sn) {
-        this.sn = sn;
+        this.urzadzenie.setSn(sn);
         return this;
     }
 }

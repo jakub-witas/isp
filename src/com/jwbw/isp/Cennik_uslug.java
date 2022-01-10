@@ -7,7 +7,8 @@ public enum Cennik_uslug {
     Diagnoza(0, 50),
     Czyszczenie(1, 30),
     WymianaCzesci(2, 60),
-    Przelutowanie(3, 100);
+    Przelutowanie(3, 100),
+    System(4, 70);
 
     private final int value;
     private final int price;
@@ -42,6 +43,9 @@ public enum Cennik_uslug {
             }
             case 3 -> {
                 return "Przelutowanie elementu";
+            }
+            case 4 -> {
+                return "Instalacja systemu";
             }
             default -> {
                 return "UNKNOWN";
