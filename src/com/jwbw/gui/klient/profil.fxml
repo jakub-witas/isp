@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFE;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Klient">
+   <children>
+      <Text layoutX="480.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profil konta">
+         <font>
+            <Font name="System Italic" size="36.0" />
+         </font>
+      </Text>
+      <Pane layoutX="88.0" layoutY="88.0" prefHeight="379.0" prefWidth="273.0" style="-fx-background-color: CCE5FF;">
+         <children>
+            <Text layoutX="63.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dane kontaktowe">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Label fx:id="id_person" accessibleRole="TEXT_FIELD" layoutX="14.0" layoutY="49.0" prefHeight="20.0" prefWidth="139.0" text="id konta">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="name" accessibleRole="TEXT_FIELD" layoutX="14.0" layoutY="78.0" prefHeight="20.0" prefWidth="139.0" text="imie">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="surname" layoutX="14.0" layoutY="104.0" prefHeight="20.0" prefWidth="139.0" text="nazwisko">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="134.0" prefHeight="20.0" prefWidth="139.0" text="mail">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="160.0" prefHeight="20.0" prefWidth="139.0" text="phone">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="188.0" prefHeight="20.0" prefWidth="139.0" text="id card">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="218.0" prefHeight="20.0" prefWidth="139.0" text="pesel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="14.0" layoutY="335.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditcontact" text="Edytuj">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="434.0" layoutY="88.0" prefHeight="379.0" prefWidth="273.0" style="-fx-background-color: CCE5FF;">
+         <children>
+            <Text layoutX="114.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adres">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Label layoutX="21.0" layoutY="60.0" prefHeight="20.0" prefWidth="139.0" text="miasto">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="114.0" prefHeight="20.0" prefWidth="139.0" text="ulica">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="140.0" prefHeight="20.0" prefWidth="139.0" text="nr domu">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="87.0" prefHeight="20.0" prefWidth="180.0" text="kod pocztowy">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="21.0" layoutY="335.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditAdres" text="Edytuj">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="790.0" layoutY="88.0" prefHeight="379.0" prefWidth="273.0" style="-fx-background-color: CCE5FF;">
+         <children>
+            <Button layoutX="21.0" layoutY="335.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditContract" text="Edytuj">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Text layoutX="100.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Umowy" wrappingWidth="72.134765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Label layoutX="21.0" layoutY="73.0" prefHeight="20.0" prefWidth="153.0" text="nazwa umowy">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="110.0" prefHeight="20.0" prefWidth="153.0" text="rodzaj umowy">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="24.0" layoutY="141.0" prefHeight="20.0" prefWidth="153.0" text="data zawarcia">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="22.0" layoutY="204.0" prefHeight="20.0" prefWidth="139.0" text="status">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="22.0" layoutY="170.0" prefHeight="20.0" prefWidth="139.0" text="kwota">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</Pane>

@@ -9,12 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
 
 import java.beans.EventHandler;
 import java.io.DataOutputStream;
@@ -33,6 +32,42 @@ public class Controller implements Initializable {
 
     @FXML
     private Pane panhom;
+
+    @FXML
+    private TextField Rlogn;
+
+    @FXML
+    private PasswordField Rpassword;
+
+    @FXML
+    private TextField name;
+
+    @FXML
+    private TextField surname;
+
+    @FXML
+    private TextField mail;
+
+    @FXML
+    private TextField phone;
+
+    @FXML
+    private TextField pesel;
+
+    @FXML
+    private TextField city;
+
+    @FXML
+    private TextField street;
+
+    @FXML
+    private TextField home_number;
+
+    @FXML
+    private TextField code;
+
+    @FXML
+    private TextField id_card;
 
 
     Alert alert = new Alert(Alert.AlertType.NONE);
@@ -106,7 +141,7 @@ public class Controller implements Initializable {
         }
     }
 
-private void logIn() throws SQLException {
+    private void logIn() throws SQLException {
         if(Main.connection == null || Main.connection.databaseHandler == null) {
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -137,7 +172,7 @@ private void logIn() throws SQLException {
                 case CLIENT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../klient/klient.fxml")));
                 case ACCOUNTANT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../ksiegowa/ksiegowa.fxml")));
                 case SPECIALIST -> scene = new Scene(FXMLLoader.load(getClass().getResource("../specjalista/specjalista.fxml")));
-                //TODO: dorobić pracownika biurowego ffs.
+                case OFFICE_WORKER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../pracownik_biurowy/pracownik_biurowy.fxml")));
                 default -> throw new IllegalStateException("Unexpected value: " + rola);
             }
 
@@ -154,6 +189,7 @@ private void logIn() throws SQLException {
         alert.showAndWait();
     }
 }
+
     public void handleButtonAplikuj(MouseEvent event) {
         try {
             Stage stage = new Stage();
@@ -168,9 +204,35 @@ private void logIn() throws SQLException {
 
     public void handleButtonZarejestruj(MouseEvent mouseEvent) {
 
-        alert.setAlertType(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Rejestracja przebiegła pomyślnie");
-        alert.show();
+       String rlogi = Rlogn.getText();
+       String rpassw = Rpassword.getText();
+       String nam = name.getText();
+       String surnam = surname.getText();
+       String mai = mail.getText();
+       String phon = phone.getText();
+       String pese = pesel.getText();
+       String cit = city.getText();
+        String stree = street.getText();
+        String home_numb = home_number.getText();
+        String cod = code.getText();
+        String id_car = id_card.getText();
+
+       if(rlogi.isEmpty() || rpassw.isEmpty() || nam.isEmpty() || surnam.isEmpty() || mai.isEmpty() || phon.isEmpty() || pese.isEmpty() || cit.isEmpty() ||
+               stree.isEmpty() || home_numb.isEmpty() || cod.isEmpty() || id_car.isEmpty()){
+
+           alert.setAlertType(Alert.AlertType.WARNING);
+           alert.setTitle("Rejestracja");
+           alert.setContentText("Nie uzupełnione wszystkie dane.");
+           alert.setHeaderText(null);
+           alert.showAndWait();
+
+       }else{
+           alert.setAlertType(Alert.AlertType.WARNING);
+           alert.setTitle("Rejestracja");
+           alert.setContentText("Rejestracja przebiegła pomyślnie");
+           alert.setHeaderText(null);
+           alert.showAndWait();
+       }
 
     }
 
