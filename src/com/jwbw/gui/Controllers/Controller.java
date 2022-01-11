@@ -175,7 +175,7 @@ public class Controller implements Initializable {
                 case OFFICE_WORKER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../pracownik_biurowy/pracownik_biurowy.fxml")));
                 default -> throw new IllegalStateException("Unexpected value: " + rola);
             }
-
+            InterfaceMain.loggedUser = user;
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {

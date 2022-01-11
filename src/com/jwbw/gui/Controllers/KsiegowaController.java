@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Ksiegowa {
+public class KsiegowaController {
 
     public void handleButtonWyl(MouseEvent mouseEvent) {
         try {

@@ -2,21 +2,20 @@ package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
+import com.jwbw.isp.Klient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 
-public class Klient {
+public class KlientController {
 
     @FXML
     private Pane paneklient;
@@ -32,6 +31,8 @@ public class Klient {
 
 
 
+    @FXML
+    private void initialize() {}
 
     //wylogowanie
     public void handleButtonWyl(MouseEvent mouseEvent) {
@@ -49,9 +50,10 @@ public class Klient {
         }
     }
 
+    @FXML
     public void setScreen(Pane pane) {
-        paneklient.getChildren().clear();
-        paneklient.getChildren().add(pane);
+        this.paneklient.getChildren().clear();
+        this.paneklient.getChildren().add(pane);
     }
 
     public void zglosUsterke() {
@@ -76,53 +78,17 @@ public class Klient {
         setScreen(pane);
     }
 
+    @FXML
     public void handleButtonProfil() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/profil.fxml"));
         Pane pane = null;
         try {
             pane = loader.load();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         setScreen(pane);
-    }
-
-    public void handleButtonEditcontact(){
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("Edycja danych");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../klient/edycjakontaktowe.fxml"))));
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void handleButtonEditAdres() {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("Edycja danych");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../klient/edycjaadres.fxml"))));
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void handleButtonEditContract() {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("Edycja danych");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../klient/edycjaumowa.fxml"))));
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void handleButtonZgloszenia() {

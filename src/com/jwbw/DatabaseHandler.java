@@ -1,8 +1,10 @@
 package com.jwbw;
 
 import com.jwbw.isp.*;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHandler extends Thread{
@@ -50,6 +52,44 @@ public class DatabaseHandler extends Thread{
                 }
             }
         }
+    }
+
+    public boolean updateUserContractData(Object user) throws SQLException {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str;
+                str = "UPDATE isp.USERS SET name = '" + ((Klient) user).getName() + "', surname = '" + ((Klient) user).getSurname() +
+                        "', phone = '" + ((Klient) user).getPhone() + "', id_card = '" + ((Klient) user).getId_card()
+                        + "', mail = '" + ((Klient) user).getMail() + "' WHERE id = '" + ((Klient) user).getId() + "';";
+
+            statement.executeUpdate(str);
+            statement.close();
+        } catch (PSQLException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateUserAddressData(Object user) throws SQLException {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str;
+            str = "SELECT address FROM isp.USERS WHERE  id = " + ((Klient)user).getId() + ";";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int id = resultSet.getInt("address");
+            resultSet.close();
+
+            str = "UPDATE isp.ADDRESS SET city = '" + ((Klient) user).getCity() + "', street = '" + ((Klient) user).getStreet() +
+                    "', house_number = '" + ((Klient) user).getHome_number() + "', code = '" + ((Klient) user).getCode()
+                     + "' WHERE id = '" + id + "';";
+
+            statement.executeUpdate(str);
+            statement.close();
+        } catch (PSQLException e) {
+            return false;
+        }
+        return true;
     }
 
     public int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException {
@@ -277,7 +317,12 @@ public class DatabaseHandler extends Thread{
             user.setMail(resultSet.getString("mail"));
             user.setPesel(resultSet.getString("pesel"));
             user.setPhone(resultSet.getString("phone"));
-            user = (Klient) getUserAddresInfo(resultSet.getInt("address"), user);
+            List<String> lista = getUserAddresInfo(resultSet.getInt("address"));
+
+            user.setCity(lista.get(0));
+            user.setStreet(lista.get(1));
+            user.setCode(lista.get(2));
+            user.setHome_number(lista.get(3));
 
             statement.close();
             resultSet.close();
@@ -293,7 +338,12 @@ public class DatabaseHandler extends Thread{
             user.setPesel(resultSet.getString("pesel"));
             user.setPhone(resultSet.getString("phone"));
             user.setRole(Role.getRole(resultSet.getInt("role")));
-            user = (Pracownik) this.getUserAddresInfo(resultSet.getInt("address"), user);
+            List<String> lista = getUserAddresInfo(resultSet.getInt("address"));
+
+            user.setCity(lista.get(0));
+            user.setStreet(lista.get(1));
+            user.setCode(lista.get(2));
+            user.setHome_number(lista.get(3));
 
             statement.close();
             resultSet.close();
@@ -302,30 +352,23 @@ public class DatabaseHandler extends Thread{
         }
     }
 
-    private Object getUserAddresInfo(int id, Object user) throws SQLException {
+    private List<String> getUserAddresInfo(int id) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM ADDRESS WHERE ID = '" + id + "';";
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
-        switch(user.getClass().toString()) {
-            case "Pracownik" ->  {
-                ((Pracownik)user).setCity(resultSet.getString("city"));
-                ((Pracownik)user).setStreet(resultSet.getString("street"));
-                ((Pracownik)user).setCode(resultSet.getString("code"));
-                ((Pracownik)user).setHome_number(resultSet.getString("house_number"));
-            }
-            case "Klient" -> {
-                ((Klient)user).setCity(resultSet.getString("city"));
-                ((Klient)user).setStreet(resultSet.getString("street"));
-                ((Klient)user).setCode(resultSet.getString("code"));
-                ((Klient)user).setHome_number(resultSet.getString("house_number"));
-            }
-        }
+
+        List<String> lista = new ArrayList<>();
+                lista.add(resultSet.getString("city"));
+        lista.add(resultSet.getString("street"));
+        lista.add(resultSet.getString("code"));
+        lista.add(resultSet.getString("house_number"));
+
 
         statement.close();
         resultSet.close();
 
-        return user;
+        return lista;
     }
 
     private int getUserRole(String username, String password) throws SQLException {

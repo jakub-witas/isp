@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Specjalista">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.SpecjalistaController">
    <children>
       <Text layoutX="118.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WWNet - Dostawca internetu wraz z serwisem PC">
          <font>

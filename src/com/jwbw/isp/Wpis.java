@@ -36,6 +36,15 @@ public class Wpis {
         this.setId(Main.connection.databaseHandler.sendWpisGetId(this));
     }
 
+    public Wpis (Object autor, Object odbiorca, String opis, boolean wasRead) throws SQLException {
+        this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
+        this.setAutor(autor);
+        this.setOpis(opis);
+        this.setWasRead(wasRead);
+        this.setOdbiorca(odbiorca);
+        this.setId(Main.connection.databaseHandler.sendPowiadomienieGetId(this));
+    }
+
     public Wpis() {}
 
     public static Wpis wyslijPowiadomienie(Object autor, Object odbiorca, String description) throws SQLException {

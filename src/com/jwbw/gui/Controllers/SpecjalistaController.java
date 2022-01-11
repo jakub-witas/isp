@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Specjalista {
+public class SpecjalistaController {
 
     @FXML
     private Pane paneSpecjalista;

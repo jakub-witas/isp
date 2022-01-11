@@ -25,14 +25,25 @@ public class Naprawa_serwisowa extends Zlecenie {
         naprawa.setZamowienie(null);
         naprawa.setWlasciciel(klient);
         naprawa.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
-        Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
+
+        Director director = new Director();
+        WpisBuilder builder = new WpisBuilder();
+        director.constructWpis(builder, klient, "Utworzenie zlecenia");
+        Wpis pierwszy_wpis = builder.getResult();
+
+        //Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
         naprawa.wpisy.add(pierwszy_wpis);
         naprawa.setId(Main.connection.databaseHandler.sendNaprawaGetId(naprawa));
         InterfaceMain.naprawy.addAll(naprawa);
     }
 
     public void dodajWpis(int number, String customDescription, List<Cennik_uslug> dodatkowe, Object odbiorca) throws SQLException {
-        Wpis wpis1 = new Wpis(InterfaceMain.loggedUser, customDescription);
+        Director director = new Director();
+        WpisBuilder builder = new WpisBuilder();
+        director.constructWpis(builder, InterfaceMain.loggedUser, customDescription);
+        Wpis wpis1 = builder.getResult();
+
+        //Wpis wpis1 = new Wpis(InterfaceMain.loggedUser, customDescription);
         this.wpisy.add(wpis1);
 
         String description;
@@ -45,11 +56,17 @@ public class Naprawa_serwisowa extends Zlecenie {
 
             description = "Diagnostyka wpisu nr ";
             description += this.getId();
-            Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
+            //Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
+            director.constructPowiadomienie(builder, InterfaceMain.loggedUser, description, odbiorca);
+            Wpis wpis2 = builder.getResult();
+            this.wpisy.add(wpis2);
         } else if (number == 2) {
             description = "Dodano odpowiedź do wpisu nr ";
             description += this.getId();
-            Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
+            //Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
+            director.constructPowiadomienie(builder, InterfaceMain.loggedUser, description, odbiorca);
+            Wpis wpis2 = builder.getResult();
+            this.wpisy.add(wpis2);
         }
 
     }

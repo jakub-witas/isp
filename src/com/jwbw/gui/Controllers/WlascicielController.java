@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Wlasciciel {
+public class WlascicielController {
 
     @FXML
     private Pane paneWlasciciel;
