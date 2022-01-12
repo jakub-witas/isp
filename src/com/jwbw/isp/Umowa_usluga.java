@@ -2,10 +2,10 @@ package com.jwbw.isp;
 
 import java.util.List;
 
-public class Umowa_usluga {
+public class Umowa_usluga extends Dokument{
     private List<Object> oferta;
     private Klient nabywca;
-    private Pracownik autor;
+    private String autor;
 
     public List<Object> getOferta() {
         return oferta;
@@ -23,11 +23,14 @@ public class Umowa_usluga {
         this.nabywca = nabywca;
     }
 
-    public Pracownik getAutor() {
+    public String getAutor() {
         return autor;
     }
 
     public void setAutor(Pracownik autor) {
+        this.autor = autor.getName()+ " " + autor.getSurname();
+    }
+    public void setAutor(String autor) {
         this.autor = autor;
     }
 }

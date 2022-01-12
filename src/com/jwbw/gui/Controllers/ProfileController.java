@@ -1,7 +1,9 @@
 package com.jwbw.gui.Controllers;
 
+import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.Klient;
+import com.jwbw.isp.Umowa_usluga;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,22 +16,28 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 
 public class ProfileController {
 
     @FXML
-    private Label id_person, name, surname, mail, phone, pesel, id_card, city, street, code, home_number;
+    private Label id_person, name, surname, mail, phone, pesel, id_card, city, street, code, home_number,
+            nr_umowy, data_zawarcia, data_zakonczenia, kwota_mc, status, type, author;
 
     @FXML
     private Button editData;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws SQLException {
        loadData();
     }
 
-    private void loadData() {
+    private void loadData() throws SQLException {
+        List<Umowa_usluga> lista =  Main.connection.databaseHandler.getServiceContracts();
         this.id_person.setText(((Klient)InterfaceMain.loggedUser).getId().toString());
         this.pesel.setText(((Klient)InterfaceMain.loggedUser).getPesel());
         this.id_card.setText(((Klient) InterfaceMain.loggedUser).getId_card());
@@ -41,6 +49,20 @@ public class ProfileController {
         this.street.setText(((Klient) InterfaceMain.loggedUser).getStreet());
         this.code.setText(((Klient) InterfaceMain.loggedUser).getCode());
         this.home_number.setText(((Klient) InterfaceMain.loggedUser).getHome_number());
+        this.nr_umowy.setText(lista.get(0).getNr_dokumentu());
+        this.data_zawarcia.setText(lista.get(0).getData_utworzenia().toString());
+        this.data_zakonczenia.setText(lista.get(0).getData_wygasniecia().toString());
+        //this.kwota_mc.setText(list);
+        //TODO: dodać kwote i funkcje ją wyliczającą lub do zmiennej, lub wyjebać. Dodać też tabele?  z ofertą wybraną na umowie
+        if(lista.get(0).getData_wygasniecia().before(Date.valueOf(LocalDate.now()))){
+            this.status.setText("Zakończona");
+        } else{
+            this.status.setText("Aktywna");
+        }
+
+        this.type.setText("Umowa na usługę");
+        this.author.setText(lista.get(0).getAutor());
+
     }
 
     public void handleButtonEditAdres() {
@@ -52,7 +74,13 @@ public class ProfileController {
             stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(this.editData.getScene().getWindow());
-            stage.setOnCloseRequest(event -> loadData());
+            stage.setOnCloseRequest(event -> {
+                try {
+                    loadData();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            });
             stage.show();
         }
         catch (IOException e) {
@@ -81,7 +109,13 @@ public class ProfileController {
             stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(this.editData.getScene().getWindow());
-            stage.setOnCloseRequest(event -> loadData());
+            stage.setOnCloseRequest(event -> {
+                try {
+                    loadData();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            });
             stage.show();
         }
         catch (IOException e) {

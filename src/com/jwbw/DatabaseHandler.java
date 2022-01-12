@@ -1,5 +1,6 @@
 package com.jwbw;
 
+import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.*;
 import org.postgresql.util.PSQLException;
 
@@ -70,6 +71,20 @@ public class DatabaseHandler extends Thread{
         return true;
     }
 
+    private List<Object> getDocumentData(int id) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str =  "SELECT * FROM DOKUMENTY WHERE ID = " + id + ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        List<Object> lista = new ArrayList<>();
+        lista.add(resultSet.getTimestamp("data_utworzenie"));
+        lista.add(resultSet.getTimestamp("data_wygasniecia"));
+        lista.add(resultSet.getString("nr_dokumentu"));
+        resultSet.close();
+        statement.close();
+        return lista;
+    }
+
     public boolean updateUserAddressData(Object user) throws SQLException {
         try {
             Statement statement = this.connection.createStatement();
@@ -90,6 +105,43 @@ public class DatabaseHandler extends Thread{
             return false;
         }
         return true;
+    }
+
+    public List<Umowa_usluga> getServiceContracts() throws SQLException {
+        List<Umowa_usluga> lista = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = " + ((Klient)InterfaceMain.loggedUser).getId();
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Umowa_usluga usluga = new Umowa_usluga();
+            String oferta = (resultSet.getString("oferta"));
+            usluga.setId(resultSet.getInt("id"));
+            int autor = resultSet.getInt("autor");
+            usluga.setAutor(getAuthorName(autor));
+            usluga.setNabywca((Klient) InterfaceMain.loggedUser);
+            List<Object> listaDoc = getDocumentData(resultSet.getInt("dokument_fk"));
+            usluga.setData_utworzenia((Timestamp) listaDoc.get(0));
+            usluga.setData_wygasniecia((Timestamp) listaDoc.get(1));
+            usluga.setNr_dokumentu((String) listaDoc.get(2));
+            lista.add(usluga);
+        }
+        return  lista;
+    }
+
+    private String getAuthorName(int id) throws SQLException {
+        Statement statement =  this.connection.createStatement();
+        String str = "SELECT name, surname FROM USERS WHERE id = " + id +  ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        String name = "";
+        name += resultSet.getString("name");
+        name +=  " ";
+        name += resultSet.getString("surname");
+
+
+        resultSet.close();
+        statement.close();
+        return name;
     }
 
     public int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException {
