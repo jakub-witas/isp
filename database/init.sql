@@ -88,7 +88,8 @@ CREATE TABLE isp.UMOWA_USLUGA (
     id INTEGER PRIMARY KEY,
     oferta VARCHAR(10) NOT NULL,
     nabywca INTEGER  REFERENCES isp.USERS(id),
-    autor INTEGER  REFERENCES isp.USERS(id)
+    autor INTEGER  REFERENCES isp.USERS(id),
+    dokument_fk INTEGER REFERENCES isp.DOKUMENTY(id)
 );
 
 CREATE TABLE isp.URZADZENIE (
@@ -218,9 +219,14 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', 'true', 50);
 
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
+INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/03/2020', 'DD/MM/YYYY'), to_timestamp('31/02/2022', 'DD/MM/YYYY'));
 
 --Contracts of employment
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
 
-UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
+--service contracts
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2, 1', 3, 4, 2);
 
+--updating document with document number
+UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
+UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2020/1' WHERE ID = 2;
