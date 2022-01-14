@@ -33,7 +33,7 @@ public class Wpis {
         this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
         this.setAutor(autor);
         this.setOpis(opis);
-        this.setId(Main.connection.databaseHandler.sendWpisGetId(this));
+        this.setId(Main.Database.sendWpisGetId(this));
     }
 
     public Wpis (Object autor, Object odbiorca, String opis, boolean wasRead) throws SQLException {
@@ -42,7 +42,7 @@ public class Wpis {
         this.setOpis(opis);
         this.setWasRead(wasRead);
         this.setOdbiorca(odbiorca);
-        this.setId(Main.connection.databaseHandler.sendPowiadomienieGetId(this));
+        this.setId(Main.Database.sendPowiadomienieGetId(this));
     }
 
     public Wpis() {}
@@ -53,7 +53,7 @@ public class Wpis {
         nowy.setOpis(description);
         nowy.setOdbiorca(odbiorca);
         nowy.setWasRead(false);
-        nowy.setId(Main.connection.databaseHandler.sendPowiadomienieGetId(nowy));
+        nowy.setId(Main.Database.sendPowiadomienieGetId(nowy));
         return nowy;
     }
 

@@ -3,11 +3,11 @@ package com.jwbw.isp;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class Dokument {
-    protected int id;
-    protected String nr_dokumentu;
-    protected Timestamp data_utworzenia;
-    protected Timestamp data_wygasniecia;
+public abstract class Dokument {
+    int id;
+    String nr_dokumentu;
+    Timestamp data_utworzenia;
+    Timestamp data_wygasniecia;
 
     public int getId() { return id; }
 

@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHandler extends Thread{
+public class DatabaseHandler extends Thread implements DatabaseInterface{
     private final String databaseUrl;
     private final String databaseUser;
     private final String databasePassword;
@@ -454,7 +454,7 @@ public class DatabaseHandler extends Thread{
         return role;
     }
 
-    public boolean authenticateUser(String username, String password) throws SQLException {
+    public boolean authenticateUser(String username, String password) {
         try {
             Statement statement = this.connection.createStatement();
             String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";

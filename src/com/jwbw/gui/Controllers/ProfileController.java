@@ -37,7 +37,7 @@ public class ProfileController {
     }
 
     private void loadData() throws SQLException {
-        List<Umowa_usluga> lista =  Main.connection.databaseHandler.getServiceContracts();
+        List<Umowa_usluga> lista =  Main.Database.getServiceContracts();
         this.id_person.setText(((Klient)InterfaceMain.loggedUser).getId().toString());
         this.pesel.setText(((Klient)InterfaceMain.loggedUser).getPesel());
         this.id_card.setText(((Klient) InterfaceMain.loggedUser).getId_card());

@@ -25,7 +25,7 @@ public class WlascicielController {
 
     public void handleButtonWyl(MouseEvent Event) {
         try {
-            Main.connection.userLoggedOff(InterfaceMain.loggedUser);
+            //Main.connection.userLoggedOff(InterfaceMain.loggedUser);
             InterfaceMain.loggedUser = null;
             Node node = (Node) Event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();

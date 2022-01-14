@@ -55,7 +55,7 @@ public class DataEditController {
         }
 
         updateClientData();
-        if (!Main.connection.databaseHandler.updateUserContractData(InterfaceMain.loggedUser)) {
+        if (!Main.Database.updateUserContractData(InterfaceMain.loggedUser)) {
             alert.setContentText("Aktualizacja danych nie powiodła się.");
             alert.showAndWait();
         } else {

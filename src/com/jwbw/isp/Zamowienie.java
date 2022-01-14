@@ -16,7 +16,7 @@ public class Zamowienie extends Dokument {
         this.setKwota(kwota);
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
         this.setData_wygasniecia(Timestamp.valueOf(this.data_utworzenia.toLocalDateTime().plusDays(14)));
-        this.setId(Main.connection.databaseHandler.sendZamowienieGetId(this));
+        this.setId(Main.Database.sendZamowienieGetId(this));
 
     }
 

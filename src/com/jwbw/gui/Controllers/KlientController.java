@@ -37,7 +37,7 @@ public class KlientController {
     //wylogowanie
     public void handleButtonWyl(MouseEvent mouseEvent) {
         try {
-            Main.connection.userLoggedOff(InterfaceMain.loggedUser);
+            //Main.connection.userLoggedOff(InterfaceMain.loggedUser);
             InterfaceMain.loggedUser = null;
             Node node = (Node) mouseEvent.getSource();
             Stage stage = (Stage) node.getScene().getWindow();

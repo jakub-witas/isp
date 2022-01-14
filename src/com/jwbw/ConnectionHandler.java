@@ -1,6 +1,5 @@
 package com.jwbw;
 
-
 import com.jwbw.isp.Klient;
 import com.jwbw.isp.Pracownik;
 
@@ -11,7 +10,7 @@ public class ConnectionHandler extends Thread{
     private final String databasePassword;
     private final ApplicationLogger logger;
 
-    public DatabaseHandler databaseHandler;
+    private DatabaseHandler databaseHandler;
     private boolean isDatabaseConnected = false;
     boolean errPromptShown = false;
 
@@ -26,7 +25,6 @@ public class ConnectionHandler extends Thread{
     @Override
     public void run() {
         initializeDatabase();
-
     }
 
     public void userLoggedOff(Object user) {
@@ -40,6 +38,7 @@ public class ConnectionHandler extends Thread{
     private void initializeDatabase(){
         databaseHandler = new DatabaseHandler(this, databaseUrl, databaseUser, databasePassword, logger);
         isDatabaseConnected = databaseHandler.isConnected();
+        Main.Database = databaseHandler;
     }
 
     public void setDatabaseConnectionState(boolean isDatabaseConnected){

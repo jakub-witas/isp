@@ -131,8 +131,6 @@ public class Controller implements Initializable {
         try {
             Node node = (Node) mouseEvent.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
-            //stage.setMaximized(true);
-            // stage.close();
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("../home/hom.fxml")));
             stage.setScene(scene);
             stage.show();
@@ -148,8 +146,8 @@ public class Controller implements Initializable {
         String log = logi.getText();
         String pass = passw.getText();
 
-    if (Main.connection.databaseHandler.authenticateUser(log, pass)) {
-        Object user = Main.connection.databaseHandler.fetchUserData(log, pass);
+    if (Main.Database.authenticateUser(log, pass)) {
+        Object user = Main.Database.fetchUserData(log, pass);
         InterfaceMain.loggedUser = user;
         Role rola;
 
@@ -215,7 +213,7 @@ public class Controller implements Initializable {
         }else{
             Klient user =  new Klient();
             this.setUserInfo(user);
-            user.setId(Main.connection.databaseHandler.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
+            user.setId(Main.Database.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
             clearRegistrationForms();
            alert.setAlertType(Alert.AlertType.INFORMATION);
            alert.setTitle("Rejestracja");
@@ -242,12 +240,11 @@ public class Controller implements Initializable {
     }
 
     private boolean checkForExistingUser() {
-        return Main.connection.databaseHandler.checkForExistingUser(Rlogn.getText());
-
+        return Main.Database.checkForExistingUser(Rlogn.getText());
     }
 
     private boolean checkDatabaseConnection() throws NullPointerException {
-        if(!Main.connection.databaseHandler.checkConnection()) {
+        if(!Main.Database.checkConnection()) {
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Błąd połączenia");

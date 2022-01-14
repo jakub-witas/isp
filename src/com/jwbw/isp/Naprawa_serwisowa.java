@@ -33,7 +33,7 @@ public class Naprawa_serwisowa extends Zlecenie {
 
         //Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
         naprawa.wpisy.add(pierwszy_wpis);
-        naprawa.setId(Main.connection.databaseHandler.sendNaprawaGetId(naprawa));
+        naprawa.setId(Main.Database.sendNaprawaGetId(naprawa));
         InterfaceMain.naprawy.addAll(naprawa);
     }
 

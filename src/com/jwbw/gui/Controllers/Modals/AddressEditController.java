@@ -42,7 +42,7 @@ public class AddressEditController {
         }
 
         updateClientData();
-        if (!Main.connection.databaseHandler.updateUserAddressData(InterfaceMain.loggedUser)) {
+        if (!Main.Database.updateUserAddressData(InterfaceMain.loggedUser)) {
             alert.setContentText("Aktualizacja danych nie powiodła się.");
             alert.showAndWait();
         } else {

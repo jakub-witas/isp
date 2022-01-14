@@ -21,7 +21,7 @@ public class Faktura extends Dokument {
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
         this.setData_wygasniecia(Timestamp.valueOf(this.data_utworzenia.toLocalDateTime().plusDays(14)));
         this.setKwota(obliczKwote(this.getObiekty()));
-        this.setId(Main.connection.databaseHandler.sendFakturaGetId(this));
+        this.setId(Main.Database.sendFakturaGetId(this));
     }
 
     private float obliczKwote(List<Object> obiekty) {
