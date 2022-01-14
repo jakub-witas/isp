@@ -20,7 +20,7 @@ CREATE TABLE isp.USERS (
     surname VARCHAR(50),
     phone VARCHAR(9),
     mail VARCHAR(50),
-    pesel VARCHAR(11) UNIQUE NOT NULL,
+    pesel VARCHAR(11) NOT NULL,
     ID_card VARCHAR(9),
     role INTEGER NOT NULL,
     address INTEGER REFERENCES isp.ADDRESS(id)
@@ -219,13 +219,13 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', 'true', 50);
 
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
-INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/03/2020', 'DD/MM/YYYY'), to_timestamp('31/02/2022', 'DD/MM/YYYY'));
+INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/03/2020', 'DD/MM/YYYY'), to_timestamp('28/02/2022', 'DD/MM/YYYY'));
 
 --Contracts of employment
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
 
 --service contracts
-INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2, 1', 3, 4, 2);
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2,1', 3, 4, 2);
 
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;

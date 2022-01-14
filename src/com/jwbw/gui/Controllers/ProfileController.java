@@ -49,20 +49,21 @@ public class ProfileController {
         this.street.setText(((Klient) InterfaceMain.loggedUser).getStreet());
         this.code.setText(((Klient) InterfaceMain.loggedUser).getCode());
         this.home_number.setText(((Klient) InterfaceMain.loggedUser).getHome_number());
-        this.nr_umowy.setText(lista.get(0).getNr_dokumentu());
-        this.data_zawarcia.setText(lista.get(0).getData_utworzenia().toString());
-        this.data_zakonczenia.setText(lista.get(0).getData_wygasniecia().toString());
-        //this.kwota_mc.setText(list);
-        //TODO: dodać kwote i funkcje ją wyliczającą lub do zmiennej, lub wyjebać. Dodać też tabele?  z ofertą wybraną na umowie
-        if(lista.get(0).getData_wygasniecia().before(Date.valueOf(LocalDate.now()))){
-            this.status.setText("Zakończona");
-        } else{
-            this.status.setText("Aktywna");
+        if(!lista.isEmpty()) {
+            this.nr_umowy.setText(lista.get(0).getNr_dokumentu());
+            this.data_zawarcia.setText(lista.get(0).getData_utworzenia().toString());
+            this.data_zakonczenia.setText(lista.get(0).getData_wygasniecia().toString());
+            //this.kwota_mc.setText(list);
+            //TODO: dodać kwote i funkcje ją wyliczającą lub do zmiennej, lub wyjebać. Dodać też tabele?  z ofertą wybraną na umowie
+            if (lista.get(0).getData_wygasniecia().before(Date.valueOf(LocalDate.now()))) {
+                this.status.setText("Zakończona");
+            } else {
+                this.status.setText("Aktywna");
+            }
+
+            this.type.setText("Umowa na usługę");
+            this.author.setText(lista.get(0).getAutor());
         }
-
-        this.type.setText("Umowa na usługę");
-        this.author.setText(lista.get(0).getAutor());
-
     }
 
     public void handleButtonEditAdres() {

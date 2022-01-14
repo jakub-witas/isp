@@ -2,6 +2,7 @@ package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
+import com.jwbw.isp.Klient;
 import com.jwbw.isp.Pracownik;
 import com.jwbw.isp.Role;
 import javafx.fxml.FXML;
@@ -142,16 +143,10 @@ public class Controller implements Initializable {
     }
 
     private void logIn() throws SQLException {
-        if(Main.connection == null || Main.connection.databaseHandler == null) {
-            alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Błąd połączenia");
-            alert.setContentText("Brak połączenia z bazą danych.");
-            alert.showAndWait();
-            return;
-        }
-    String log = logi.getText();
-    String pass = passw.getText();
+        if (checkDatabaseConnection()) return;
+
+        String log = logi.getText();
+        String pass = passw.getText();
 
     if (Main.connection.databaseHandler.authenticateUser(log, pass)) {
         Object user = Main.connection.databaseHandler.fetchUserData(log, pass);
@@ -202,38 +197,86 @@ public class Controller implements Initializable {
         }
     }
 
-    public void handleButtonZarejestruj(MouseEvent mouseEvent) {
+    public void handleButtonZarejestruj(MouseEvent mouseEvent) throws SQLException {
+        if (checkDatabaseConnection()) return;
 
-       String rlogi = Rlogn.getText();
-       String rpassw = Rpassword.getText();
-       String nam = name.getText();
-       String surnam = surname.getText();
-       String mai = mail.getText();
-       String phon = phone.getText();
-       String pese = pesel.getText();
-       String cit = city.getText();
-        String stree = street.getText();
-        String home_numb = home_number.getText();
-        String cod = code.getText();
-        String id_car = id_card.getText();
-
-       if(rlogi.isEmpty() || rpassw.isEmpty() || nam.isEmpty() || surnam.isEmpty() || mai.isEmpty() || phon.isEmpty() || pese.isEmpty() || cit.isEmpty() ||
-               stree.isEmpty() || home_numb.isEmpty() || cod.isEmpty() || id_car.isEmpty()){
-
-           alert.setAlertType(Alert.AlertType.WARNING);
-           alert.setTitle("Rejestracja");
-           alert.setContentText("Nie uzupełnione wszystkie dane.");
-           alert.setHeaderText(null);
-           alert.showAndWait();
-
-       }else{
-           alert.setAlertType(Alert.AlertType.WARNING);
+        if (registrationEmptyFieldCheck()) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setTitle("Błąd rejestracji");
+            alert.setContentText("Wszystkie pola są obowiązkowe.");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        } else if (checkForExistingUser()) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setTitle("Błąd rejestracji");
+            alert.setContentText("Podany login jest już zajęty.");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }else{
+            Klient user =  new Klient();
+            this.setUserInfo(user);
+            user.setId(Main.connection.databaseHandler.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
+            clearRegistrationForms();
+           alert.setAlertType(Alert.AlertType.INFORMATION);
            alert.setTitle("Rejestracja");
            alert.setContentText("Rejestracja przebiegła pomyślnie");
            alert.setHeaderText(null);
            alert.showAndWait();
        }
+    }
 
+    @FXML
+    private void clearRegistrationForms() {
+        Rlogn.clear();
+        Rpassword.clear();
+        name.clear();
+        surname.clear();
+        mail.clear();
+        phone.clear();
+        pesel.clear();
+        home_number.clear();
+        street.clear();
+        city.clear();
+        code.clear();
+        id_card.clear();
+    }
+
+    private boolean checkForExistingUser() {
+        return Main.connection.databaseHandler.checkForExistingUser(Rlogn.getText());
+
+    }
+
+    private boolean checkDatabaseConnection() throws NullPointerException {
+        if(!Main.connection.databaseHandler.checkConnection()) {
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Błąd połączenia");
+            alert.setContentText("Brak połączenia z bazą danych.");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
+
+    private void setUserInfo(Klient user) {
+        user.setName(name.getText());
+        user.setSurname(surname.getText());
+        user.setMail(mail.getText());
+        user.setPhone(phone.getText());
+        user.setPesel(pesel.getText());
+        user.setHome_number(home_number.getText());
+        user.setStreet(street.getText());
+        user.setCity(city.getText());
+        user.setCode(code.getText());
+        user.setId_card(id_card.getText());
+    }
+
+    @FXML
+    private boolean registrationEmptyFieldCheck() {
+        return Rlogn.getText().isEmpty() || Rpassword.getText().isEmpty() || name.getText().isEmpty()
+                || surname.getText().isEmpty() || mail.getText().isEmpty() || phone.getText().isEmpty()
+                || pesel.getText().isEmpty() || city.getText().isEmpty() || street.getText().isEmpty()
+                || home_number.getText().isEmpty() || code.getText().isEmpty() || id_card.getText().isEmpty();
     }
 
     @Override

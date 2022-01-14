@@ -110,7 +110,8 @@ public class DatabaseHandler extends Thread{
     public List<Umowa_usluga> getServiceContracts() throws SQLException {
         List<Umowa_usluga> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = " + ((Klient)InterfaceMain.loggedUser).getId();
+        String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = "
+                + ((Klient)InterfaceMain.loggedUser).getId() +  ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Umowa_usluga usluga = new Umowa_usluga();
@@ -338,9 +339,9 @@ public class DatabaseHandler extends Thread{
             addressId = this.getAddressId(user);
         }
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO USERS VALUES (nextval('user_seq'), " + username + "', '" + password +  "', '" +
+        String str = "INSERT INTO USERS VALUES (nextval('user_seq'), '" + username + "', '" + password +  "', '" +
                 user.getName() + "', '" + user.getSurname() + "', '" + user.getPhone() + "', '" + user.getMail() + "', '" +
-                user.getPesel() + "', '" + user.getId_card() + "', 2, '" + addressId + ");";
+                user.getPesel() + "', '" + user.getId_card() + "', 2, " + addressId + ");";
        statement.executeUpdate(str);
 
         str = "SELECT MAX(ID) FROM USERS WHERE username = '" + username + "' AND password = '" + password + "';";
@@ -423,6 +424,23 @@ public class DatabaseHandler extends Thread{
         return lista;
     }
 
+    public boolean checkForExistingUser(String username) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+
+            boolean authenticate = resultSet.isBeforeFirst();
+
+            statement.close();
+            resultSet.close();
+
+            return authenticate;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     private int getUserRole(String username, String password) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT role FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
@@ -437,22 +455,26 @@ public class DatabaseHandler extends Thread{
     }
 
     public boolean authenticateUser(String username, String password) throws SQLException {
-        Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
-        ResultSet resultSet = statement.executeQuery(str);
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
+            ResultSet resultSet = statement.executeQuery(str);
 
-        boolean authenticate = resultSet.isBeforeFirst();
+            boolean authenticate = resultSet.isBeforeFirst();
 
-        statement.close();
-        resultSet.close();
+            statement.close();
+            resultSet.close();
 
-        return authenticate;
+            return authenticate;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public boolean checkConnection(){
         try {
             this.connection.createStatement().executeQuery("SELECT 1");
-        } catch (SQLException ignored) {
+        } catch (SQLException | NullPointerException ignored) {
             if(!(isConnected = connect())){
                 connectionHandler.setDatabaseConnectionState(false);
                 return false;

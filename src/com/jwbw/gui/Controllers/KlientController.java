@@ -81,7 +81,7 @@ public class KlientController {
     @FXML
     public void handleButtonProfil() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/profil.fxml"));
-        Pane pane = null;
+        Pane pane = new Pane();
         try {
             pane = loader.load();
 

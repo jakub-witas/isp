@@ -107,11 +107,6 @@
       </Pane>
       <Pane layoutX="790.0" layoutY="88.0" prefHeight="379.0" prefWidth="273.0" style="-fx-background-color: CCE5FF;">
          <children>
-            <Button layoutX="21.0" layoutY="335.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditContract" text="Edytuj">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
             <Text layoutX="100.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Umowy" wrappingWidth="72.134765625">
                <font>
                   <Font size="18.0" />
@@ -142,13 +137,13 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="nr_umowy" layoutX="146.0" layoutY="75.0" text="Label" />
-            <Label fx:id="data_zawarcia" layoutX="139.0" layoutY="149.0" prefHeight="24.0" prefWidth="95.0" text="Label" />
-            <Label fx:id="data_zakonczenia" layoutX="136.0" layoutY="179.0" prefHeight="24.0" prefWidth="101.0" text="Label" />
-            <Label fx:id="kwota_mc" layoutX="135.0" layoutY="193.0" prefHeight="20.0" prefWidth="95.0" text="Label" />
-            <Label fx:id="status" layoutX="133.0" layoutY="205.0" prefHeight="42.0" prefWidth="101.0" text="Label" />
-            <Label fx:id="type" layoutX="133.0" layoutY="113.0" prefHeight="42.0" prefWidth="101.0" text="Label" />
-            <Label fx:id="author" layoutX="133.0" layoutY="220.0" prefHeight="42.0" prefWidth="101.0" text="Label" />
+            <Label fx:id="nr_umowy" layoutX="146.0" layoutY="75.0"  />
+            <Label fx:id="data_zawarcia" layoutX="139.0" layoutY="149.0" prefHeight="24.0" prefWidth="95.0"  />
+            <Label fx:id="data_zakonczenia" layoutX="136.0" layoutY="179.0" prefHeight="24.0" prefWidth="101.0"/>
+            <Label fx:id="kwota_mc" layoutX="135.0" layoutY="193.0" prefHeight="20.0" prefWidth="95.0"  />
+            <Label fx:id="status" layoutX="133.0" layoutY="205.0" prefHeight="42.0" prefWidth="101.0" />
+            <Label fx:id="type" layoutX="133.0" layoutY="113.0" prefHeight="42.0" prefWidth="101.0" />
+            <Label fx:id="author" layoutX="133.0" layoutY="220.0" prefHeight="42.0" prefWidth="101.0" />
          </children>
       </Pane>
 
