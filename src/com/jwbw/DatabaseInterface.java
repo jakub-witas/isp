@@ -20,4 +20,5 @@ public interface DatabaseInterface {
     boolean authenticateUser(String username, String password) throws SQLException;
     boolean checkConnection();
     boolean isConnected();
+    List<Utrzymanie_sieci>  getNetworkTicketList() throws SQLException;
 }

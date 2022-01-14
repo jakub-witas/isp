@@ -1,6 +1,5 @@
 package com.jwbw.isp;
 
-import com.jwbw.DatabaseHandler;
 import com.jwbw.Main;
 
 import java.sql.SQLException;
@@ -8,11 +7,13 @@ import java.sql.SQLException;
 public class Urzadzenie_sieciowe extends Urzadzenie {
     private boolean wlan;
     private String przepustowosc;
+    private String ip_address;
     private boolean czy_dostepne;
     private Klient wlasciciel;
 
-    public Urzadzenie_sieciowe(String nazwa, String producent, String sn, String przepustowosc, boolean wlan) throws SQLException {
+    public Urzadzenie_sieciowe(String nazwa, String producent, String sn, String przepustowosc, boolean wlan, String ip_address) throws SQLException {
         super();
+        this.ip_address = ip_address;
         this.setNazwa(nazwa);
         this.setProducent(producent);
         this.setSn(sn);
@@ -20,7 +21,15 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.setPrzepustowosc(przepustowosc);
         this.setWlan(wlan);
         this.setWlasciciel(null);
-        //this.setId(Main.connection.databaseHandler.sendUrzadzenieSiecioweGetId(this));
+        //this.setId(Main.Database.sendUrzadzenieSiecioweGetId(this));
+    }
+
+    public String getIp_address() {
+        return ip_address;
+    }
+
+    public void setIp_address(String ip_address) {
+        this.ip_address = ip_address;
     }
 
     public boolean isWlan() {

@@ -102,6 +102,7 @@ CREATE TABLE isp.URZADZENIE (
 CREATE TABLE isp.URZADZENIE_SIECIOWE (
     id INTEGER PRIMARY KEY,
     wlan BOOLEAN NOT NULL,
+    ip_address VARCHAR(19),
     przepustowosc VARCHAR(10) NOT NULL,
     czy_dostepne BOOLEAN NOT NULL,
     wlasciciel INTEGER,
@@ -125,8 +126,7 @@ CREATE TABLE isp.ZLECENIE (
 
 CREATE TABLE isp.ZLECENIE_SIEC (
   id INTEGER PRIMARY KEY,
-  opis VARCHAR(100),
-  sprzet VARCHAR(20),
+  --sprzet VARCHAR(20),
   klient INTEGER REFERENCES isp.USERS(id),
   zlecenie_fk INTEGER REFERENCES isp.ZLECENIE(id)
 );
@@ -168,8 +168,11 @@ CREATE SEQUENCE isp.internet_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.tv_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.gsm_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.urzadzenie_seq INCREMENT BY 1 MINVALUE 1;
+CREATE SEQUENCE isp.urzadzenie_sieciowe_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.wpis_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zamowienie_seq INCREMENT BY 1 MINVALUE 1;
+CREATE SEQUENCE isp.zlecenie_seq INCREMENT BY 1 MINVALUE 1;
+CREATE SEQUENCE isp.zlecenie_siec_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_naprawa_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.powiadomienie_seq INCREMENT BY 1 MINVALUE 1;
 
@@ -230,3 +233,18 @@ INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2,1', 3, 
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2020/1' WHERE ID = 2;
+
+--device
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045692346');
+
+--network device
+INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 3, 1);
+
+--issue entry
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'My network says the cable is disconnected', 3);
+
+--issue
+INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '1,');
+
+--ticket for network issue
+INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 3, 1);

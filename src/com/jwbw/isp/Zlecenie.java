@@ -6,7 +6,6 @@ import java.util.List;
 
 public abstract class Zlecenie {
     protected int id;
-    protected String nr_zlecenia;
     protected Timestamp data_utworzenia;
     protected Timestamp data_wykonania;
     protected List<Wpis> wpisy;
@@ -19,13 +18,6 @@ public abstract class Zlecenie {
         this.id = id;
     }
 
-    public String getNr_zlecenia() {
-        return nr_zlecenia;
-    }
-
-    public void setNr_zlecenia(String nr_zlecenia) {
-        this.nr_zlecenia = nr_zlecenia;
-    }
 
     public Date getData_utworzenia() {
         return data_utworzenia;

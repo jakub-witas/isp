@@ -331,6 +331,46 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
+    public List<Utrzymanie_sieci> getNetworkTicketList() throws SQLException {
+        List<Utrzymanie_sieci> lista = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT *  FROM ZLECENIE_SIEC WHERE klient = "
+                + ((Klient)InterfaceMain.loggedUser).getId() +  ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Utrzymanie_sieci utrzymanieSieci = new Utrzymanie_sieci();
+            utrzymanieSieci.setId(resultSet.getInt("id"));
+            utrzymanieSieci.setKlient((Klient) InterfaceMain.loggedUser);
+
+            List<Object> listaZlecenie = getZlecenieData(resultSet.getInt("zlecenie_fk"));
+            utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
+            utrzymanieSieci.setData_wykonania((Timestamp) listaZlecenie.get(1));
+            List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
+
+            lista.add(utrzymanieSieci);
+        }
+        return  lista;
+    }
+
+    private List<Wpis> getEntries(String wpisy) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        //TODO: dokonczyc
+    }
+
+    private List<Object> getZlecenieData(int id) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str =  "SELECT * FROM ZLECENIE WHERE ID = " + id + ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        List<Object> lista = new ArrayList<>();
+        lista.add(resultSet.getTimestamp("creation_date"));
+        lista.add(resultSet.getTimestamp("close_date"));
+        lista.add(resultSet.getString("wpisy"));
+        resultSet.close();
+        statement.close();
+        return lista;
+    }
+
     public int registerNewUser(Klient user, String username, String password) throws SQLException {
         int addressId;
         if(!checkForAddress(user)) {
