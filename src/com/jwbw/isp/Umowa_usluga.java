@@ -7,18 +7,6 @@ public class Umowa_usluga extends Dokument{
     private Klient nabywca;
     private String autor;
 
-    public List<Object> getOferta() {
-        return oferta;
-    }
-
-    public void setOferta(List<Object> oferta) {
-        this.oferta = oferta;
-    }
-
-    public Klient getNabywca() {
-        return nabywca;
-    }
-
     public void setNabywca(Klient nabywca) {
         this.nabywca = nabywca;
     }
@@ -30,7 +18,20 @@ public class Umowa_usluga extends Dokument{
     public void setAutor(Pracownik autor) {
         this.autor = autor.getName()+ " " + autor.getSurname();
     }
+
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public List<Object> getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(List<Object> oferta) {
+        this.oferta = oferta;
+    }
+
+    public Klient getNabywca() {
+        return nabywca;
     }
 }

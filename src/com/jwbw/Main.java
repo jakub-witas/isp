@@ -19,7 +19,7 @@ public class Main {
 
         Configuration configuration = new Configuration(activeProfile);
 
-        ConnectionHandler  connection = new ConnectionHandler(configuration.getDatabaseUrl(),
+         new ConnectionHandler(configuration.getDatabaseUrl(),
                 configuration.getDatabaseUser(),
                 configuration.getDatabasePassword(),
                 logger);

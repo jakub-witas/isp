@@ -28,6 +28,4 @@ public abstract class Dokument {
     }
 
     public Date getData_utworzenia() { return data_utworzenia; }
-
-
 }

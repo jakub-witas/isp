@@ -1,8 +1,12 @@
 package com.jwbw.isp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Director {
     public void constructWpis(Builder builder, Object autor, String opis) {
         builder.setType("wpis");
+        builder.setOdbiorca(null);
         builder.setAutor(autor);
         builder.setOpis(opis);
     }
@@ -14,5 +18,4 @@ public class Director {
         builder.setOdbiorca(odbiorca);
         builder.setWasRead();
     }
-
 }

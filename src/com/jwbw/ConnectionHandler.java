@@ -12,7 +12,6 @@ public class ConnectionHandler extends Thread{
 
     private DatabaseHandler databaseHandler;
     private boolean isDatabaseConnected = false;
-    boolean errPromptShown = false;
 
     public ConnectionHandler(String databaseUrl, String databaseUser, String databasePassword, ApplicationLogger logger) {
         this.logger = logger;
@@ -28,11 +27,7 @@ public class ConnectionHandler extends Thread{
     }
 
     public void userLoggedOff(Object user) {
-        if(user.getClass() == Pracownik.class) {
-            this.logger.userLoggedOff(((Pracownik) user).getId());
-        } else {
-            this.logger.userLoggedOff(((Klient) user).getId());
-        }
+        this.logger.userLoggedOff(((Klient) user).getId());
     }
 
     private void initializeDatabase(){
@@ -44,5 +39,4 @@ public class ConnectionHandler extends Thread{
     public void setDatabaseConnectionState(boolean isDatabaseConnected){
         this.isDatabaseConnected = isDatabaseConnected;
     }
-
 }

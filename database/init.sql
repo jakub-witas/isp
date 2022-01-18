@@ -141,18 +141,11 @@ CREATE TABLE isp.ZLECENIE_NAPRAWA (
     zlecenie_fk INTEGER REFERENCES isp.ZLECENIE(id)
 );
 
-CREATE TABLE isp.WPIS (
+CREATE TABLE isp.Wpis (
     id INTEGER PRIMARY KEY,
-    data_utworzenia TIMESTAMP,
+    data_utworzenia TIMESTAMP NOT NULL,
     opis VARCHAR(100),
-    autor INTEGER REFERENCES isp.USERS(id)
-);
-
-CREATE TABLE isp.POWIADOMIENIE (
-    id INTEGER PRIMARY KEY,
-    data_utworzenia TIMESTAMP,
-    opis VARCHAR(100),
-    przeczytane boolean NOT NULL,
+    przeczytane boolean,
     autor INTEGER REFERENCES isp.USERS(id),
     odbiorca INTEGER REFERENCES isp.USERS(id)
 );
@@ -174,7 +167,6 @@ CREATE SEQUENCE isp.zamowienie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_siec_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_naprawa_seq INCREMENT BY 1 MINVALUE 1;
-CREATE SEQUENCE isp.powiadomienie_seq INCREMENT BY 1 MINVALUE 1;
 
 --Addresses
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/609', '25-109');
@@ -241,7 +233,7 @@ INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', '
 INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 3, 1);
 
 --issue entry
-INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'My network says the cable is disconnected', 3);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'My network says the cable is disconnected', null, 3, null);
 
 --issue
 INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '1,');

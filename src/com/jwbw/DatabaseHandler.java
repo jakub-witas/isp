@@ -4,6 +4,7 @@ import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.*;
 import org.postgresql.util.PSQLException;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             String oferta = (resultSet.getString("oferta"));
             usluga.setId(resultSet.getInt("id"));
             int autor = resultSet.getInt("autor");
-            usluga.setAutor(getAuthorName(autor));
+            List<String> name = getAuthorName(autor);
+            usluga.setAutor(name.get(0) + " " + name.get(1));
             usluga.setNabywca((Klient) InterfaceMain.loggedUser);
             List<Object> listaDoc = getDocumentData(resultSet.getInt("dokument_fk"));
             usluga.setData_utworzenia((Timestamp) listaDoc.get(0));
@@ -129,15 +131,14 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return  lista;
     }
 
-    private String getAuthorName(int id) throws SQLException {
+    private List<String> getAuthorName(int id) throws SQLException {
         Statement statement =  this.connection.createStatement();
         String str = "SELECT name, surname FROM USERS WHERE id = " + id +  ";";
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
-        String name = "";
-        name += resultSet.getString("name");
-        name +=  " ";
-        name += resultSet.getString("surname");
+        List<String> name = new ArrayList<>();
+        name.add(resultSet.getString("name"));
+        name.add(resultSet.getString("surname"));
 
 
         resultSet.close();
@@ -225,7 +226,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
         Statement statement = this.connection.createStatement();
         String str = "INSERT INTO WPIS(id, data_utworzenia, opis, autor) VALUES (nextval('wpis_seq'), '"
-                + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', '" + id + "')";
+                + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', null, '" + id + " null')";
 
         statement.executeUpdate(str);
         str = "SELECT MAX(ID) FROM WPIS WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
@@ -244,11 +245,11 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         idOdbiorca = getObjectId(wpis.getOdbiorca());
 
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO POWIADOMIENIE(id, data_utworzenia, opis, przeczytane, autor, odbiorca) VALUES (nextval('wpis_seq'), '"
+        String str = "INSERT INTO WPIS(id, data_utworzenia, opis, przeczytane, autor, odbiorca) VALUES (nextval('wpis_seq'), '"
                 + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', '" + wpis.isWasRead() + "', '" + idAutor + "', '" + idOdbiorca + "')";
 
         statement.executeUpdate(str);
-        str = "SELECT MAX(ID) FROM POWIADOMIENIE WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
+        str = "SELECT MAX(ID) FROM WPIS WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
         String identyfikator = resultSet.getString("max");
@@ -346,15 +347,43 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
             utrzymanieSieci.setData_wykonania((Timestamp) listaZlecenie.get(1));
             List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
-
+            utrzymanieSieci.setWpisy(listaWpisy);
+            utrzymanieSieci.setLastEntry(listaWpisy.get(listaWpisy.size()-1).getOpis());
             lista.add(utrzymanieSieci);
         }
         return  lista;
     }
 
     private List<Wpis> getEntries(String wpisy) throws SQLException {
+        //wpisy = wpisy.replace(",", " OR ");
+        wpisy = wpisy.substring(0, wpisy.lastIndexOf(",")).replaceAll("," , " OR ");
+        List<Wpis> wpisList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        //TODO: dokonczyc
+        String str = "SELECT * FROM WPIS WHERE id = " + wpisy + ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+        Wpis wpis = new Wpis();
+        wpis.setId(resultSet.getInt("id"));
+        wpis.setOpis(resultSet.getString("opis"));
+        wpis.setData_utworzenia(resultSet.getTimestamp("data_utworzenia"));
+        Klient klient = new Klient();
+        klient.setId(resultSet.getInt("autor"));
+        List<String> name = getAuthorName(klient.getId());
+        klient.setName(name.get(0));
+        klient.setSurname(name.get(1));
+        wpis.setAutor(klient);
+        if(resultSet.getString("odbiorca") != null) {
+            klient.setId(resultSet.getInt("odbiorca"));
+            name = getAuthorName(klient.getId());
+            klient.setName(name.get(0));
+            klient.setSurname(name.get(1));
+            wpis.setOdbiorca(klient);
+            wpis.setWasRead(resultSet.getBoolean("przeczytane"));
+        }
+
+        wpisList.add(wpis);
+        }
+        return wpisList;
     }
 
     private List<Object> getZlecenieData(int id) throws SQLException {

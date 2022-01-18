@@ -93,7 +93,7 @@ public class KlientController {
 
     public void handleButtonZgloszenia() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/zgloszenia.fxml"));
-        Pane pane = null;
+        Pane pane = new Pane();
         try {
             pane = loader.load();
         } catch (IOException e) {

@@ -195,6 +195,7 @@ public class Controller implements Initializable {
         }
     }
 
+
     public void handleButtonZarejestruj(MouseEvent mouseEvent) throws SQLException {
         if (checkDatabaseConnection()) return;
 

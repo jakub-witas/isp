@@ -25,7 +25,7 @@
          <TableColumn text="id" fx:id="networkTabId" prefWidth="50"/>
          <TableColumn text="Data zgłoszenia" fx:id="networkTabCreationDate" prefWidth="100"/>
          <TableColumn text="Data zamknięcia" fx:id="networkTabDueToDate" prefWidth="100"/>
-         <TableColumn text="Ostatni wpis" fx:id="networkTabLastEntry" prefWidth="281"/>
+         <TableColumn text="Ostatni wpis" fx:id="networkTabLastEntry" prefWidth="281" />
       </columns>
          <sortOrder>
             <fx:reference source="networkTabId" />

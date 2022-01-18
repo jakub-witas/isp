@@ -5,8 +5,16 @@ import java.util.List;
 public class Utrzymanie_sieci extends Zlecenie {
     //private List<Urzadzenie_sieciowe> sprzet;
     private Klient klient;
+    private String lastEntry;
 
-//    public List<Urzadzenie_sieciowe> getSprzet() {
+    public String getLastEntry() {
+        return lastEntry;
+    }
+
+    public void setLastEntry(String lastEntry) {
+        this.lastEntry = lastEntry;
+    }
+    //    public List<Urzadzenie_sieciowe> getSprzet() {
 //        return sprzet;
 //    }
 //
