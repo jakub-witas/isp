@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Umowa_usluga extends Dokument{
     private List<Object> oferta;
-    private Klient nabywca;
+    private User nabywca;
     private String autor;
 
-    public void setNabywca(Klient nabywca) {
+    public void setNabywca(User nabywca) {
         this.nabywca = nabywca;
     }
 
@@ -31,7 +31,7 @@ public class Umowa_usluga extends Dokument{
         this.oferta = oferta;
     }
 
-    public Klient getNabywca() {
+    public User getNabywca() {
         return nabywca;
     }
 }

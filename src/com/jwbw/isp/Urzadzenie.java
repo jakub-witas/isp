@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.gui.InterfaceMain;
 
 import java.sql.SQLException;
 
@@ -9,15 +10,25 @@ public class Urzadzenie {
     protected String nazwa;
     protected String producent;
     protected String sn;
+    protected User wlasciciel;
 
     public Urzadzenie (String nazwa, String producent, String sn) throws SQLException {
         this.setNazwa(nazwa);
         this.setProducent(producent);
         this.setSn(sn);
+        this.setWlasciciel((User)InterfaceMain.loggedUser);
         this.setId(Main.Database.sendUrzadzenieGetId(this));
     }
 
     public Urzadzenie() {}
+
+    public User getWlasciciel() {
+        return wlasciciel;
+    }
+
+    public void setWlasciciel(User wlasciciel) {
+        this.wlasciciel = wlasciciel;
+    }
 
     public int getId() {
         return id;

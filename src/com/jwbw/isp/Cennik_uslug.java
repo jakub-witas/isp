@@ -29,6 +29,28 @@ public enum Cennik_uslug {
                 .findFirst();
     }
 
+    public static Cennik_uslug getService(int value){
+        switch (value) {
+            case 0 -> {
+                return Cennik_uslug.Diagnoza;
+            }
+            case 1 -> {
+                return Cennik_uslug.Czyszczenie;
+            }
+            case 2 -> {
+                return Cennik_uslug.WymianaCzesci;
+            }
+            case 3 -> {
+                return Cennik_uslug.Przelutowanie;
+            }
+            case 4 -> {
+                return Cennik_uslug.System;
+            }
+            default -> {
+                return null;
+            }
+        }}
+
     public String getName(){
 
         switch (value) {

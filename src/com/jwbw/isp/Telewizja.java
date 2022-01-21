@@ -1,9 +1,11 @@
 package com.jwbw.isp;
 
+import java.util.List;
+
 public class Telewizja {
     private int id;
     private int ilosc_kanalow;
-    private boolean multiroom;
+    private List<AdditionalFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -22,12 +24,12 @@ public class Telewizja {
         this.ilosc_kanalow = ilosc_kanalow;
     }
 
-    public boolean isMultiroom() {
-        return multiroom;
+    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+        return additionalFeaturesList;
     }
 
-    public void setMultiroom(boolean multiroom) {
-        this.multiroom = multiroom;
+    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+        this.additionalFeaturesList = additionalFeaturesList;
     }
 
     public float getCena() {

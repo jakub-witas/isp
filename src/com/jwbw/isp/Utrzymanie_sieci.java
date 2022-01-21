@@ -1,10 +1,8 @@
 package com.jwbw.isp;
 
-import java.util.List;
-
 public class Utrzymanie_sieci extends Zlecenie {
     //private List<Urzadzenie_sieciowe> sprzet;
-    private Klient klient;
+    private User klient;
     private String lastEntry;
 
     public String getLastEntry() {
@@ -22,11 +20,11 @@ public class Utrzymanie_sieci extends Zlecenie {
 //        this.sprzet = sprzet;
 //    }
 
-    public Klient getKlient() {
+    public User getKlient() {
         return klient;
     }
 
-    public void setKlient(Klient klient) {
-        this.klient = klient;
+    public void setKlient(User user) {
+        this.klient = user;
     }
 }

@@ -1,13 +1,10 @@
 package com.jwbw.gui.Controllers;
 
-import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Klient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

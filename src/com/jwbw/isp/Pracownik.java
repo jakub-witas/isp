@@ -1,6 +1,6 @@
 package com.jwbw.isp;
 
-public class    Pracownik extends Osoba{
+public class  Pracownik extends Osoba{
     private String nr_umowy;
     private Role role;
 

@@ -65,7 +65,7 @@ CREATE TABLE isp.UMOWA_PRACA (
 CREATE TABLE isp.TELEWIZJA (
     id INTEGER PRIMARY KEY,
     lista_kanalow INTEGER NOT NULL,
-    multiroom BOOLEAN NOT NULL,
+    additional_features VARCHAR(10),
     cena NUMERIC NOT NULL
 );
 
@@ -73,14 +73,14 @@ CREATE TABLE isp.PAKIET_INTERNETU (
     id INTEGER PRIMARY KEY,
     download  NUMERIC NOT NULL,
     upload NUMERIC NOT NULL,
-    publiczne_ip BOOLEAN NOT NULL,
+    additional_features VARCHAR(10),
     cena NUMERIC NOT NULL
 );
 
 CREATE TABLE isp.GSM (
     id INTEGER  PRIMARY KEY,
     standard VARCHAR(10) NOT NULL,
-    roaming BOOLEAN NOT NULL,
+    additional_features VARCHAR(10),
     cena NUMERIC NOT NULL
 );
 
@@ -96,7 +96,8 @@ CREATE TABLE isp.URZADZENIE (
     id INTEGER PRIMARY KEY,
     nazwa VARCHAR(30) NOT NULL,
     producent VARCHAR(30) NOT NULL,
-    sn VARCHAR(20) NOT NULL
+    sn VARCHAR(20) NOT NULL,
+    wlasciciel INTEGER
 );
 
 CREATE TABLE isp.URZADZENIE_SIECIOWE (
@@ -105,7 +106,6 @@ CREATE TABLE isp.URZADZENIE_SIECIOWE (
     ip_address VARCHAR(19),
     przepustowosc VARCHAR(10) NOT NULL,
     czy_dostepne BOOLEAN NOT NULL,
-    wlasciciel INTEGER,
     urzadzenie_fk INTEGER REFERENCES isp.URZADZENIE(id)
 );
 
@@ -144,7 +144,7 @@ CREATE TABLE isp.ZLECENIE_NAPRAWA (
 CREATE TABLE isp.Wpis (
     id INTEGER PRIMARY KEY,
     data_utworzenia TIMESTAMP NOT NULL,
-    opis VARCHAR(100),
+    opis VARCHAR(200),
     przeczytane boolean,
     autor INTEGER REFERENCES isp.USERS(id),
     odbiorca INTEGER REFERENCES isp.USERS(id)
@@ -182,35 +182,35 @@ INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek
 
 --Internet packages
 --no public ip
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, 'false', 50);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, 'false', 65);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, 'false', 80);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, 'false', 100);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, '', 50);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, '', 65);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, '', 80);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, '', 100);
 --public ip included
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, 'true', 65);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, 'true', 80);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, 'true', 95);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, 'true', 115);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, '0,', 65);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, '0,', 80);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, '0,', 95);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, '0,', 115);
 
 --TV packages
 --no multiroom
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, 'false', 30);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, 'false', 45);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, 'false', 60);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '', 30);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '', 45);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '', 60);
 --multiroom included
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, 'true', 40);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, 'true', 55);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, 'true', 70);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '1', 40);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '1', 55);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '1', 70);
 
 --GSM packages
 --no roaming
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', 'false', 15);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', 'false', 25);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', 'false', 40);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '', 15);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '', 25);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '', 40);
 --roaming included
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', 'true', 25);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', 'true', 35);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', 'true', 50);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '2', 25);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '2', 35);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '2', 50);
 
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
@@ -220,23 +220,32 @@ INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
 
 --service contracts
-INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2,1', 3, 4, 2);
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2,1,0', 3, 4, 2);
 
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2020/1' WHERE ID = 2;
 
 --device
-INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045692346');
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045692346', 3);
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'X515', 'ASUS', '54678041231421', 3);
 
 --network device
-INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 3, 1);
+INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 1);
 
 --issue entry
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'My network says the cable is disconnected', null, 3, null);
-
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'I get blue screens after few minutes of work', null, 3, null);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('11/01/2022', 'DD/MM/YYYY'), 'Check all cable connections and make sure they are not damaged', null, 2, null);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'I did it all and it still would not work, but i have a connection directly from your cable', null, 3, null);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'Okay, so we probably need to replace your router. Do you agree on 15/01?', null, 2, null);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'You have date to confirm.', false, 2, 3);
 --issue
-INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '1,');
+INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '1,3,4,5,6,');
+INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '2,');
 
 --ticket for network issue
 INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 3, 1);
+
+--ticket for hardware issue
+INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, 3, 2, 0, 2);

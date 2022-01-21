@@ -20,6 +20,8 @@ public class Zamowienie extends Dokument {
 
     }
 
+    public Zamowienie() {}
+
     public List<Czesc_komputerowa> getCzesci() {
         return czesci;
     }

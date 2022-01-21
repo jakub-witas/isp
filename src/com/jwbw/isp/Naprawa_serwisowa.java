@@ -12,9 +12,10 @@ public class Naprawa_serwisowa extends Zlecenie {
     private Zamowienie zamowienie;
     private List<Cennik_uslug> wykonane_uslugi;
     private float koszt;
-    private Klient wlasciciel;
+    private User wlasciciel;
+    private String lastEntry;
 
-    public void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, Klient klient) throws SQLException {
+    public void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, User klient) throws SQLException {
         Naprawa_serwisowa naprawa = new Naprawa_serwisowa();
         naprawa.setKoszt(0);
         if (urzadzenie != null) naprawa.setUrzadzenie_naprawiane(urzadzenie);
@@ -71,6 +72,14 @@ public class Naprawa_serwisowa extends Zlecenie {
 
     }
 
+    public String getLastEntry() {
+        return lastEntry;
+    }
+
+    public void setLastEntry(String lastEntry) {
+        this.lastEntry = lastEntry;
+    }
+
     public void dodajUsluge(List<Cennik_uslug> uslugi) {
         this.wykonane_uslugi.addAll(uslugi);
     }
@@ -121,11 +130,11 @@ public class Naprawa_serwisowa extends Zlecenie {
         this.koszt = koszt;
     }
 
-    public Klient getWlasciciel() {
+    public User getWlasciciel() {
         return wlasciciel;
     }
 
-    public void setWlasciciel(Klient wlasciciel) {
+    public void setWlasciciel(User wlasciciel) {
         this.wlasciciel = wlasciciel;
     }
 }

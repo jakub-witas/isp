@@ -1,7 +1,6 @@
 package com.jwbw;
 
-import com.jwbw.isp.Klient;
-import com.jwbw.isp.Pracownik;
+import com.jwbw.isp.User;
 
 public class ConnectionHandler extends Thread{
 
@@ -27,7 +26,7 @@ public class ConnectionHandler extends Thread{
     }
 
     public void userLoggedOff(Object user) {
-        this.logger.userLoggedOff(((Klient) user).getId());
+        this.logger.userLoggedOff(((User) user).getId());
     }
 
     private void initializeDatabase(){

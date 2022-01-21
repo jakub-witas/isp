@@ -1,10 +1,12 @@
 package com.jwbw.isp;
 
+import java.util.List;
+
 public class Pakiet_internetu {
     private int id;
     private float download;
     private float upload;
-    private boolean publiczne_ip;
+    private List<AdditionalFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -31,12 +33,12 @@ public class Pakiet_internetu {
         this.upload = upload;
     }
 
-    public boolean isPubliczne_ip() {
-        return publiczne_ip;
+    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+        return additionalFeaturesList;
     }
 
-    public void setPubliczne_ip(boolean publiczne_ip) {
-        this.publiczne_ip = publiczne_ip;
+    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+        this.additionalFeaturesList = additionalFeaturesList;
     }
 
     public float getCena() {

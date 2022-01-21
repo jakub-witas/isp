@@ -1,7 +1,5 @@
 package com.jwbw.isp;
 
-import com.jwbw.Main;
-
 import java.sql.SQLException;
 
 public class Urzadzenie_sieciowe extends Urzadzenie {
@@ -9,7 +7,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
     private String przepustowosc;
     private String ip_address;
     private boolean czy_dostepne;
-    private Klient wlasciciel;
+    private User wlasciciel;
 
     public Urzadzenie_sieciowe(String nazwa, String producent, String sn, String przepustowosc, boolean wlan, String ip_address) throws SQLException {
         super();
@@ -23,6 +21,8 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.setWlasciciel(null);
         //this.setId(Main.Database.sendUrzadzenieSiecioweGetId(this));
     }
+
+    public Urzadzenie_sieciowe() {}
 
     public String getIp_address() {
         return ip_address;
@@ -56,11 +56,11 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.czy_dostepne = czy_dostepne;
     }
 
-    public Klient getWlasciciel() {
+    public User getWlasciciel() {
         return wlasciciel;
     }
 
-    public void setWlasciciel(Klient wlasciciel) {
+    public void setWlasciciel(User wlasciciel) {
         this.wlasciciel = wlasciciel;
     }
 }

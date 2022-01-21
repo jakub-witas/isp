@@ -2,7 +2,7 @@ package com.jwbw.isp;
 
 public class Wpis_kasowy extends Dokument {
     private float kwota;
-    private Klient wykonawca;
+    private User wykonawca;
 
     public float getKwota() {
         return kwota;
@@ -12,11 +12,11 @@ public class Wpis_kasowy extends Dokument {
         this.kwota = kwota;
     }
 
-    public Klient getWykonawca() {
+    public User getWykonawca() {
         return wykonawca;
     }
 
-    public void setWykonawca(Klient wykonawca) {
+    public void setWykonawca(User wykonawca) {
         this.wykonawca = wykonawca;
     }
 }

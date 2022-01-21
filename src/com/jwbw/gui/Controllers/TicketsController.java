@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
 import com.jwbw.isp.Wpis;
 import javafx.beans.value.ObservableValue;
@@ -25,12 +26,22 @@ public class TicketsController {
     TableColumn<Utrzymanie_sieci, Wpis> networkTabLastEntry;
     @FXML
     TableView<Utrzymanie_sieci> networkTicket;
+    @FXML
+    TableColumn<Naprawa_serwisowa, Integer> hardwareTabId;
+    @FXML
+    TableColumn<Naprawa_serwisowa, Timestamp> hardwareTabCreationDate, hardwareTabDueToDate;
+    @FXML
+    TableColumn<Naprawa_serwisowa, Wpis> hardwareTabLastEntry;
+    @FXML
+    TableView<Naprawa_serwisowa> hardwareTicket;
 
     public static List<Utrzymanie_sieci> networkTicketList = new ArrayList<>();
+    public static List<Naprawa_serwisowa> hardwareTicketList = new ArrayList<>();
 
     @FXML
     public void initialize() throws SQLException {
         getNetworkTicketList();
+        getHardwareTicketList();
     }
 
     private void getNetworkTicketList() throws SQLException {
@@ -45,6 +56,23 @@ public class TicketsController {
                 networkTabDueToDate.setCellValueFactory(new PropertyValueFactory<>("data_wykonania"));
                 networkTabLastEntry.setCellValueFactory(new PropertyValueFactory<>("lastEntry"));
                 networkTicket.getItems().add(NetworkList);
+
+            }
+        }
+    }
+
+    private void getHardwareTicketList() throws SQLException {
+        Object response = Main.Database.getHardwareTicketList();
+
+        if(response instanceof List) {
+            hardwareTicketList = (List<Naprawa_serwisowa>) response;
+
+            for(Naprawa_serwisowa HardwareList: hardwareTicketList) {
+                hardwareTabId.setCellValueFactory(new PropertyValueFactory<>("id"));
+                hardwareTabCreationDate.setCellValueFactory(new PropertyValueFactory<>("data_utworzenia"));
+                hardwareTabDueToDate.setCellValueFactory(new PropertyValueFactory<>("data_wykonania"));
+                hardwareTabLastEntry.setCellValueFactory(new PropertyValueFactory<>("lastEntry"));
+                hardwareTicket.getItems().add(HardwareList);
 
             }
         }

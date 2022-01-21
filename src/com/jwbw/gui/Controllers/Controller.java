@@ -2,7 +2,7 @@ package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Klient;
+import com.jwbw.isp.User;
 import com.jwbw.isp.Pracownik;
 import com.jwbw.isp.Role;
 import javafx.fxml.FXML;
@@ -13,11 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.beans.EventHandler;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -147,26 +144,19 @@ public class Controller implements Initializable {
         String pass = passw.getText();
 
     if (Main.Database.authenticateUser(log, pass)) {
-        Object user = Main.Database.fetchUserData(log, pass);
+        User user = Main.Database.fetchUserData(log, pass);
         InterfaceMain.loggedUser = user;
-        Role rola;
 
-        if (user.getClass() == Pracownik.class) {
-            rola = ((Pracownik)user).getRole();
-        } else {
-            rola = Role.CLIENT;
-        }
-        assert rola != null;
         try {
             Stage stage = (Stage) this.passw.getScene().getWindow();
             Scene scene;
-            switch(rola) {
+            switch(user.getRole()) {
                 case OWNER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../wlasciciel/wlasciciel.fxml")));
                 case CLIENT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../klient/klient.fxml")));
                 case ACCOUNTANT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../ksiegowa/ksiegowa.fxml")));
                 case SPECIALIST -> scene = new Scene(FXMLLoader.load(getClass().getResource("../specjalista/specjalista.fxml")));
                 case OFFICE_WORKER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../pracownik_biurowy/pracownik_biurowy.fxml")));
-                default -> throw new IllegalStateException("Unexpected value: " + rola);
+                default -> throw new IllegalStateException("Unexpected value: " + user.getRole());
             }
             InterfaceMain.loggedUser = user;
             stage.setScene(scene);
@@ -212,7 +202,7 @@ public class Controller implements Initializable {
             alert.setHeaderText(null);
             alert.showAndWait();
         }else{
-            Klient user =  new Klient();
+            User user =  new User();
             this.setUserInfo(user);
             user.setId(Main.Database.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
             clearRegistrationForms();
@@ -256,7 +246,7 @@ public class Controller implements Initializable {
         return false;
     }
 
-    private void setUserInfo(Klient user) {
+    private void setUserInfo(User user) {
         user.setName(name.getText());
         user.setSurname(surname.getText());
         user.setMail(mail.getText());

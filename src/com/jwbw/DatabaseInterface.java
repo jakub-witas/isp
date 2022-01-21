@@ -14,11 +14,12 @@ public interface DatabaseInterface {
     int sendWpisGetId(Wpis wpis) throws SQLException;
     int sendPowiadomienieGetId(Wpis wpis) throws SQLException;
     int sendFakturaGetId(Faktura faktura) throws SQLException;
-    int registerNewUser(Klient user, String username, String password) throws SQLException;
-    Object fetchUserData(String username, String password) throws SQLException;
+    int registerNewUser(User user, String username, String password) throws SQLException;
+    User fetchUserData(String username, String password) throws SQLException;
     boolean checkForExistingUser(String username);
     boolean authenticateUser(String username, String password) throws SQLException;
     boolean checkConnection();
     boolean isConnected();
     List<Utrzymanie_sieci>  getNetworkTicketList() throws SQLException;
+    List<Naprawa_serwisowa> getHardwareTicketList() throws SQLException;
 }

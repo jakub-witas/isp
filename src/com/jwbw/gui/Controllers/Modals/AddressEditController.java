@@ -2,7 +2,7 @@ package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Klient;
+import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -22,10 +22,10 @@ public class AddressEditController {
     }
 
     private void loadData() {
-        this.editedCity.setText(((Klient) InterfaceMain.loggedUser).getCity());
-        this.editedStreet.setText(((Klient) InterfaceMain.loggedUser).getStreet());
-        this.editedCode.setText(((Klient) InterfaceMain.loggedUser).getCode());
-        this.editedNumber.setText(((Klient) InterfaceMain.loggedUser).getHome_number());
+        this.editedCity.setText(((User) InterfaceMain.loggedUser).getCity());
+        this.editedStreet.setText(((User) InterfaceMain.loggedUser).getStreet());
+        this.editedCode.setText(((User) InterfaceMain.loggedUser).getCode());
+        this.editedNumber.setText(((User) InterfaceMain.loggedUser).getHome_number());
     }
 
     public void onConfirmButtonClick(ActionEvent actionEvent) throws SQLException {
@@ -55,10 +55,10 @@ public class AddressEditController {
 
     @FXML
     private void updateClientData() {
-        ((Klient)InterfaceMain.loggedUser).setCity(editedCity.getText());
-        ((Klient)InterfaceMain.loggedUser).setStreet(editedStreet.getText());
-        ((Klient)InterfaceMain.loggedUser).setHome_number(editedNumber.getText());
-        ((Klient)InterfaceMain.loggedUser).setCode(editedCode.getText());
+        ((User)InterfaceMain.loggedUser).setCity(editedCity.getText());
+        ((User)InterfaceMain.loggedUser).setStreet(editedStreet.getText());
+        ((User)InterfaceMain.loggedUser).setHome_number(editedNumber.getText());
+        ((User)InterfaceMain.loggedUser).setCode(editedCode.getText());
     }
 
     @FXML

@@ -1,21 +1,18 @@
 package com.jwbw.isp;
 
-import com.jwbw.DatabaseHandler;
 import com.jwbw.Main;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 public class Faktura extends Dokument {
     private float kwota;
-    private Klient nabywca;
+    private User nabywca;
     private List<Object> obiekty;
 
-    public Faktura(Klient nabywca, List<Object> obiekty) throws SQLException {
+    public Faktura(User nabywca, List<Object> obiekty) throws SQLException {
         this.setNabywca(nabywca);
         this.setObiekty(obiekty);
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
@@ -23,6 +20,8 @@ public class Faktura extends Dokument {
         this.setKwota(obliczKwote(this.getObiekty()));
         this.setId(Main.Database.sendFakturaGetId(this));
     }
+
+    public Faktura() {}
 
     private float obliczKwote(List<Object> obiekty) {
         float kwota = 0;
@@ -44,11 +43,11 @@ public class Faktura extends Dokument {
         this.kwota = kwota;
     }
 
-    public Klient getNabywca() {
+    public User getNabywca() {
         return nabywca;
     }
 
-    public void setNabywca(Klient nabywca) {
+    public void setNabywca(User nabywca) {
         this.nabywca = nabywca;
     }
 

@@ -2,10 +2,9 @@ package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Klient;
+import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,11 +22,11 @@ public class DataEditController {
     }
 
     private void loadData() {
-        this.editedId_card.setText(((Klient) InterfaceMain.loggedUser).getId_card());
-        this.editedMail.setText(((Klient) InterfaceMain.loggedUser).getMail());
-        this.editedName.setText(((Klient) InterfaceMain.loggedUser).getName());
-        this.editedSurname.setText(((Klient) InterfaceMain.loggedUser).getSurname());
-        this.editedPhone.setText(((Klient) InterfaceMain.loggedUser).getPhone());
+        this.editedId_card.setText(((User) InterfaceMain.loggedUser).getId_card());
+        this.editedMail.setText(((User) InterfaceMain.loggedUser).getMail());
+        this.editedName.setText(((User) InterfaceMain.loggedUser).getName());
+        this.editedSurname.setText(((User) InterfaceMain.loggedUser).getSurname());
+        this.editedPhone.setText(((User) InterfaceMain.loggedUser).getPhone());
     }
 
 
@@ -68,11 +67,11 @@ public class DataEditController {
 
     @FXML
     private void updateClientData() {
-        ((Klient)InterfaceMain.loggedUser).setPhone(editedPhone.getText());
-        ((Klient)InterfaceMain.loggedUser).setName(editedName.getText());
-        ((Klient)InterfaceMain.loggedUser).setMail(editedMail.getText());
-        ((Klient)InterfaceMain.loggedUser).setSurname(editedSurname.getText());
-        ((Klient)InterfaceMain.loggedUser).setId_card(editedId_card.getText());
+        ((User)InterfaceMain.loggedUser).setPhone(editedPhone.getText());
+        ((User)InterfaceMain.loggedUser).setName(editedName.getText());
+        ((User)InterfaceMain.loggedUser).setMail(editedMail.getText());
+        ((User)InterfaceMain.loggedUser).setSurname(editedSurname.getText());
+        ((User)InterfaceMain.loggedUser).setId_card(editedId_card.getText());
     }
 
     @FXML

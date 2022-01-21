@@ -1,6 +1,7 @@
 package com.jwbw.gui;
 
 import com.jwbw.isp.Naprawa_serwisowa;
+import com.jwbw.isp.User;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import java.io.IOException;
 public class InterfaceMain extends Application {
 
     public static ObservableList<Naprawa_serwisowa> naprawy;
-    public static Object loggedUser;
+    public static User loggedUser;
 
 
     @Override

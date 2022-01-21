@@ -31,7 +31,17 @@
             <fx:reference source="networkTabId" />
          </sortOrder>
       </TableView>
-      <TableView layoutX="585.0" layoutY="55.0" prefHeight="413.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;" />
+      <TableView fx:id="hardwareTicket" layoutX="585.0" layoutY="55.0" prefHeight="413.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;">
+      <columns>
+         <TableColumn text="id" fx:id="hardwareTabId" prefWidth="50"/>
+         <TableColumn text="Data zgłoszenia" fx:id="hardwareTabCreationDate" prefWidth="100"/>
+         <TableColumn text="Data zamknięcia" fx:id="hardwareTabDueToDate" prefWidth="100"/>
+         <TableColumn text="Ostatni wpis" fx:id="hardwareTabLastEntry" prefWidth="281" />
+      </columns>
+      <sortOrder>
+         <fx:reference source="hardwareTabId" />
+      </sortOrder>
+      </TableView>
       <Line endX="-6.0" endY="429.0" layoutX="570.0" layoutY="31.0" startX="-6.0" startY="-19.0" />
    </children>
 </Pane>

@@ -11,6 +11,8 @@ public class Czesc_komputerowa extends Urzadzenie {
         super(nazwa, producent, sn);
     }
 
+    public Czesc_komputerowa() {}
+
 
     public String getPort() {
         return port;

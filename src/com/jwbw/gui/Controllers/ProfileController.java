@@ -2,17 +2,15 @@ package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Klient;
+import com.jwbw.isp.User;
 import com.jwbw.isp.Umowa_usluga;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -38,17 +36,17 @@ public class ProfileController {
 
     private void loadData() throws SQLException {
         List<Umowa_usluga> lista =  Main.Database.getServiceContracts();
-        this.id_person.setText(((Klient)InterfaceMain.loggedUser).getId().toString());
-        this.pesel.setText(((Klient)InterfaceMain.loggedUser).getPesel());
-        this.id_card.setText(((Klient) InterfaceMain.loggedUser).getId_card());
-        this.mail.setText(((Klient) InterfaceMain.loggedUser).getMail());
-        this.name.setText(((Klient) InterfaceMain.loggedUser).getName());
-        this.surname.setText(((Klient) InterfaceMain.loggedUser).getSurname());
-        this.phone.setText(((Klient) InterfaceMain.loggedUser).getPhone());
-        this.city.setText(((Klient) InterfaceMain.loggedUser).getCity());
-        this.street.setText(((Klient) InterfaceMain.loggedUser).getStreet());
-        this.code.setText(((Klient) InterfaceMain.loggedUser).getCode());
-        this.home_number.setText(((Klient) InterfaceMain.loggedUser).getHome_number());
+        this.id_person.setText(((User)InterfaceMain.loggedUser).getId().toString());
+        this.pesel.setText(((User)InterfaceMain.loggedUser).getPesel());
+        this.id_card.setText(((User) InterfaceMain.loggedUser).getId_card());
+        this.mail.setText(((User) InterfaceMain.loggedUser).getMail());
+        this.name.setText(((User) InterfaceMain.loggedUser).getName());
+        this.surname.setText(((User) InterfaceMain.loggedUser).getSurname());
+        this.phone.setText(((User) InterfaceMain.loggedUser).getPhone());
+        this.city.setText(((User) InterfaceMain.loggedUser).getCity());
+        this.street.setText(((User) InterfaceMain.loggedUser).getStreet());
+        this.code.setText(((User) InterfaceMain.loggedUser).getCode());
+        this.home_number.setText(((User) InterfaceMain.loggedUser).getHome_number());
         if(!lista.isEmpty()) {
             this.nr_umowy.setText(lista.get(0).getNr_dokumentu());
             this.data_zawarcia.setText(lista.get(0).getData_utworzenia().toString());

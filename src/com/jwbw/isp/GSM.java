@@ -1,9 +1,11 @@
 package com.jwbw.isp;
 
+import java.util.List;
+
 public class GSM {
     private int id;
     private String standard;
-    private boolean roaming;
+    private List<AdditionalFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -22,12 +24,12 @@ public class GSM {
         this.standard = standard;
     }
 
-    public boolean isRoaming() {
-        return roaming;
+    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+        return additionalFeaturesList;
     }
 
-    public void setRoaming(boolean roaming) {
-        this.roaming = roaming;
+    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+        this.additionalFeaturesList = additionalFeaturesList;
     }
 
     public float getCena() {
