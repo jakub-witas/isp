@@ -16,7 +16,7 @@ public class Urzadzenie {
         this.setNazwa(nazwa);
         this.setProducent(producent);
         this.setSn(sn);
-        this.setWlasciciel((User)InterfaceMain.loggedUser);
+        this.setWlasciciel(InterfaceMain.loggedUser);
         this.setId(Main.Database.sendUrzadzenieGetId(this));
     }
 

@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 
 public class WpisBuilder implements Builder{
     private String type;
-    private Object autor;
-    private Object odbiorca;
+    private User autor;
+    private User odbiorca;
     private boolean wasRead;
     private String opis;
 
@@ -23,12 +23,12 @@ public class WpisBuilder implements Builder{
     }
 
     @Override
-    public void setAutor(Object autor) {
+    public void setAutor(User autor) {
         this.autor = autor;
     }
 
     @Override
-    public void setOdbiorca(Object odbiorca) {
+    public void setOdbiorca(User odbiorca) {
         this.odbiorca = odbiorca;
     }
 

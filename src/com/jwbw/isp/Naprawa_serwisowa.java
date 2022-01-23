@@ -5,6 +5,7 @@ import com.jwbw.gui.InterfaceMain;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Naprawa_serwisowa extends Zlecenie {
@@ -13,9 +14,8 @@ public class Naprawa_serwisowa extends Zlecenie {
     private List<Cennik_uslug> wykonane_uslugi;
     private float koszt;
     private User wlasciciel;
-    private String lastEntry;
 
-    public void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, User klient) throws SQLException {
+    public static void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, User klient, String description) throws SQLException {
         Naprawa_serwisowa naprawa = new Naprawa_serwisowa();
         naprawa.setKoszt(0);
         if (urzadzenie != null) naprawa.setUrzadzenie_naprawiane(urzadzenie);
@@ -29,16 +29,16 @@ public class Naprawa_serwisowa extends Zlecenie {
 
         Director director = new Director();
         WpisBuilder builder = new WpisBuilder();
-        director.constructWpis(builder, klient, "Utworzenie zlecenia");
+        director.constructWpis(builder, klient, description);
         Wpis pierwszy_wpis = builder.getResult();
-
+        List<Wpis> wpisy = new ArrayList<>();
         //Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
-        naprawa.wpisy.add(pierwszy_wpis);
+        wpisy.add(pierwszy_wpis);
+        naprawa.setWpisy(wpisy);
         naprawa.setId(Main.Database.sendNaprawaGetId(naprawa));
-        InterfaceMain.naprawy.addAll(naprawa);
     }
 
-    public void dodajWpis(int number, String customDescription, List<Cennik_uslug> dodatkowe, Object odbiorca) throws SQLException {
+    public void dodajWpis(int number, String customDescription, List<Cennik_uslug> dodatkowe, User odbiorca) throws SQLException {
         Director director = new Director();
         WpisBuilder builder = new WpisBuilder();
         director.constructWpis(builder, InterfaceMain.loggedUser, customDescription);
@@ -70,14 +70,6 @@ public class Naprawa_serwisowa extends Zlecenie {
             this.wpisy.add(wpis2);
         }
 
-    }
-
-    public String getLastEntry() {
-        return lastEntry;
-    }
-
-    public void setLastEntry(String lastEntry) {
-        this.lastEntry = lastEntry;
     }
 
     public void dodajUsluge(List<Cennik_uslug> uslugi) {

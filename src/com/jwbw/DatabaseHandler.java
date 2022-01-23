@@ -251,44 +251,60 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return Integer.parseInt(id);
     }
 
-    public int sendNaprawaGetId(Naprawa_serwisowa naprawa) throws SQLException {
-        StringBuilder uslugi = null;
-        List<Cennik_uslug> lista = naprawa.getWykonane_uslugi();
-        assert false;
-
-        for(Cennik_uslug usluga : lista) {
-            uslugi.append(usluga.getValue() + ',');
-        }
-
-        StringBuilder wpisy = null;
-        List<Wpis> lista_wpisow = naprawa.getWpisy();
-        assert false;
-
-        for(Wpis wpis : lista_wpisow) {
-            wpisy.append(wpis.getId() + ',');
-        }
-
+    public int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanieSieci) throws SQLException {
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO ZLECENIE_NAPRAWA(id, creation_date, close_date, wpisy, uslugi, kwota, wlasciciel, urzadzenie, zamowienie) " +
-                "VALUES (nextval('zlecenie_naprawa_seq'), '" + naprawa.getData_utworzenia() + "', null, '"
-                + wpisy + "', '" + uslugi + "', '" + 0 + "', '" + naprawa.getWlasciciel().getId() + "', '" + naprawa.getUrzadzenie_naprawiane().getId()
-                + "', null )";
-
+        String str = "INSERT INTO ZLECENIE VALUES (nextval('isp.zlecenie_seq'), '" + utrzymanieSieci.getData_utworzenia() + "', null, '" +
+                utrzymanieSieci.getWpisy().get(0).getId() + ",');";
         statement.executeUpdate(str);
-        str = "SELECT MAX(ID) FROM ZLECENIE_NAPRAWA WHERE creation_date = '" + naprawa.getData_utworzenia() + "';";
+
+        str = "SELECT MAX(id) FROM ZLECENIE WHERE creation_date = '" + utrzymanieSieci.getData_utworzenia() + "';";
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
-        String id = resultSet.getString("max");
+        int id = resultSet.getInt("max");
+
+        str = "INSERT INTO ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), '" + utrzymanieSieci.getNr_umowy() + "', '" +
+                utrzymanieSieci.getKlient().getId() + "', '" + id + "');";
+        statement.executeUpdate(str);
+
+        str = "SELECT MAX(id) FROM ZLECENIE_SIEC WHERE zlecenie_fk = '" + id + "';";
+        resultSet = statement.executeQuery(str);
+        resultSet.next();
+        id = resultSet.getInt("max");
 
         statement.close();
         resultSet.close();
-        return Integer.parseInt(id);
+        return id;
+    }
+
+    public int sendNaprawaGetId(Naprawa_serwisowa naprawa) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO ZLECENIE VALUES (nextval('isp.zlecenie_seq'), '" + naprawa.getData_utworzenia() + "', null, '" +
+                naprawa.getWpisy().get(0).getId() + ",');";
+        statement.executeUpdate(str);
+
+        str = "SELECT MAX(id) FROM ZLECENIE WHERE creation_date = '" + naprawa.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("max");
+
+        str = "INSERT INTO ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, '" + InterfaceMain.loggedUser.getId() + "', '" +
+                naprawa.getUrzadzenie_naprawiane().getId() + "', null, '" + id + "');";
+        statement.executeUpdate(str);
+
+        str = "SELECT MAX(id) FROM ZLECENIE_NAPRAWA WHERE zlecenie_fk = '" + id + "';";
+        resultSet = statement.executeQuery(str);
+        resultSet.next();
+        id = resultSet.getInt("max");
+
+        statement.close();
+        resultSet.close();
+        return id;
     }
 
     public int sendUrzadzenieGetId(Urzadzenie urzadzenie) throws SQLException {
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO URZADZENIE(id, nazwa, producent, sn) VALUES (nextval('urzadzenie_seq'), '"
-                + urzadzenie.getNazwa() + "', '" + urzadzenie.getProducent() + "', '" + urzadzenie.getSn() + "')";
+        String str = "INSERT INTO URZADZENIE VALUES (nextval('urzadzenie_seq'), '"
+                + urzadzenie.getNazwa() + "', '" + urzadzenie.getProducent() + "', '" + urzadzenie.getSn() + "','" + urzadzenie.getWlasciciel().getId() + "')";
 
         statement.executeUpdate(str);
         str = "SELECT MAX(ID) FROM URZADZENIE WHERE sn = '" + urzadzenie.getSn() + "';";
@@ -305,8 +321,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         int id = getObjectId(wpis.getAutor());
 
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO WPIS(id, data_utworzenia, opis, autor) VALUES (nextval('wpis_seq'), '"
-                + wpis.getData_utworzenia() + "', '" + wpis.getOpis() + "', null, '" + id + " null')";
+        String str = "INSERT INTO WPIS VALUES (nextval('isp.wpis_seq'), '" + wpis.getData_utworzenia() + "', '" +
+                wpis.getOpis() + "', null, " + id + ",null);";
 
         statement.executeUpdate(str);
         str = "SELECT MAX(ID) FROM WPIS WHERE data_utworzenia = '" + wpis.getData_utworzenia() + "';";
@@ -317,6 +333,61 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         statement.close();
         resultSet.close();
         return Integer.parseInt(identyfikator);
+    }
+
+    public List<Wpis> getNotificationList() throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM WPIS WHERE odbiorca = " + InterfaceMain.loggedUser.getId() + ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        List<Wpis> wpisList = new ArrayList<>();
+        makeEntriesList(resultSet, wpisList);
+        return wpisList;
+    }
+
+    private void makeEntriesList(ResultSet resultSet, List<Wpis> wpisList) throws SQLException {
+        while(resultSet.next()) {
+            Wpis wpis = new Wpis();
+            wpis.setId(resultSet.getInt("id"));
+            wpis.setOpis(resultSet.getString("opis"));
+            wpis.setData_utworzenia(resultSet.getTimestamp("data_utworzenia"));
+            User user = new User();
+            user.setId(resultSet.getInt("autor"));
+            List<String> name = getAuthorName(user.getId());
+            user.setName(name.get(0));
+            user.setSurname(name.get(1));
+            wpis.setAutor(user);
+            if(resultSet.getString("odbiorca") != null) {
+                User user1 = new User();
+                user1.setId(resultSet.getInt("odbiorca"));
+                name = getAuthorName(user.getId());
+                user1.setName(name.get(0));
+                user1.setSurname(name.get(1));
+                wpis.setOdbiorca(user1);
+                wpis.setWasRead(resultSet.getBoolean("przeczytane"));
+            }
+
+            wpisList.add(wpis);
+        }
+    }
+
+    public List<Urzadzenie> getDevices() throws SQLException {
+        List<Urzadzenie> urzadzenieList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "select * from urzadzenie where id NOT IN (SELECT urzadzenie_fk " +
+                "FROM urzadzenie_sieciowe) AND id NOT IN (SELECT urzadzenie_fk FROM czesc_komputerowa) AND urzadzenie.wlasciciel = " +  3 + ";";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Urzadzenie urzadzenie = new Urzadzenie();
+            urzadzenie.setSn(resultSet.getString("sn"));
+            urzadzenie.setId(resultSet.getInt("id"));
+            urzadzenie.setWlasciciel(InterfaceMain.loggedUser);
+            urzadzenie.setProducent(resultSet.getString("producent"));
+            urzadzenie.setNazwa(resultSet.getString("nazwa"));
+            urzadzenieList.add(urzadzenie);
+        }
+        resultSet.close();
+        statement.close();
+        return urzadzenieList;
     }
 
     public int sendPowiadomienieGetId(Wpis wpis) throws SQLException {
@@ -422,13 +493,12 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             Utrzymanie_sieci utrzymanieSieci = new Utrzymanie_sieci();
             utrzymanieSieci.setId(resultSet.getInt("id"));
             utrzymanieSieci.setKlient((User) InterfaceMain.loggedUser);
-
+            utrzymanieSieci.setNr_umowy(resultSet.getString("umowa"));
             List<Object> listaZlecenie = getZlecenieData(resultSet.getInt("zlecenie_fk"));
             utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
             utrzymanieSieci.setData_wykonania((Timestamp) listaZlecenie.get(1));
             List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
             utrzymanieSieci.setWpisy(listaWpisy);
-            utrzymanieSieci.setLastEntry(listaWpisy.get(listaWpisy.size()-1).getOpis());
             lista.add(utrzymanieSieci);
         }
         return  lista;
@@ -468,7 +538,6 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             naprawaSerwisowa.setData_wykonania((Timestamp) listaZlecenie.get(1));
             List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
             naprawaSerwisowa.setWpisy(listaWpisy);
-            naprawaSerwisowa.setLastEntry(listaWpisy.get(listaWpisy.size()-1).getOpis());
             lista.add(naprawaSerwisowa);
         }
         return  lista;
@@ -545,28 +614,9 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM WPIS WHERE id IN (  " + wpisy + ");";
         ResultSet resultSet = statement.executeQuery(str);
-        while(resultSet.next()) {
-        Wpis wpis = new Wpis();
-        wpis.setId(resultSet.getInt("id"));
-        wpis.setOpis(resultSet.getString("opis"));
-        wpis.setData_utworzenia(resultSet.getTimestamp("data_utworzenia"));
-        User user = new User();
-        user.setId(resultSet.getInt("autor"));
-        List<String> name = getAuthorName(user.getId());
-        user.setName(name.get(0));
-        user.setSurname(name.get(1));
-        wpis.setAutor(user);
-        if(resultSet.getString("odbiorca") != null) {
-            user.setId(resultSet.getInt("odbiorca"));
-            name = getAuthorName(user.getId());
-            user.setName(name.get(0));
-            user.setSurname(name.get(1));
-            wpis.setOdbiorca(user);
-            wpis.setWasRead(resultSet.getBoolean("przeczytane"));
-        }
-
-        wpisList.add(wpis);
-        }
+        makeEntriesList(resultSet, wpisList);
+        resultSet.close();
+        statement.close();
         return wpisList;
     }
 

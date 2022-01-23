@@ -4,6 +4,7 @@ import com.jwbw.Main;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
 import com.jwbw.isp.Wpis;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -23,7 +24,7 @@ public class TicketsController {
     @FXML
     TableColumn<Utrzymanie_sieci, Timestamp> networkTabCreationDate, networkTabDueToDate;
     @FXML
-    TableColumn<Utrzymanie_sieci, Wpis> networkTabLastEntry;
+    TableColumn<Utrzymanie_sieci, String> networkTabLastEntry;
     @FXML
     TableView<Utrzymanie_sieci> networkTicket;
     @FXML
@@ -31,7 +32,7 @@ public class TicketsController {
     @FXML
     TableColumn<Naprawa_serwisowa, Timestamp> hardwareTabCreationDate, hardwareTabDueToDate;
     @FXML
-    TableColumn<Naprawa_serwisowa, Wpis> hardwareTabLastEntry;
+    TableColumn<Naprawa_serwisowa, String> hardwareTabLastEntry;
     @FXML
     TableView<Naprawa_serwisowa> hardwareTicket;
 
@@ -54,7 +55,9 @@ public class TicketsController {
                 networkTabId.setCellValueFactory(new PropertyValueFactory<>("id"));
                 networkTabCreationDate.setCellValueFactory(new PropertyValueFactory<>("data_utworzenia"));
                 networkTabDueToDate.setCellValueFactory(new PropertyValueFactory<>("data_wykonania"));
-                networkTabLastEntry.setCellValueFactory(new PropertyValueFactory<>("lastEntry"));
+                networkTabLastEntry.setCellValueFactory(cellData ->
+                        new ReadOnlyStringWrapper(cellData.getValue().getWpisy().get(cellData.getValue().getWpisy().size()-1).getOpis()));
+
                 networkTicket.getItems().add(NetworkList);
 
             }
@@ -71,7 +74,9 @@ public class TicketsController {
                 hardwareTabId.setCellValueFactory(new PropertyValueFactory<>("id"));
                 hardwareTabCreationDate.setCellValueFactory(new PropertyValueFactory<>("data_utworzenia"));
                 hardwareTabDueToDate.setCellValueFactory(new PropertyValueFactory<>("data_wykonania"));
-                hardwareTabLastEntry.setCellValueFactory(new PropertyValueFactory<>("lastEntry"));
+                hardwareTabLastEntry.setCellValueFactory(cellData ->
+                        new ReadOnlyStringWrapper(cellData.getValue().getWpisy().get(cellData.getValue().getWpisy().size()-1).getOpis()));
+
                 hardwareTicket.getItems().add(HardwareList);
 
             }

@@ -1,6 +1,9 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -8,16 +11,16 @@ import java.time.LocalDateTime;
 public class Wpis {
     private int id;
     private Timestamp data_utworzenia;
-    private Object autor;
-    private Object odbiorca;
+    private User autor;
+    private User odbiorca;
     private boolean wasRead;
     private String opis;
 
-    public Object getOdbiorca() {
+    public User getOdbiorca() {
         return odbiorca;
     }
 
-    public void setOdbiorca(Object odbiorca) {
+    public void setOdbiorca(User odbiorca) {
         this.odbiorca = odbiorca;
     }
 
@@ -29,14 +32,14 @@ public class Wpis {
         this.wasRead = wasRead;
     }
 
-    public Wpis (Object autor, String opis) throws SQLException {
+    public Wpis (User autor, String opis) throws SQLException {
         this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
         this.setAutor(autor);
         this.setOpis(opis);
         this.setId(Main.Database.sendWpisGetId(this));
     }
 
-    public Wpis (Object autor, Object odbiorca, String opis, boolean wasRead) throws SQLException {
+    public Wpis (User autor, User odbiorca, String opis, boolean wasRead) throws SQLException {
         this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
         this.setAutor(autor);
         this.setOpis(opis);
@@ -47,7 +50,7 @@ public class Wpis {
 
     public Wpis() {}
 
-    public static Wpis wyslijPowiadomienie(Object autor, Object odbiorca, String description) throws SQLException {
+    public static Wpis wyslijPowiadomienie(User autor, User odbiorca, String description) throws SQLException {
         Wpis nowy = new Wpis();
         nowy.setAutor(autor);
         nowy.setOpis(description);
@@ -73,11 +76,11 @@ public class Wpis {
         this.data_utworzenia = data_utworzenia;
     }
 
-    public Object getAutor() {
+    public User getAutor() {
         return autor;
     }
 
-    public void setAutor(Object autor) {
+    public void setAutor(User autor) {
         this.autor = autor;
     }
 
@@ -87,5 +90,9 @@ public class Wpis {
 
     public void setOpis(String opis) {
         this.opis = opis;
+    }
+
+    public String getNameSurname() {
+        return autor.name + " " + autor.surname;
     }
 }

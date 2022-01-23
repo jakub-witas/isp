@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="232.0" prefWidth="298.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.NewDeviceController">
+   <children>
+      <Button fx:id="addButton" layoutX="113.0" layoutY="170.0" mnemonicParsing="false" onAction="#onAddButton" text="Dodaj">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="producentField" layoutX="120.0" layoutY="37.0" />
+      <TextField fx:id="modelField" layoutX="120.0" layoutY="78.0" />
+      <TextField fx:id="snField" layoutX="120.0" layoutY="122.0" />
+      <Label layoutX="35.0" layoutY="41.0" text="Producent" />
+      <Label layoutX="54.0" layoutY="82.0" text="Model" />
+      <Label layoutX="15.0" layoutY="126.0" text="Numer Seryjny" />
+   </children>
+</Pane>

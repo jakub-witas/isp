@@ -126,7 +126,7 @@ CREATE TABLE isp.ZLECENIE (
 
 CREATE TABLE isp.ZLECENIE_SIEC (
   id INTEGER PRIMARY KEY,
-  --sprzet VARCHAR(20),
+  umowa VARCHAR(15) NOT NULL,
   klient INTEGER REFERENCES isp.USERS(id),
   zlecenie_fk INTEGER REFERENCES isp.ZLECENIE(id)
 );
@@ -144,7 +144,7 @@ CREATE TABLE isp.ZLECENIE_NAPRAWA (
 CREATE TABLE isp.Wpis (
     id INTEGER PRIMARY KEY,
     data_utworzenia TIMESTAMP NOT NULL,
-    opis VARCHAR(200),
+    opis VARCHAR(200) NOT NULL,
     przeczytane boolean,
     autor INTEGER REFERENCES isp.USERS(id),
     odbiorca INTEGER REFERENCES isp.USERS(id)
@@ -245,7 +245,7 @@ INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zleceni
 INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '2,');
 
 --ticket for network issue
-INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 3, 1);
+INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 'US/2020/1', 3, 1);
 
 --ticket for hardware issue
 INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, 3, 2, 0, 2);

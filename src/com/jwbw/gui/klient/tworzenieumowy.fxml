@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.CreatorController">
    <children>
       <Button fx:id="create_contract" layoutX="976.0" layoutY="413.0" mnemonicParsing="false" text="Wyślij ">
          <font>
@@ -111,7 +111,7 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Label layoutX="980.0" layoutY="93.0" text="100 zł">
+      <Label  fx:id="priceCount" layoutX="980.0" layoutY="93.0" text="0 zł">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

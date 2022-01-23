@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="formPaneNetwork" prefHeight="308.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="com.jwbw.gui.Controllers.Panes.HardwarePaneController">
+    <Button fx:id="sendButton" layoutX="180.0" layoutY="264.0" mnemonicParsing="false" text="Wyślij" onAction="#onSendButton">
+        <font>
+            <Font name="System Italic" size="14.0" />
+        </font>
+    </Button>
+    <TextArea fx:id="descArea" layoutX="19.0" layoutY="54.0" prefHeight="200.0" prefWidth="376.0" promptText="Proszę opisać zaistniały problem" />
+   <ComboBox fx:id="deviceCombo" layoutX="19.0" layoutY="21.0" prefWidth="150.0" promptText="Wybierz urządzenie" />
+   <Button fx:id="newDeviceButton" layoutX="190.0" layoutY="21.0" mnemonicParsing="false" text="Dodaj" onAction="#onAddNewDevice" />
+</Pane>

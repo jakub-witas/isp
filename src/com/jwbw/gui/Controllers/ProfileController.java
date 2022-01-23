@@ -91,7 +91,7 @@ public class ProfileController {
         try {
             Stage stage = new Stage();
             stage.setTitle("Edycja danych");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../klient/edycjaumowa.fxml"))));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../klient/newDevice.fxml"))));
             stage.show();
         }
         catch (IOException e) {

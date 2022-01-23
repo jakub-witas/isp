@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.Pane?>
 
 <?import javafx.scene.control.TableColumn?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.NotificationController">
    <children>
-      <TableView layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="1104.0" style="-fx-background-color: #99CCFF;">
+      <TableView fx:id="notificationTable" layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="1104.0" style="-fx-background-color: #99CCFF;">
          <columns>
             <TableColumn text="id" prefWidth="50" fx:id="notificationId" />
             <TableColumn text="data utworzenia" prefWidth="250" fx:id="notificationDate" />
