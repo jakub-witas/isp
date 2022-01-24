@@ -1,15 +1,15 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
-import com.jwbw.isp.Utrzymanie_sieci;
 import com.jwbw.isp.Wpis;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.scene.input.MouseEvent;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -28,12 +28,19 @@ public class NotificationController {
     TableColumn<Wpis, String> notificationAuthor, notificationDescription;
     @FXML
     TableView<Wpis> notificationTable;
+    @FXML
+    private Button confirmationButton;
 
     public static List<Wpis> notificationList = new ArrayList<>();
 
     @FXML
     public void initialize() throws SQLException {
         getNotificationList();
+        final Tooltip tooltipButton = new Tooltip();
+        tooltipButton.setText("Oznacz jako przeczytane");
+        confirmationButton.setTooltip(tooltipButton);
+        confirmationButton.setOnMouseEntered(e -> confirmationButton.setStyle("-fx-background-color: green"));
+        confirmationButton.setOnMouseExited(e -> confirmationButton.setStyle("-fx-background-color: white"));
     }
 
     private void getNotificationList() throws SQLException {
@@ -50,8 +57,11 @@ public class NotificationController {
                 notificationAuthor.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNameSurname()));
 
                 notificationTable.getItems().add(notifList);
-
             }
         }
+    }
+
+    public void handleButtonActionRead(MouseEvent mouseEvent)  {
+
     }
 }

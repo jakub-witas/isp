@@ -2,8 +2,8 @@ package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.User;
 import com.jwbw.isp.Umowa_usluga;
+import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,11 +21,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-public class ProfileController {
+public class ProfileController{
 
     @FXML
     private Label id_person, name, surname, mail, phone, pesel, id_card, city, street, code, home_number,
-            nr_umowy, data_zawarcia, data_zakonczenia, kwota_mc, status, type, author;
+            nr_umowy, data_zawarcia, data_zakonczenia, kwota_mc, status, type, author,name_device,producer,id_sn;
 
     @FXML
     private Button editData;
