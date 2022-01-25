@@ -1,6 +1,5 @@
 package com.jwbw.gui.Controllers;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
