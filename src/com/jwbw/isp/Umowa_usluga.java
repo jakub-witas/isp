@@ -7,6 +7,29 @@ public class Umowa_usluga extends Dokument{
     private User nabywca;
     private String autor;
 
+    public float calculateMonthlyPayment() {
+        float cena = 0;
+        for(Object object: oferta) {
+            if(object instanceof Pakiet_internetu) {
+                cena += ((Pakiet_internetu) object).getCena();
+                for(AdditionalFeatures feature: ((Pakiet_internetu) object).getAdditionalFeaturesList()) {
+                    cena += feature.getPrice();
+                }
+            } else if(object instanceof Telewizja) {
+                cena += ((Telewizja) object).getCena();
+                for(AdditionalFeatures feature: ((Telewizja) object).getAdditionalFeaturesList()) {
+                    cena += feature.getPrice();
+                }
+            } else {
+                cena += ((GSM) object).getCena();
+                for(AdditionalFeatures feature: ((GSM) object).getAdditionalFeaturesList()) {
+                    cena += feature.getPrice();
+                }
+            }
+        }
+        return cena;
+    }
+
     public void setNabywca(User nabywca) {
         this.nabywca = nabywca;
     }

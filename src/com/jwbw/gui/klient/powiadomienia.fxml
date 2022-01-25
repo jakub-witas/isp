@@ -10,12 +10,12 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.NotificationController">
    <children>
-      <Button fx:id="confirmationButton" layoutX="1083.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionRead" prefHeight="30.0" prefWidth="30.0">
+      <Button fx:id="confirmationButton" layoutX="1083.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionRead" prefHeight="15.0" prefWidth="15.0">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../pictures/confirmationicon.png" />
                </image>

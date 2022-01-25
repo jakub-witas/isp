@@ -4,15 +4,29 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum AdditionalFeatures {
-    publicIp(0),
-    multiRoom(1),
-    roaming(2);
+    publicIp(0, 1, 15),
+    multiRoom(1, 2, 10),
+    roaming(2, 3, 10);
 
     private final int value;
+    private final int packet;
+    private final int price;
 
-    AdditionalFeatures(int value) {this.value = value;}
+    AdditionalFeatures(int value, int packet, int price) {
+        this.value = value;
+        this.packet = packet;
+        this.price = price;
+    }
 
     public int getValue() {return value;}
+
+    public int getPacket() {
+        return packet;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 
     public static AdditionalFeatures getFeature(int value){
         switch (value) {
@@ -30,6 +44,22 @@ public enum AdditionalFeatures {
             }
         }}
 
+    public static AdditionalFeatures getFeature(String value){
+        switch (value) {
+            case "Publiczne IP" -> {
+                return AdditionalFeatures.publicIp;
+            }
+            case "Multiroom" -> {
+                return AdditionalFeatures.multiRoom;
+            }
+            case "Roaming" -> {
+                return AdditionalFeatures.roaming;
+            }
+            default -> {
+                return null;
+            }
+        }}
+
     public static Optional<AdditionalFeatures> valueOf(int value){
         return Arrays.stream(values())
                 .filter(additionalFeatures -> additionalFeatures.value == value)
@@ -40,7 +70,7 @@ public enum AdditionalFeatures {
 
         switch (value) {
             case 0 -> {
-                return "Public IP";
+                return "Publiczne IP";
             }
             case 1 -> {
                 return "Multiroom";

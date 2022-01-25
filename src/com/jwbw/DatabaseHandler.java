@@ -200,8 +200,16 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
     private List<Cennik_uslug> getServiceEnum(String feature) {
         List<Cennik_uslug> servicesList = new ArrayList<>();
-        for(int i=0;i<feature.length(); i+=2) {
+        for(int i=0;i<feature.length()-1; i+=2) {
             servicesList.add(Cennik_uslug.getService(Integer.parseInt(feature.substring(i, i+1))));
+        }
+        return servicesList;
+    }
+
+    private List<AdditionalFeatures> getAdditionalFeaturesEnum(String feature) {
+        List<AdditionalFeatures> servicesList = new ArrayList<>();
+        for(int i=0;i<feature.length()-1; i+=2) {
+            servicesList.add(AdditionalFeatures.getFeature(Integer.parseInt(feature.substring(i, i+1))));
         }
         return servicesList;
     }
@@ -588,6 +596,70 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         resultSet.close();
         statement.close();
         return parts;
+    }
+
+    public List<Pakiet_internetu> getInternetPackets() throws SQLException {
+        List<Pakiet_internetu> internetList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM PAKIET_INTERNETU WHERE additional_features = ''";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Pakiet_internetu pakiet = new Pakiet_internetu();
+            pakiet.setId(resultSet.getInt("id"));
+            pakiet.setUpload(resultSet.getFloat("upload"));
+            pakiet.setDownload(resultSet.getFloat("download"));
+            pakiet.setCena(resultSet.getFloat("cena"));
+            String features = resultSet.getString("additional_features");
+            if(!features.isEmpty()) {
+                pakiet.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+            }
+            internetList.add(pakiet);
+        }
+        resultSet.close();
+        statement.close();
+        return internetList;
+    }
+
+    public List<Telewizja> getTVpackets() throws SQLException {
+        List<Telewizja> tvList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM TELEWIZJA WHERE additional_features = ''";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Telewizja tv = new Telewizja();
+            tv.setId(resultSet.getInt("id"));
+            tv.setCena(resultSet.getFloat("cena"));
+            tv.setIlosc_kanalow(resultSet.getInt("lista_kanalow"));
+            String features = resultSet.getString("additional_features");
+            if(!features.isEmpty()) {
+                tv.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+            }
+            tvList.add(tv);
+        }
+        resultSet.close();
+        statement.close();
+        return tvList;
+    }
+
+    public List<GSM> getGSMpackets() throws SQLException {
+        List<GSM> gsmList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM GSM WHERE additional_features = ''";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            GSM gsm = new GSM();
+            gsm.setId(resultSet.getInt("id"));
+            gsm.setCena(resultSet.getFloat("cena"));
+            gsm.setStandard(resultSet.getString("standard"));
+            String features = resultSet.getString("additional_features");
+            if(!features.isEmpty()) {
+                gsm.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+            }
+            gsmList.add(gsm);
+        }
+        resultSet.close();
+        statement.close();
+        return gsmList;
     }
 
     private Urzadzenie getDevice(int id) throws SQLException {

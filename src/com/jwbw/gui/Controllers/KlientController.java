@@ -65,7 +65,7 @@ public class KlientController {
     }
 
     public void utworzUmowe() {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/tworzenieumowy.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/NewSrvwiceContractForm.fxml"));
         Pane pane = null;
         try {
             pane = loader.load();
