@@ -5,7 +5,7 @@ import java.util.List;
 public class Telewizja {
     private int id;
     private int ilosc_kanalow;
-    private List<AdditionalFeatures> additionalFeaturesList;
+    private List<TelevisionFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -24,11 +24,11 @@ public class Telewizja {
         this.ilosc_kanalow = ilosc_kanalow;
     }
 
-    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+    public List<TelevisionFeatures> getAdditionalFeaturesList() {
         return additionalFeaturesList;
     }
 
-    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+    public void setAdditionalFeaturesList(List<TelevisionFeatures> additionalFeaturesList) {
         this.additionalFeaturesList = additionalFeaturesList;
     }
 

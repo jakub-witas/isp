@@ -4,9 +4,7 @@ import com.jwbw.gui.InterfaceMain;
 
 public class Main {
 
-    //public static ConnectionHandler connection;
-    public static DatabaseInterface Proxy;
-
+    public static Proxy Proxy;
 
     public static void main(String[] args) {
         ApplicationLogger logger = new ApplicationLogger();
@@ -17,6 +15,7 @@ public class Main {
         }
 
         logger.activeProfile(activeProfile);
+
 
         Configuration configuration = new Configuration(activeProfile);
 

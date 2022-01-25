@@ -1,12 +1,10 @@
 package com.jwbw.gui.Controllers;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
 import com.jwbw.isp.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -42,7 +40,9 @@ public class CreatorController {
         loadInternetPackets();
         loadTvPackets();
         loadGsmPackets();
-        loadAdditionalFeatures();
+        loadAdditionalInternetFeatures();
+        loadAdditionalTelephoneFeatures();
+        loadAdditionalTelevisionFeatures();
         AdditionalInternetListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         AdditionalTVListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         AdditionalGSMListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -91,24 +91,25 @@ public class CreatorController {
         comboGSM.setItems(observableList);
     }
 
-    private void loadAdditionalFeatures() {
-        for(AdditionalFeatures featureList: AdditionalFeatures.values()) {
-            switch (featureList.getPacket()) {
-                case 1 -> {
+    private void loadAdditionalInternetFeatures() {
+        for(InternetFeatures featureList: InternetFeatures.values()) {
                     internetAdditionalList.add(featureList.getName() + " - " + featureList.getPrice() + "zł");
-                }
-                case 2 -> {
-                    tvAdditionalList.add(featureList.getName() + " - " + featureList.getPrice() + "zł");
-                }
-                case 3 -> {
-                    gsmAdditionalList.add(featureList.getName() + " - " + featureList.getPrice() + "zł");
-                }
-                default ->  {}
-            }
+        }
+        AdditionalInternetListView.setItems(FXCollections.observableList(internetAdditionalList));
+    }
+
+    private void loadAdditionalTelevisionFeatures() {
+        for(TelevisionFeatures featureList: TelevisionFeatures.values()) {
+            tvAdditionalList.add(featureList.getName() + " - " + featureList.getPrice() + "zł");
+        }
+        AdditionalTVListView.setItems(FXCollections.observableList(tvAdditionalList));
+    }
+
+    private void loadAdditionalTelephoneFeatures() {
+        for(TelephoneFeatures featureList: TelephoneFeatures.values()) {
+            gsmAdditionalList.add(featureList.getName() + " - " + featureList.getPrice() + "zł");
         }
         AdditionalGSMListView.setItems(FXCollections.observableList(gsmAdditionalList));
-        AdditionalInternetListView.setItems(FXCollections.observableList(internetAdditionalList));
-        AdditionalTVListView.setItems(FXCollections.observableList(tvAdditionalList));
     }
 
     @FXML
@@ -118,7 +119,7 @@ public class CreatorController {
             cena += gsmList.get(comboGSM.getItems().indexOf(comboGSM.getValue())).getCena();
             if(selectedGSMItems != null) {
                 for (String string : selectedGSMItems) {
-                    cena += AdditionalFeatures.getFeature(string.substring(0, string.indexOf("-") - 1)).getPrice();
+                    cena += TelephoneFeatures.getFeature(string.substring(0, string.indexOf("-") - 1)).getPrice();
                 }
             }
         }
@@ -126,23 +127,53 @@ public class CreatorController {
             cena += internetList.get(comboInternet.getItems().indexOf(comboInternet.getValue())).getCena();
             if(selectedInternetItems != null)
                 for(String string: selectedInternetItems) {
-                    cena += AdditionalFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getPrice();
+                    cena += InternetFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getPrice();
                 }
         }
         if (comboTV.getValue() != null) {
             cena += telewizjaList.get(comboTV.getItems().indexOf(comboTV.getValue())).getCena();
             if(selectedTVItems != null)
                 for(String string: selectedTVItems) {
-                    cena += AdditionalFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getPrice();
+                    cena += TelevisionFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getPrice();
                 }
         }
 
         priceCount.setText(cena + " zł");
     }
 
-    public void onCreateContract() {
+    public void onCreateContract() throws SQLException {
         if(comboInternet.getValue() != null) {
-            comboInternet.getValue();
+            String dl = comboInternet.getValue().substring(0, comboInternet.getValue().indexOf("/"));
+            String features = "";
+            if(selectedInternetItems != null) {
+                for(String string: selectedInternetItems) {
+                    features += InternetFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+                }
+            }
+            System.out.println(Proxy.getInternetPacketId(Float.parseFloat(dl), features));
         }
-    }
+
+        if (comboTV.getValue() != null) {
+            int kanały = Integer.parseInt(comboTV.getValue().substring(0, comboTV.getValue().indexOf("k")-1));
+            String features = "";
+            if(selectedTVItems != null) {
+                for(String string: selectedTVItems) {
+                    features += TelevisionFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+                }
+            }
+            System.out.println(Proxy.getTvPacketId(kanały, features));
+        }
+
+        if (comboGSM.getValue() != null) {
+            String standard = comboGSM.getValue().substring(0, comboGSM.getValue().indexOf("-")-1);
+            String features = "";
+            if(selectedGSMItems != null) {
+                for(String string: selectedGSMItems) {
+                    features += TelephoneFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+                }
+            }
+            System.out.println(Proxy.getGsmPacketId(standard, features));
+        }
+        }
+
 }

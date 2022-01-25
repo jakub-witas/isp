@@ -12,17 +12,17 @@ public class Umowa_usluga extends Dokument{
         for(Object object: oferta) {
             if(object instanceof Pakiet_internetu) {
                 cena += ((Pakiet_internetu) object).getCena();
-                for(AdditionalFeatures feature: ((Pakiet_internetu) object).getAdditionalFeaturesList()) {
+                for(InternetFeatures feature: ((Pakiet_internetu) object).getAdditionalFeaturesList()) {
                     cena += feature.getPrice();
                 }
             } else if(object instanceof Telewizja) {
                 cena += ((Telewizja) object).getCena();
-                for(AdditionalFeatures feature: ((Telewizja) object).getAdditionalFeaturesList()) {
+                for(TelevisionFeatures feature: ((Telewizja) object).getAdditionalFeaturesList()) {
                     cena += feature.getPrice();
                 }
             } else {
                 cena += ((GSM) object).getCena();
-                for(AdditionalFeatures feature: ((GSM) object).getAdditionalFeaturesList()) {
+                for(TelephoneFeatures feature: ((GSM) object).getAdditionalFeaturesList()) {
                     cena += feature.getPrice();
                 }
             }

@@ -1,6 +1,5 @@
 package com.jwbw;
 
-import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.*;
 import org.postgresql.util.PSQLException;
 
@@ -152,7 +151,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             pakiet.setUpload(resultSet.getFloat("upload"));
             String adds = resultSet.getString("additional_features");
             if(!adds.equals("")){
-                pakiet.setAdditionalFeaturesList(getFeature(adds));
+                pakiet.setAdditionalFeaturesList(getInternetFeature(adds));
             } else {
                 pakiet.setAdditionalFeaturesList(null);
             }
@@ -167,7 +166,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             tv.setIlosc_kanalow(resultSet.getInt("lista_kanalow"));
             String adds = resultSet.getString("additional_features");
             if(!adds.equals("")){
-                tv.setAdditionalFeaturesList(getFeature(adds));
+                tv.setAdditionalFeaturesList(getTelevisionFeature(adds));
             } else {
                 tv.setAdditionalFeaturesList(null);
             }
@@ -182,7 +181,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             gsm.setCena(resultSet.getFloat("cena"));
             String adds = resultSet.getString("additional_features");
             if(!adds.equals("")){
-                gsm.setAdditionalFeaturesList(getFeature(adds));
+                gsm.setAdditionalFeaturesList(getTelephoneFeature(adds));
             } else {
                 gsm.setAdditionalFeaturesList(null);
             }
@@ -191,10 +190,26 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return servicesList;
     }
 
-    private List<AdditionalFeatures> getFeature(String feature) {
-        List<AdditionalFeatures> featuresList = new ArrayList<>();
+    private List<InternetFeatures> getInternetFeature(String feature) {
+        List<InternetFeatures> featuresList = new ArrayList<>();
         for(int i=0;i<feature.length(); i+=2) {
-            featuresList.add(AdditionalFeatures.getFeature(Integer.parseInt(feature.substring(i,i+1))));
+            featuresList.add(InternetFeatures.getFeature(Integer.parseInt(feature.substring(i,i+1))));
+        }
+        return featuresList;
+    }
+
+    private List<TelephoneFeatures> getTelephoneFeature(String feature) {
+        List<TelephoneFeatures> featuresList = new ArrayList<>();
+        for(int i=0;i<feature.length(); i+=2) {
+            featuresList.add(TelephoneFeatures.getFeature(Integer.parseInt(feature.substring(i,i+1))));
+        }
+        return featuresList;
+    }
+
+    private List<TelevisionFeatures> getTelevisionFeature(String feature) {
+        List<TelevisionFeatures> featuresList = new ArrayList<>();
+        for(int i=0;i<feature.length(); i+=2) {
+            featuresList.add(TelevisionFeatures.getFeature(Integer.parseInt(feature.substring(i,i+1))));
         }
         return featuresList;
     }
@@ -207,13 +222,6 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return servicesList;
     }
 
-    private List<AdditionalFeatures> getAdditionalFeaturesEnum(String feature) {
-        List<AdditionalFeatures> servicesList = new ArrayList<>();
-        for(int i=0;i<feature.length()-1; i+=2) {
-            servicesList.add(AdditionalFeatures.getFeature(Integer.parseInt(feature.substring(i, i+1))));
-        }
-        return servicesList;
-    }
 
     private String getIdListForSelect(String string) {
         //return string.substring(0, string.lastIndexOf(",")).replaceAll("," , " OR ");
@@ -552,6 +560,42 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return  lista;
     }
 
+    public int getInternetPacketId(float dl, String features) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT id FROM PAKIET_INTERNETU WHERE download = '" + dl + "' AND additional_features = '" + features + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("id");
+
+        resultSet.close();
+        statement.close();
+        return id;
+    }
+
+    public int getTvPacketId(int kanaly, String features) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT id FROM TELEWIZJA WHERE lista_kanalow = '" + kanaly + "' AND additional_features = '" + features + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("id");
+
+        resultSet.close();
+        statement.close();
+        return id;
+    }
+
+    public int getGsmPacketId(String standard, String features) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT id FROM GSM WHERE standard = '" + standard + "' AND additional_features = '" + features + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("id");
+
+        resultSet.close();
+        statement.close();
+        return id;
+    }
+
     private Zamowienie getZamowienie(int id) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM ZAMOWIENIE WHERE id = " + id + ";";
@@ -612,7 +656,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             pakiet.setCena(resultSet.getFloat("cena"));
             String features = resultSet.getString("additional_features");
             if(!features.isEmpty()) {
-                pakiet.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+                pakiet.setAdditionalFeaturesList(getInternetFeature(features));
             }
             internetList.add(pakiet);
         }
@@ -633,7 +677,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             tv.setIlosc_kanalow(resultSet.getInt("lista_kanalow"));
             String features = resultSet.getString("additional_features");
             if(!features.isEmpty()) {
-                tv.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+                tv.setAdditionalFeaturesList(getTelevisionFeature(features));
             }
             tvList.add(tv);
         }
@@ -654,7 +698,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             gsm.setStandard(resultSet.getString("standard"));
             String features = resultSet.getString("additional_features");
             if(!features.isEmpty()) {
-                gsm.setAdditionalFeaturesList(getAdditionalFeaturesEnum(features));
+                gsm.setAdditionalFeaturesList(getTelephoneFeature(features));
             }
             gsmList.add(gsm);
         }

@@ -18,6 +18,9 @@ public interface DatabaseInterface {
     List<Pakiet_internetu> getInternetPackets() throws SQLException;
     List<GSM> getGSMpackets() throws SQLException;
     List<Telewizja> getTVpackets() throws SQLException;
+    int getInternetPacketId(float dl, String features) throws SQLException;
+    int getTvPacketId(int kanaly, String features) throws SQLException;
+    int getGsmPacketId(String standard, String features) throws SQLException;
 
     //issuesHandler
     int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException;

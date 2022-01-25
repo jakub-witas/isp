@@ -5,7 +5,7 @@ import java.util.List;
 public class GSM {
     private int id;
     private String standard;
-    private List<AdditionalFeatures> additionalFeaturesList;
+    private List<TelephoneFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -24,11 +24,11 @@ public class GSM {
         this.standard = standard;
     }
 
-    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+    public List<TelephoneFeatures> getAdditionalFeaturesList() {
         return additionalFeaturesList;
     }
 
-    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+    public void setAdditionalFeaturesList(List<TelephoneFeatures> additionalFeaturesList) {
         this.additionalFeaturesList = additionalFeaturesList;
     }
 

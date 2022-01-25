@@ -6,7 +6,7 @@ public class Pakiet_internetu {
     private int id;
     private float download;
     private float upload;
-    private List<AdditionalFeatures> additionalFeaturesList;
+    private List<InternetFeatures> additionalFeaturesList;
     private float cena;
 
     public int getId() {
@@ -33,11 +33,11 @@ public class Pakiet_internetu {
         this.upload = upload;
     }
 
-    public List<AdditionalFeatures> getAdditionalFeaturesList() {
+    public List<InternetFeatures> getAdditionalFeaturesList() {
         return additionalFeaturesList;
     }
 
-    public void setAdditionalFeaturesList(List<AdditionalFeatures> additionalFeaturesList) {
+    public void setAdditionalFeaturesList(List<InternetFeatures> additionalFeaturesList) {
         this.additionalFeaturesList = additionalFeaturesList;
     }
 

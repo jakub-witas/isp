@@ -198,9 +198,9 @@ INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '', 30);
 INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '', 45);
 INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '', 60);
 --multiroom included
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '1,', 40);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '1,', 55);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '1,', 70);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '0,', 40);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '0,', 55);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '0,', 70);
 
 --GSM packages
 --no roaming
@@ -208,9 +208,9 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '', 15);
 INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '', 25);
 INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '', 40);
 --roaming included
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '2,', 25);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '2,', 35);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '2,', 50);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '0,', 25);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '0,', 35);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '0,', 50);
 
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
