@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.isp.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,9 +25,9 @@ public class CreatorController {
     ListView<String> AdditionalInternetListView, AdditionalTVListView, AdditionalGSMListView;
 
     ObservableList<String> selectedInternetItems, selectedTVItems, selectedGSMItems;
-    List<Pakiet_internetu> internetList = Main.Database.getInternetPackets();
-    List<Telewizja> telewizjaList = Main.Database.getTVpackets();
-    List<GSM> gsmList = Main.Database.getGSMpackets();
+    List<Pakiet_internetu> internetList = Proxy.getInternetPackets();
+    List<Telewizja> telewizjaList = Proxy.getTVpackets();
+    List<GSM> gsmList = Proxy.getGSMpackets();
     List<String> internetAdditionalList = new ArrayList<>();
     List<String> tvAdditionalList = new ArrayList<>();
     List<String> gsmAdditionalList = new ArrayList<>();

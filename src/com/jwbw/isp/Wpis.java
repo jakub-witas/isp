@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -36,7 +37,7 @@ public class Wpis {
         this.data_utworzenia = Timestamp.valueOf(LocalDateTime.now());
         this.setAutor(autor);
         this.setOpis(opis);
-        this.setId(Main.Database.sendWpisGetId(this));
+        this.setId(Proxy.sendWpisGetId(this));
     }
 
     public Wpis (User autor, User odbiorca, String opis, boolean wasRead) throws SQLException {
@@ -45,7 +46,7 @@ public class Wpis {
         this.setOpis(opis);
         this.setWasRead(wasRead);
         this.setOdbiorca(odbiorca);
-        this.setId(Main.Database.sendPowiadomienieGetId(this));
+        this.setId(Proxy.sendPowiadomienieGetId(this));
     }
 
     public Wpis() {}
@@ -56,7 +57,7 @@ public class Wpis {
         nowy.setOpis(description);
         nowy.setOdbiorca(odbiorca);
         nowy.setWasRead(false);
-        nowy.setId(Main.Database.sendPowiadomienieGetId(nowy));
+        nowy.setId(Proxy.sendPowiadomienieGetId(nowy));
         return nowy;
     }
 

@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 
 import java.sql.SQLException;
@@ -15,17 +16,18 @@ public class Utrzymanie_sieci extends Zlecenie {
     private String nr_umowy;
 
     public Utrzymanie_sieci(String umowa, String description) throws SQLException {
-        this.setKlient(InterfaceMain.loggedUser);
+        this.setKlient(Proxy.loggedUser);
         this.setNr_umowy(umowa);
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
         Director director = new Director();
         WpisBuilder builder = new WpisBuilder();
-        director.constructWpis(builder, InterfaceMain.loggedUser, description);
+        director.constructWpis(builder, Proxy.loggedUser, description);
         Wpis wpis = builder.getResult();
         List<Wpis> wpisList = new ArrayList<>();
         wpisList.add(wpis);
         this.setWpisy(wpisList);
-        Main.Database.sendNaprawaSieciGetId(this);
+        Proxy.sendNaprawaSieciGetId(this);
+        Proxy.naprawySieci.add(this);
     }
 
     public Utrzymanie_sieci() {}

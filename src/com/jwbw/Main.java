@@ -5,7 +5,8 @@ import com.jwbw.gui.InterfaceMain;
 public class Main {
 
     //public static ConnectionHandler connection;
-    public static DatabaseInterface Database;
+    public static DatabaseInterface Proxy;
+
 
     public static void main(String[] args) {
         ApplicationLogger logger = new ApplicationLogger();

@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -18,7 +19,7 @@ public class Faktura extends Dokument {
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
         this.setData_wygasniecia(Timestamp.valueOf(this.data_utworzenia.toLocalDateTime().plusDays(14)));
         this.setKwota(obliczKwote(this.getObiekty()));
-        this.setId(Main.Database.sendFakturaGetId(this));
+        this.setId(Proxy.sendFakturaGetId(this));
     }
 
     public Faktura() {}

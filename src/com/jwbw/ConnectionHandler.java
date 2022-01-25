@@ -32,7 +32,7 @@ public class ConnectionHandler extends Thread{
     private void initializeDatabase(){
         databaseHandler = new DatabaseHandler(this, databaseUrl, databaseUser, databasePassword, logger);
         isDatabaseConnected = databaseHandler.isConnected();
-        Main.Database = databaseHandler;
+        Proxy.Database = databaseHandler;
     }
 
     public void setDatabaseConnectionState(boolean isDatabaseConnected){

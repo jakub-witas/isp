@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
@@ -22,10 +23,10 @@ public class AddressEditController {
     }
 
     private void loadData() {
-        this.editedCity.setText(((User) InterfaceMain.loggedUser).getCity());
-        this.editedStreet.setText(((User) InterfaceMain.loggedUser).getStreet());
-        this.editedCode.setText(((User) InterfaceMain.loggedUser).getCode());
-        this.editedNumber.setText(((User) InterfaceMain.loggedUser).getHome_number());
+        this.editedCity.setText(Proxy.loggedUser.getCity());
+        this.editedStreet.setText(Proxy.loggedUser.getStreet());
+        this.editedCode.setText(Proxy.loggedUser.getCode());
+        this.editedNumber.setText(Proxy.loggedUser.getHome_number());
     }
 
     public void onConfirmButtonClick(ActionEvent actionEvent) throws SQLException {
@@ -42,7 +43,7 @@ public class AddressEditController {
         }
 
         updateClientData();
-        if (!Main.Database.updateUserAddressData(InterfaceMain.loggedUser)) {
+        if (!Proxy.updateUserAddressData()) {
             alert.setContentText("Aktualizacja danych nie powiodła się.");
             alert.showAndWait();
         } else {
@@ -55,10 +56,10 @@ public class AddressEditController {
 
     @FXML
     private void updateClientData() {
-        ((User)InterfaceMain.loggedUser).setCity(editedCity.getText());
-        ((User)InterfaceMain.loggedUser).setStreet(editedStreet.getText());
-        ((User)InterfaceMain.loggedUser).setHome_number(editedNumber.getText());
-        ((User)InterfaceMain.loggedUser).setCode(editedCode.getText());
+        (Proxy.loggedUser).setCity(editedCity.getText());
+        (Proxy.loggedUser).setStreet(editedStreet.getText());
+        (Proxy.loggedUser).setHome_number(editedNumber.getText());
+        (Proxy.loggedUser).setCode(editedCode.getText());
     }
 
     @FXML

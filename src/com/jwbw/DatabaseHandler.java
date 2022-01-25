@@ -6,6 +6,7 @@ import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DatabaseHandler extends Thread implements DatabaseInterface{
@@ -107,11 +108,11 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
-    public List<Umowa_usluga> getServiceContracts() throws SQLException {
-        List<Umowa_usluga> lista = new ArrayList<>();
+    public List<Dokument> getServiceContracts() throws SQLException {
+        List<Dokument> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = "
-                + ((User)InterfaceMain.loggedUser).getId() +  ";";
+                + (Proxy.loggedUser).getId() +  ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Umowa_usluga usluga = new Umowa_usluga();
@@ -121,14 +122,14 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             int autor = resultSet.getInt("autor");
             List<String> name = getAuthorName(autor);
             usluga.setAutor(name.get(0) + " " + name.get(1));
-            usluga.setNabywca(InterfaceMain.loggedUser);
+            usluga.setNabywca(Proxy.loggedUser);
             List<Object> listaDoc = getDocumentData(resultSet.getInt("dokument_fk"));
             usluga.setData_utworzenia((Timestamp) listaDoc.get(0));
             usluga.setData_wygasniecia((Timestamp) listaDoc.get(1));
             usluga.setNr_dokumentu((String) listaDoc.get(2));
             lista.add(usluga);
         }
-        return  lista;
+        return lista;
     }
 
     private List<Object> getServicesFromContract(String oferta) throws SQLException {
@@ -295,7 +296,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         resultSet.next();
         int id = resultSet.getInt("max");
 
-        str = "INSERT INTO ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, '" + InterfaceMain.loggedUser.getId() + "', '" +
+        str = "INSERT INTO ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, '" + Proxy.loggedUser.getId() + "', '" +
                 naprawa.getUrzadzenie_naprawiane().getId() + "', null, '" + id + "');";
         statement.executeUpdate(str);
 
@@ -345,7 +346,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
     public List<Wpis> getNotificationList() throws SQLException {
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM WPIS WHERE odbiorca = " + InterfaceMain.loggedUser.getId() + ";";
+        String str = "SELECT * FROM WPIS WHERE odbiorca = " + Proxy.loggedUser.getId() + ";";
         ResultSet resultSet = statement.executeQuery(str);
         List<Wpis> wpisList = new ArrayList<>();
         makeEntriesList(resultSet, wpisList);
@@ -388,7 +389,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             Urzadzenie urzadzenie = new Urzadzenie();
             urzadzenie.setSn(resultSet.getString("sn"));
             urzadzenie.setId(resultSet.getInt("id"));
-            urzadzenie.setWlasciciel(InterfaceMain.loggedUser);
+            urzadzenie.setWlasciciel(Proxy.loggedUser);
             urzadzenie.setProducent(resultSet.getString("producent"));
             urzadzenie.setNazwa(resultSet.getString("nazwa"));
             urzadzenieList.add(urzadzenie);
@@ -495,12 +496,12 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         List<Utrzymanie_sieci> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "SELECT *  FROM ZLECENIE_SIEC WHERE klient = "
-                + ((User)InterfaceMain.loggedUser).getId() +  ";";
+                + Proxy.loggedUser.getId() +  ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Utrzymanie_sieci utrzymanieSieci = new Utrzymanie_sieci();
             utrzymanieSieci.setId(resultSet.getInt("id"));
-            utrzymanieSieci.setKlient((User) InterfaceMain.loggedUser);
+            utrzymanieSieci.setKlient(Proxy.loggedUser);
             utrzymanieSieci.setNr_umowy(resultSet.getString("umowa"));
             List<Object> listaZlecenie = getZlecenieData(resultSet.getInt("zlecenie_fk"));
             utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
@@ -516,14 +517,14 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         List<Naprawa_serwisowa> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "SELECT *  FROM ZLECENIE_NAPRAWA WHERE wlasciciel = "
-                + (InterfaceMain.loggedUser).getId() +  ";";
+                + Proxy.loggedUser.getId() +  ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Naprawa_serwisowa naprawaSerwisowa = new Naprawa_serwisowa();
             naprawaSerwisowa.setId(resultSet.getInt("id"));
-            naprawaSerwisowa.setWlasciciel( InterfaceMain.loggedUser);
+            naprawaSerwisowa.setWlasciciel(Proxy.loggedUser);
 
-            List<Urzadzenie> klientDevice = InterfaceMain.loggedUser.getPosiadane_urzadzenia();
+            List<Urzadzenie> klientDevice = Proxy.loggedUser.getPosiadane_urzadzenia();
             if(klientDevice != null) {
                 for (Urzadzenie device : klientDevice) {
                     if (device.getId() == resultSet.getInt("urzadzenie") && !(device instanceof Urzadzenie_sieciowe)) {
@@ -672,7 +673,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         urzadzenie.setNazwa(resultSet.getString("nazwa"));
         urzadzenie.setProducent(resultSet.getString("producent"));
         urzadzenie.setSn(resultSet.getString("sn"));
-        urzadzenie.setWlasciciel((User)InterfaceMain.loggedUser);
+        urzadzenie.setWlasciciel(Proxy.loggedUser);
 
         resultSet.close();
         statement.close();
@@ -751,7 +752,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             user.setHome_number(lista.get(3));
 
             user.setPosiadane_urzadzenia(getDevices(user.getId()));
-            user.setDokumenty(getDocuments(user.getId()));
+            user.setDokumenty(Collections.singletonList(getDocuments(user.getId())));
 
             statement.close();
             resultSet.close();
@@ -775,7 +776,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         while(resultSet.next()) {
             Wpis_kasowy wpis = new Wpis_kasowy();
             wpis.setId(resultSet.getInt("id"));
-            wpis.setWykonawca(InterfaceMain.loggedUser);
+            wpis.setWykonawca(Proxy.loggedUser);
             wpis.setKwota(resultSet.getFloat("kwota"));
             List<Object> listaDoc = getDocumentData(resultSet.getInt("dokument_fk"));
             wpis.setData_utworzenia((Timestamp) listaDoc.get(0));
@@ -798,7 +799,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         while(resultSet.next()) {
             Faktura faktura = new Faktura();
             faktura.setId(resultSet.getInt("id"));
-            faktura.setNabywca(InterfaceMain.loggedUser);
+            faktura.setNabywca(Proxy.loggedUser);
             faktura.setKwota(resultSet.getFloat("kwota"));
             List<Object> listaDoc = getDocumentData(resultSet.getInt("dokument_fk"));
             faktura.setData_utworzenia((Timestamp) listaDoc.get(0));
@@ -830,7 +831,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                 urzadzenie.setWlan(resultSet1.getBoolean("wlan"));
                 urzadzenie.setIp_address(resultSet1.getString("ip_address"));
                 urzadzenie.setId(resultSet1.getInt("id"));
-                urzadzenie.setWlasciciel(InterfaceMain.loggedUser);
+                urzadzenie.setWlasciciel(Proxy.loggedUser);
                 urzadzenie.setNazwa(resultSet.getString("nazwa"));
                 urzadzenie.setSn(resultSet.getString("sn"));
                 urzadzenie.setProducent(resultSet.getString("producent"));
@@ -838,7 +839,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             } else {
                 Urzadzenie urzadzenie = new Urzadzenie();
                 urzadzenie.setId(resultSet.getInt("id"));
-                urzadzenie.setWlasciciel(InterfaceMain.loggedUser);
+                urzadzenie.setWlasciciel(Proxy.loggedUser);
                 urzadzenie.setNazwa(resultSet.getString("nazwa"));
                 urzadzenie.setSn(resultSet.getString("sn"));
                 urzadzenie.setProducent(resultSet.getString("producent"));

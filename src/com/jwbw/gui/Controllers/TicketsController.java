@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
 import com.jwbw.isp.Wpis;
@@ -46,7 +47,7 @@ public class TicketsController {
     }
 
     private void getNetworkTicketList() throws SQLException {
-        Object response = Main.Database.getNetworkTicketList();
+        Object response = Proxy.getNetworkTicketList();
 
         if(response instanceof List) {
             networkTicketList = (List<Utrzymanie_sieci>) response;
@@ -65,7 +66,7 @@ public class TicketsController {
     }
 
     private void getHardwareTicketList() throws SQLException {
-        Object response = Main.Database.getHardwareTicketList();
+        Object response = Proxy.getHardwareTicketList();
 
         if(response instanceof List) {
             hardwareTicketList = (List<Naprawa_serwisowa>) response;

@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers.Panes;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.Dokument;
 import com.jwbw.isp.Naprawa_serwisowa;
@@ -32,7 +33,7 @@ public class HardwarePaneController {
     @FXML
     ComboBox<String> deviceCombo;
 
-    private List<Urzadzenie> urzadzenieList = Main.Database.getDevices();
+    private List<Urzadzenie> urzadzenieList = Proxy.getDevices();
 
     Alert alert = new Alert(Alert.AlertType.WARNING);
 
@@ -61,7 +62,7 @@ public class HardwarePaneController {
             alert.setContentText("Nie wybrano urządzenia do naprawy.");
             alert.showAndWait();
             return;
-        } else if(!Main.Database.checkConnection()) {
+        } else if(!Proxy.checkConnection()) {
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Błąd połączenia");
@@ -70,7 +71,7 @@ public class HardwarePaneController {
             return;
         } else {
             Naprawa_serwisowa.utworzZlecenieFormularz(urzadzenieList.get(deviceCombo.getItems().indexOf(deviceCombo.getValue())),
-                    null, null,null, InterfaceMain.loggedUser, descArea.getText());
+                    null, null,null, Proxy.loggedUser, descArea.getText());
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Zgłoszenie zostało pomyślnie dodane");
@@ -92,7 +93,7 @@ public class HardwarePaneController {
             stage.initOwner(this.deviceCombo.getScene().getWindow());
             stage.setOnCloseRequest(event -> {
                 try {
-                    urzadzenieList = Main.Database.getDevices();
+                    urzadzenieList = Proxy.getDevices();
                     deviceCombo.getItems().clear();
                     fillData();
 

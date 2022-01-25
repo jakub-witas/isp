@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 
 import java.sql.SQLException;
@@ -16,8 +17,9 @@ public class Urzadzenie {
         this.setNazwa(nazwa);
         this.setProducent(producent);
         this.setSn(sn);
-        this.setWlasciciel(InterfaceMain.loggedUser);
-        this.setId(Main.Database.sendUrzadzenieGetId(this));
+        this.setWlasciciel(Proxy.loggedUser);
+        this.setId(Proxy.sendUrzadzenieGetId(this));
+        Proxy.loggedUser.getPosiadane_urzadzenia().add(this);
     }
 
     public Urzadzenie() {}

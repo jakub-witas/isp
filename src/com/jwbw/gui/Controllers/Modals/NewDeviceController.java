@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Urzadzenie;
@@ -28,7 +29,7 @@ public class NewDeviceController {
             alert.setContentText("Wypełnij wszystkie pola informacjami.");
             alert.showAndWait();
             return;
-        } else if (!Main.Database.checkConnection()) {
+        } else if (!Proxy.checkConnection()) {
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Błąd połączenia");

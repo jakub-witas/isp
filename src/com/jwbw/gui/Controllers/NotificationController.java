@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.isp.Wpis;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
@@ -44,7 +45,7 @@ public class NotificationController {
     }
 
     private void getNotificationList() throws SQLException {
-        Object response = Main.Database.getNotificationList();
+        Object response = Proxy.getNotificationList();
 
         if(response instanceof List) {
             notificationList = (List<Wpis>) response;

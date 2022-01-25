@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
@@ -22,11 +23,11 @@ public class DataEditController {
     }
 
     private void loadData() {
-        this.editedId_card.setText(((User) InterfaceMain.loggedUser).getId_card());
-        this.editedMail.setText(((User) InterfaceMain.loggedUser).getMail());
-        this.editedName.setText(((User) InterfaceMain.loggedUser).getName());
-        this.editedSurname.setText(((User) InterfaceMain.loggedUser).getSurname());
-        this.editedPhone.setText(((User) InterfaceMain.loggedUser).getPhone());
+        this.editedId_card.setText((Proxy.loggedUser).getId_card());
+        this.editedMail.setText(Proxy.loggedUser.getMail());
+        this.editedName.setText(Proxy.loggedUser.getName());
+        this.editedSurname.setText(Proxy.loggedUser.getSurname());
+        this.editedPhone.setText(Proxy.loggedUser.getPhone());
     }
 
 
@@ -54,7 +55,7 @@ public class DataEditController {
         }
 
         updateClientData();
-        if (!Main.Database.updateUserContractData(InterfaceMain.loggedUser)) {
+        if (!Proxy.updateUserContractData()) {
             alert.setContentText("Aktualizacja danych nie powiodła się.");
             alert.showAndWait();
         } else {
@@ -67,11 +68,11 @@ public class DataEditController {
 
     @FXML
     private void updateClientData() {
-        ((User)InterfaceMain.loggedUser).setPhone(editedPhone.getText());
-        ((User)InterfaceMain.loggedUser).setName(editedName.getText());
-        ((User)InterfaceMain.loggedUser).setMail(editedMail.getText());
-        ((User)InterfaceMain.loggedUser).setSurname(editedSurname.getText());
-        ((User)InterfaceMain.loggedUser).setId_card(editedId_card.getText());
+        (Proxy.loggedUser).setPhone(editedPhone.getText());
+        (Proxy.loggedUser).setName(editedName.getText());
+        (Proxy.loggedUser).setMail(editedMail.getText());
+        (Proxy.loggedUser).setSurname(editedSurname.getText());
+        (Proxy.loggedUser).setId_card(editedId_card.getText());
     }
 
     @FXML

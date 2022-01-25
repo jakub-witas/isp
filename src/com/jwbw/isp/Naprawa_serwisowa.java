@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -35,13 +36,14 @@ public class Naprawa_serwisowa extends Zlecenie {
         //Wpis pierwszy_wpis = new Wpis(klient, "Utworzenie zlecenia");
         wpisy.add(pierwszy_wpis);
         naprawa.setWpisy(wpisy);
-        naprawa.setId(Main.Database.sendNaprawaGetId(naprawa));
+        naprawa.setId(Proxy.sendNaprawaGetId(naprawa));
+        Proxy.naprawySprzetu.add(naprawa);
     }
 
     public void dodajWpis(int number, String customDescription, List<Cennik_uslug> dodatkowe, User odbiorca) throws SQLException {
         Director director = new Director();
         WpisBuilder builder = new WpisBuilder();
-        director.constructWpis(builder, InterfaceMain.loggedUser, customDescription);
+        director.constructWpis(builder, Proxy.loggedUser, customDescription);
         Wpis wpis1 = builder.getResult();
 
         //Wpis wpis1 = new Wpis(InterfaceMain.loggedUser, customDescription);
@@ -58,14 +60,14 @@ public class Naprawa_serwisowa extends Zlecenie {
             description = "Diagnostyka wpisu nr ";
             description += this.getId();
             //Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
-            director.constructPowiadomienie(builder, InterfaceMain.loggedUser, description, odbiorca);
+            director.constructPowiadomienie(builder, Proxy.loggedUser, description, odbiorca);
             Wpis wpis2 = builder.getResult();
             this.wpisy.add(wpis2);
         } else if (number == 2) {
             description = "Dodano odpowiedź do wpisu nr ";
             description += this.getId();
             //Wpis wpis2 = Wpis.wyslijPowiadomienie(InterfaceMain.loggedUser, odbiorca, description);
-            director.constructPowiadomienie(builder, InterfaceMain.loggedUser, description, odbiorca);
+            director.constructPowiadomienie(builder, Proxy.loggedUser, description, odbiorca);
             Wpis wpis2 = builder.getResult();
             this.wpisy.add(wpis2);
         }

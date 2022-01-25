@@ -1,5 +1,6 @@
 package com.jwbw.gui.Controllers;
 
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +36,7 @@ public class KlientController {
     public void handleButtonWyl(MouseEvent mouseEvent) {
         try {
             //Main.connection.userLoggedOff(InterfaceMain.loggedUser);
-            InterfaceMain.loggedUser = null;
+            Proxy.loggedUser = null;
             Node node = (Node) mouseEvent.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("../login/login.fxml")));

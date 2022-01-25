@@ -3,16 +3,16 @@ package com.jwbw.isp;
 import java.util.List;
 
 public class User extends Osoba{
-    List<Dokument> dokumenty;
+    List<Object> dokumenty;
     List<Urzadzenie> posiadane_urzadzenia;
     Role role;
 
 
-    public List<Dokument> getDokumenty() {
+    public List<Object> getDokumenty() {
         return dokumenty;
     }
 
-    public void setDokumenty(List<Dokument> dokumenty) {
+    public void setDokumenty(List<Object> dokumenty) {
         this.dokumenty = dokumenty;
     }
 

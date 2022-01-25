@@ -13,9 +13,6 @@ import java.io.IOException;
 
 public class InterfaceMain extends Application {
 
-    public static ObservableList<Naprawa_serwisowa> naprawy;
-    public static User loggedUser;
-
 
     @Override
     public void start(Stage stage) throws IOException {

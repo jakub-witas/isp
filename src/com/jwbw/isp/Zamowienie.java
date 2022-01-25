@@ -1,6 +1,7 @@
 package com.jwbw.isp;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -16,7 +17,7 @@ public class Zamowienie extends Dokument {
         this.setKwota(kwota);
         this.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now()));
         this.setData_wygasniecia(Timestamp.valueOf(this.data_utworzenia.toLocalDateTime().plusDays(14)));
-        this.setId(Main.Database.sendZamowienieGetId(this));
+        this.setId(Proxy.sendZamowienieGetId(this));
 
     }
 

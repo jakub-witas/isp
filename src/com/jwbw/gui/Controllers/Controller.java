@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.User;
 import com.jwbw.isp.Pracownik;
@@ -143,9 +144,9 @@ public class Controller implements Initializable {
         String log = logi.getText();
         String pass = passw.getText();
 
-    if (Main.Database.authenticateUser(log, pass)) {
-        User user = Main.Database.fetchUserData(log, pass);
-        InterfaceMain.loggedUser = user;
+    if (Proxy.authenticateUser(log, pass)) {
+        User user = Proxy.fetchUserData(log, pass);
+        Proxy.loggedUser = user;
 
         try {
             Stage stage = (Stage) this.passw.getScene().getWindow();
@@ -158,7 +159,7 @@ public class Controller implements Initializable {
                 case OFFICE_WORKER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../pracownik_biurowy/pracownik_biurowy.fxml")));
                 default -> throw new IllegalStateException("Unexpected value: " + user.getRole());
             }
-            InterfaceMain.loggedUser = user;
+            Proxy.loggedUser = user;
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
@@ -204,7 +205,7 @@ public class Controller implements Initializable {
         }else{
             User user =  new User();
             this.setUserInfo(user);
-            user.setId(Main.Database.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
+            user.setId(Proxy.registerNewUser(user, Rlogn.getText(), Rpassword.getText()));
             clearRegistrationForms();
            alert.setAlertType(Alert.AlertType.INFORMATION);
            alert.setTitle("Rejestracja");
@@ -231,11 +232,11 @@ public class Controller implements Initializable {
     }
 
     private boolean checkForExistingUser() {
-        return Main.Database.checkForExistingUser(Rlogn.getText());
+        return Proxy.checkForExistingUser(Rlogn.getText());
     }
 
     private boolean checkDatabaseConnection() throws NullPointerException {
-        if(!Main.Database.checkConnection()) {
+        if(!Proxy.checkConnection()) {
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Błąd połączenia");

@@ -1,7 +1,9 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
+import com.jwbw.isp.Dokument;
 import com.jwbw.isp.Umowa_usluga;
 import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
@@ -36,32 +38,36 @@ public class ProfileController{
     }
 
     private void loadData() throws SQLException {
-        List<Umowa_usluga> lista =  Main.Database.getServiceContracts();
-        this.id_person.setText(((User)InterfaceMain.loggedUser).getId().toString());
-        this.pesel.setText(((User)InterfaceMain.loggedUser).getPesel());
-        this.id_card.setText(((User) InterfaceMain.loggedUser).getId_card());
-        this.mail.setText(((User) InterfaceMain.loggedUser).getMail());
-        this.name.setText(((User) InterfaceMain.loggedUser).getName());
-        this.surname.setText(((User) InterfaceMain.loggedUser).getSurname());
-        this.phone.setText(((User) InterfaceMain.loggedUser).getPhone());
-        this.city.setText(((User) InterfaceMain.loggedUser).getCity());
-        this.street.setText(((User) InterfaceMain.loggedUser).getStreet());
-        this.code.setText(((User) InterfaceMain.loggedUser).getCode());
-        this.home_number.setText(((User) InterfaceMain.loggedUser).getHome_number());
+        List<Object> lista =  Proxy.getServiceContracts();
+        this.id_person.setText(Proxy.loggedUser.getId().toString());
+        this.pesel.setText(Proxy.loggedUser.getPesel());
+        this.id_card.setText(Proxy.loggedUser.getId_card());
+        this.mail.setText(Proxy.loggedUser.getMail());
+        this.name.setText(Proxy.loggedUser.getName());
+        this.surname.setText(Proxy.loggedUser.getSurname());
+        this.phone.setText(Proxy.loggedUser.getPhone());
+        this.city.setText(Proxy.loggedUser.getCity());
+        this.street.setText(Proxy.loggedUser.getStreet());
+        this.code.setText(Proxy.loggedUser.getCode());
+        this.home_number.setText(Proxy.loggedUser.getHome_number());
         if(!lista.isEmpty()) {
-            this.nr_umowy.setText(lista.get(0).getNr_dokumentu());
-            this.data_zawarcia.setText(lista.get(0).getData_utworzenia().toString());
-            this.data_zakonczenia.setText(lista.get(0).getData_wygasniecia().toString());
-            //this.kwota_mc.setText(list);
-            //TODO: dodać kwote i funkcje ją wyliczającą lub do zmiennej, lub wyjebać. Dodać też tabele?  z ofertą wybraną na umowie
-            if (lista.get(0).getData_wygasniecia().before(Date.valueOf(LocalDate.now()))) {
-                this.status.setText("Zakończona");
-            } else {
-                this.status.setText("Aktywna");
-            }
+            for(Object dokument: lista) {
+                if(dokument instanceof Umowa_usluga) {
+                    this.nr_umowy.setText(((Umowa_usluga)lista.get(0)).getNr_dokumentu());
+                    this.data_zawarcia.setText(((Umowa_usluga)lista.get(0)).getData_utworzenia().toString());
+                    this.data_zakonczenia.setText(((Umowa_usluga)lista.get(0)).getData_wygasniecia().toString());
+                    //this.kwota_mc.setText(list);
+                    //TODO: dodać kwote i funkcje ją wyliczającą lub do zmiennej, lub wyjebać. Dodać też tabele?  z ofertą wybraną na umowie
+                    if (((Umowa_usluga)lista.get(0)).getData_wygasniecia().before(Date.valueOf(LocalDate.now()))) {
+                        this.status.setText("Zakończona");
+                    } else {
+                        this.status.setText("Aktywna");
+                    }
 
-            this.type.setText("Umowa na usługę");
-            this.author.setText(lista.get(0).getAutor());
+                    this.type.setText("Umowa na usługę");
+                    this.author.setText(((Umowa_usluga)lista.get(0)).getAutor());
+                }
+            }
         }
     }
 

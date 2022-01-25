@@ -1,6 +1,7 @@
 package com.jwbw.gui.Controllers.Panes;
 
 import com.jwbw.Main;
+import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
 import com.jwbw.isp.Dokument;
 import com.jwbw.isp.Utrzymanie_sieci;
@@ -28,8 +29,8 @@ public class NetworkPaneController {
     @FXML
     public void initialize() throws SQLException {
                 List<String> docList = new ArrayList<>();
-                for(Dokument dokumentList: Main.Database.getServiceContracts()) {
-                    docList.add(dokumentList.getNr_dokumentu());
+                for(Object dokumentList: Proxy.getServiceContracts()) {
+                    docList.add(((Dokument)dokumentList).getNr_dokumentu());
                 }
                 ObservableList<String> observableList = FXCollections.observableList(docList);
                 contractCombo.setItems(observableList);
@@ -42,7 +43,7 @@ public class NetworkPaneController {
             alert.setContentText("Nie wybrano umowy, której ma dotyczyć zgłoszenie");
             alert.showAndWait();
             return;
-        } else if(!Main.Database.checkConnection()) {
+        } else if(!Proxy.checkConnection()) {
                 alert.setAlertType(Alert.AlertType.ERROR);
                 alert.setHeaderText(null);
                 alert.setTitle("Błąd połączenia");

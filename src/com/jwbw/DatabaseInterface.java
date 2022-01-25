@@ -14,7 +14,7 @@ public interface DatabaseInterface {
     boolean authenticateUser(String username, String password) throws SQLException;
 
     //servicesHandler
-    List<Umowa_usluga> getServiceContracts() throws SQLException;
+    List<Dokument> getServiceContracts() throws SQLException;
     List<Pakiet_internetu> getInternetPackets() throws SQLException;
     List<GSM> getGSMpackets() throws SQLException;
     List<Telewizja> getTVpackets() throws SQLException;
