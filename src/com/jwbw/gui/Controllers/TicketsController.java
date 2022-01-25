@@ -4,15 +4,21 @@ import com.jwbw.Main;
 import com.jwbw.Proxy;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
-import com.jwbw.isp.Wpis;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.security.Timestamp;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,6 +43,12 @@ public class TicketsController {
     @FXML
     TableView<Naprawa_serwisowa> hardwareTicket;
 
+    @FXML
+    private Button tooltipButton1;
+
+    @FXML
+    private Button tooltipButton2;
+
     public static List<Utrzymanie_sieci> networkTicketList = new ArrayList<>();
     public static List<Naprawa_serwisowa> hardwareTicketList = new ArrayList<>();
 
@@ -44,6 +56,18 @@ public class TicketsController {
     public void initialize() throws SQLException {
         getNetworkTicketList();
         getHardwareTicketList();
+
+        final Tooltip t1 = new Tooltip();
+        t1.setText("Pokaż szczegóły");
+        tooltipButton1.setTooltip(t1);
+        tooltipButton1.setOnMouseEntered(e -> tooltipButton1.setStyle("-fx-background-color: green"));
+        tooltipButton1.setOnMouseExited(e -> tooltipButton1.setStyle("-fx-background-color: white"));
+
+        final Tooltip t2 = new Tooltip();
+        t2.setText("Pokaż szczegóły");
+        tooltipButton2.setTooltip(t2);
+        tooltipButton2.setOnMouseEntered(e -> tooltipButton2.setStyle("-fx-background-color: green"));
+        tooltipButton2.setOnMouseExited(e -> tooltipButton2.setStyle("-fx-background-color: white"));
     }
 
     private void getNetworkTicketList() throws SQLException {
@@ -81,6 +105,36 @@ public class TicketsController {
                 hardwareTicket.getItems().add(HardwareList);
 
             }
+        }
+    }
+
+    public void handleButtonEditNetwork(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("../klient/editNetwork.fxml"));
+            stage.setTitle("Naprawy sieciowe");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleButtonEditHardware(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("../klient/editHardware.fxml"));
+            stage.setTitle("Naprawy sprzętowe");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

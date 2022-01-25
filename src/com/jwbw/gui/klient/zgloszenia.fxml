@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-
-<?import javafx.scene.control.TableColumn?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="com.jwbw.gui.Controllers.TicketsController" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.TicketsController">
    <children>
       <Text layoutX="185.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Naprawy sieciowe">
          <font>
@@ -20,28 +18,52 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <TableView fx:id="networkTicket" layoutX="14.0" layoutY="55.0" prefHeight="413.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;">
+      <TableView fx:id="networkTicket" layoutX="14.0" layoutY="55.0" prefHeight="378.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;">
       <columns>
-         <TableColumn text="id" fx:id="networkTabId" prefWidth="50"/>
-         <TableColumn text="Data zgłoszenia" fx:id="networkTabCreationDate" prefWidth="100"/>
-         <TableColumn text="Data zamknięcia" fx:id="networkTabDueToDate" prefWidth="100"/>
-         <TableColumn text="Ostatni wpis" fx:id="networkTabLastEntry" prefWidth="281" />
+         <TableColumn fx:id="networkTabId" prefWidth="50" text="id" />
+         <TableColumn fx:id="networkTabCreationDate" prefWidth="100" text="Data zgłoszenia" />
+         <TableColumn fx:id="networkTabDueToDate" prefWidth="100" text="Data zamknięcia" />
+         <TableColumn fx:id="networkTabLastEntry" prefWidth="281" text="Ostatni wpis" />
       </columns>
          <sortOrder>
             <fx:reference source="networkTabId" />
          </sortOrder>
       </TableView>
-      <TableView fx:id="hardwareTicket" layoutX="585.0" layoutY="55.0" prefHeight="413.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;">
+      <TableView fx:id="hardwareTicket" layoutX="585.0" layoutY="55.0" prefHeight="378.0" prefWidth="531.0" style="-fx-background-color: #99CCFF;">
       <columns>
-         <TableColumn text="id" fx:id="hardwareTabId" prefWidth="50"/>
-         <TableColumn text="Data zgłoszenia" fx:id="hardwareTabCreationDate" prefWidth="100"/>
-         <TableColumn text="Data zamknięcia" fx:id="hardwareTabDueToDate" prefWidth="100"/>
-         <TableColumn text="Ostatni wpis" fx:id="hardwareTabLastEntry" prefWidth="281" />
+         <TableColumn fx:id="hardwareTabId" prefWidth="50" text="id" />
+         <TableColumn fx:id="hardwareTabCreationDate" prefWidth="100" text="Data zgłoszenia" />
+         <TableColumn fx:id="hardwareTabDueToDate" prefWidth="100" text="Data zamknięcia" />
+         <TableColumn fx:id="hardwareTabLastEntry" prefWidth="281" text="Ostatni wpis" />
       </columns>
       <sortOrder>
          <fx:reference source="hardwareTabId" />
       </sortOrder>
       </TableView>
-      <Line endX="-6.0" endY="429.0" layoutX="570.0" layoutY="31.0" startX="-6.0" startY="-19.0" />
+      <Line endX="-6.0" endY="440.0" layoutX="570.0" layoutY="31.0" startX="-6.0" startY="-19.0" />
+      <Button fx:id="tooltipButton1" layoutX="200.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditNetwork" prefHeight="29.0" prefWidth="159.0">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/editicon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="tooltipButton2" layoutX="771.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditHardware" prefHeight="29.0" prefWidth="159.0">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/editicon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </Pane>
