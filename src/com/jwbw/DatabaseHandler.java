@@ -756,6 +756,25 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return urzadzenie;
     }
 
+    public List<Urzadzenie> getDev() throws SQLException {
+        List<Urzadzenie> urzadzenieList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM URZADZENIE WHERE wlasciciel = '" + 3 + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Urzadzenie urzadzenie = new Urzadzenie();
+            urzadzenie.setId(resultSet.getInt("id"));
+            urzadzenie.setNazwa(resultSet.getString("nazwa"));
+            urzadzenie.setProducent(resultSet.getString("producent"));
+            urzadzenie.setSn(resultSet.getString("sn"));
+            urzadzenie.setWlasciciel(Proxy.loggedUser);
+            urzadzenieList.add(urzadzenie);
+        }
+        resultSet.close();
+        statement.close();
+        return urzadzenieList;
+    }
+
     private List<Wpis> getEntries(String wpisy) throws SQLException {
         //wpisy = wpisy.replace(",", " OR ");
         wpisy = getIdListForSelect(wpisy);

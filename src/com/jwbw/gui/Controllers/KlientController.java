@@ -1,11 +1,11 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Proxy;
-import com.jwbw.gui.InterfaceMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -27,10 +27,26 @@ public class KlientController {
     @FXML
     private ToggleGroup tg3;
 
-
+    @FXML
+    private Button profileButton, notification1Button, servicesButton, notification2Button, notification3Button;
 
     @FXML
-    private void initialize() {}
+    private void initialize() {
+        profileButton.setOnMouseEntered(e -> profileButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        profileButton.setOnMouseExited(e -> profileButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        notification1Button.setOnMouseEntered(e -> notification1Button.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        notification1Button.setOnMouseExited(e -> notification1Button.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        servicesButton.setOnMouseEntered(e -> servicesButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        servicesButton.setOnMouseExited(e -> servicesButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        notification2Button.setOnMouseEntered(e -> notification2Button.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        notification2Button.setOnMouseExited(e -> notification2Button.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        notification3Button.setOnMouseEntered(e -> notification3Button.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        notification3Button.setOnMouseExited(e -> notification3Button.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+    }
 
     //wylogowanie
     public void handleButtonWyl(MouseEvent mouseEvent) {
