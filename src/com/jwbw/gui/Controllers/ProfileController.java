@@ -1,11 +1,7 @@
 package com.jwbw.gui.Controllers;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
-import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Dokument;
 import com.jwbw.isp.Umowa_usluga;
-import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

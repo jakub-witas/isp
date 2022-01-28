@@ -183,6 +183,10 @@ public class Proxy {
         return Database.getDevices();
     }
 
+    public static List<Urzadzenie> getDev() throws SQLException {
+        return Database.getDev();
+    }
+
     //connectionHandler
     public static boolean checkConnection() {
         return Database.checkConnection();

@@ -34,6 +34,7 @@ public interface DatabaseInterface {
     List<Wpis> getNotificationList() throws SQLException;
     int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanie_sieci) throws SQLException;
     List<Urzadzenie> getDevices() throws SQLException;
+    List<Urzadzenie> getDev() throws SQLException;
 
     //connectionHandler
     boolean checkConnection();

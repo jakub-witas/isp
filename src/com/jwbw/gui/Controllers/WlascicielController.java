@@ -1,12 +1,11 @@
 package com.jwbw.gui.Controllers;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
-import com.jwbw.gui.InterfaceMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -18,6 +17,23 @@ public class WlascicielController {
     @FXML
     private Pane paneWlasciciel;
 
+    @FXML
+    private Button profileButton, advertismentButton, deleteButton, priceButton;
+
+    @FXML
+    private void initialize() {
+        profileButton.setOnMouseEntered(e -> profileButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        profileButton.setOnMouseExited(e -> profileButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        advertismentButton.setOnMouseEntered(e -> advertismentButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        advertismentButton.setOnMouseExited(e -> advertismentButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        deleteButton.setOnMouseEntered(e -> deleteButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        deleteButton.setOnMouseExited(e -> deleteButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+
+        priceButton.setOnMouseEntered(e -> priceButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
+        priceButton.setOnMouseExited(e -> priceButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
+    }
 
     public void setScreen(Pane pane) {
         paneWlasciciel.getChildren().clear();
@@ -39,7 +55,7 @@ public class WlascicielController {
         }
     }
 
-    public void handleButtonDodajogloszenie(MouseEvent mouseEvent) {
+    public void handleButtonAddAdvertisment() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../wlasciciel/dodajogloszenie.fxml"));
         Pane pane = null;
         try {
@@ -50,7 +66,7 @@ public class WlascicielController {
         setScreen(pane);
     }
 
-    public void handleButtonUstawcennik(MouseEvent mouseEvent) {
+    public void handleButtonSetPrice() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../wlasciciel/cennik.fxml"));
         Pane pane = null;
         try {
@@ -61,4 +77,26 @@ public class WlascicielController {
         setScreen(pane);
     }
 
+    public void handleButtonProfile() {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/profil.fxml"));
+        Pane pane = new Pane();
+        try {
+            pane = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setScreen(pane);
+    }
+
+    public void handleButtonDelete(MouseEvent mouseEvent) {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../wlasciciel/usunogloszenie.fxml"));
+        Pane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setScreen(pane);
+    }
 }

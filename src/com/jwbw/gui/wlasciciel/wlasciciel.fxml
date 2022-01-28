@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.WlascicielController">
+<AnchorPane prefHeight="650.0" prefWidth="1200.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.WlascicielController">
    <children>
       <Text layoutX="118.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WWNet - Dostawca internetu wraz z serwisem PC">
          <font>
@@ -17,7 +17,7 @@
          </font>
       </Text>
       <Line endX="1050.0" endY="-6.0" layoutX="131.0" layoutY="85.0" startX="-118.0" startY="-6.0" />
-      <Button layoutX="13.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonDodajogloszenie" prefHeight="51.0" prefWidth="575.0" style="-fx-background-color: #99CCFF;" text="Dodaj ogłoszenie">
+      <Button fx:id="advertismentButton" layoutX="306.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonAddAdvertisment" prefHeight="51.0" prefWidth="280.0" style="-fx-background-color: #99CCFF;" text="Dodaj ogłoszenie">
          <font>
             <Font size="24.0" />
          </font>
@@ -32,12 +32,24 @@
             <Image url="@../pictures/obr1.png" />
          </image>
       </ImageView>
-      <Button layoutX="606.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonUstawcennik" prefHeight="51.0" prefWidth="585.0" style="-fx-background-color: #99CCFF;" text="Ustaw cennik">
+      <Button fx:id="priceButton" layoutX="901.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonSetPrice" prefHeight="51.0" prefWidth="280.0" style="-fx-background-color: #99CCFF;" text="Ustaw cennik">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Line endX="-10.0" endY="-70.0" layoutX="606.0" layoutY="156.0" startX="-10.0" startY="-10.0" />
-      <Pane fx:id="paneWlasciciel" layoutX="11.0" layoutY="153.0" prefHeight="540.0" prefWidth="1170.0" />
+      <Line endX="-10.0" endY="-70.0" layoutX="902.0" layoutY="153.0" startX="-10.0" startY="-10.0" />
+      <Pane fx:id="paneWlasciciel" layoutX="11.0" layoutY="153.0" prefHeight="480.0" prefWidth="1170.0" />
+      <Button fx:id="profileButton" layoutX="11.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonProfile" prefHeight="51.0" prefWidth="280.0" style="-fx-background-color: #99CCFF;" text="Profil">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Line endX="-10.0" endY="-70.0" layoutX="309.0" layoutY="153.0" startX="-10.0" startY="-10.0" />
+      <Button fx:id="deleteButton" layoutX="606.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#handleButtonDelete" prefHeight="51.0" prefWidth="279.0" style="-fx-background-color: #99CCFF;" text="Usuń ogłoszenie">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Line endX="-10.0" endY="-70.0" layoutX="606.0" layoutY="153.0" startX="-10.0" startY="-10.0" />
    </children>
 </AnchorPane>

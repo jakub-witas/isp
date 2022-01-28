@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1169.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1169.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.AccountsController">
    <children>
-      <TableView layoutX="4.0" layoutY="2.0" prefHeight="520.0" prefWidth="1158.0" />
+      <TableView fx:id="accountsTable" layoutX="4.0" layoutY="2.0" prefHeight="520.0" prefWidth="1158.0">
+         <columns>
+            <TableColumn fx:id="accounts_id" prefWidth="100.0" text="id" />
+            <TableColumn fx:id="accounts_username" prefWidth="210.0" text="login" />
+            <TableColumn fx:id="accounts_name" prefWidth="210.0" text="imię" />
+            <TableColumn fx:id="accounts_surname" prefWidth="210.0" text="nazwisko" />
+            <TableColumn fx:id="accounts_phone" prefWidth="210.0" text="telefon" />
+            <TableColumn fx:id="accounts_mail" prefWidth="210.0" text="mail" />
+         </columns></TableView>
    </children>
 </Pane>
