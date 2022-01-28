@@ -756,23 +756,25 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return urzadzenie;
     }
 
-    public List<Urzadzenie> getDev() throws SQLException {
-        List<Urzadzenie> urzadzenieList = new ArrayList<>();
+    public List<User> getAccountsClients() throws SQLException {
+        List<User> accountsList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM URZADZENIE WHERE wlasciciel = '" + 3 + "';";
+        String str = "SELECT * FROM USERS WHERE role = '" + 2 + "';";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
-            Urzadzenie urzadzenie = new Urzadzenie();
-            urzadzenie.setId(resultSet.getInt("id"));
-            urzadzenie.setNazwa(resultSet.getString("nazwa"));
-            urzadzenie.setProducent(resultSet.getString("producent"));
-            urzadzenie.setSn(resultSet.getString("sn"));
-            urzadzenie.setWlasciciel(Proxy.loggedUser);
-            urzadzenieList.add(urzadzenie);
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setUsername(resultSet.getString("username"));
+            user.setName(resultSet.getString("name"));
+            user.setSurname(resultSet.getString("surname"));
+            user.setPhone(resultSet.getString("phone"));
+            user.setMail(resultSet.getString("mail"));
+            user.setPesel(resultSet.getString("pesel"));
+            accountsList.add(user);
         }
         resultSet.close();
         statement.close();
-        return urzadzenieList;
+        return accountsList;
     }
 
     private List<Wpis> getEntries(String wpisy) throws SQLException {

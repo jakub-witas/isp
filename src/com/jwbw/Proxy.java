@@ -271,8 +271,8 @@ public class Proxy {
         return Database.getDevices();
     }
 
-    public static List<Urzadzenie> getDev() throws SQLException {
-        return Database.getDev();
+    public static List<User> getAccountsClients() throws SQLException {
+        return Database.getAccountsClients();
     }
 
     //connectionHandler

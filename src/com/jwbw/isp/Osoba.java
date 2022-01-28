@@ -2,6 +2,7 @@ package com.jwbw.isp;
 
 abstract class Osoba {
     protected int id;
+    protected String username;
     protected String name;
     protected String surname;
     protected String phone;
@@ -16,6 +17,14 @@ abstract class Osoba {
     public Integer getId() { return id; }
 
     public void setId(Integer id) { this.id = id; }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getName() {
         return name;

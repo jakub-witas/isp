@@ -79,7 +79,7 @@ public class SpecjalistaController {
 
     public void handleButtonKonta() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../specjalista/kontaklientow.fxml"));
-        Pane pane = null;
+        Pane pane = new Pane();
         try {
             pane = loader.load();
         } catch (IOException e) {
