@@ -5,10 +5,7 @@ import com.jwbw.Proxy;
 import com.jwbw.isp.Wpis;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -42,6 +39,7 @@ public class NotificationController {
         confirmationButton.setTooltip(tooltipButton);
         confirmationButton.setOnMouseEntered(e -> confirmationButton.setStyle("-fx-background-color: green"));
         confirmationButton.setOnMouseExited(e -> confirmationButton.setStyle("-fx-background-color: white"));
+        notificationTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     private void getNotificationList() throws SQLException {
@@ -62,7 +60,9 @@ public class NotificationController {
         }
     }
 
-    public void handleButtonActionRead(MouseEvent mouseEvent)  {
-
+    public void handleButtonActionRead() throws SQLException {
+        notificationTable.getSelectionModel().getSelectedItem().setWasRead(!notificationTable.getSelectionModel().getSelectedItem().isWasRead());
+        notificationTable.refresh();
+        Proxy.setNotificationStatus(notificationTable.getSelectionModel().getSelectedItem().getId(), !notificationTable.getSelectionModel().getSelectedItem().isWasRead());
     }
 }

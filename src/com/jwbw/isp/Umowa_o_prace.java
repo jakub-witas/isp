@@ -3,7 +3,7 @@ package com.jwbw.isp;
 public class Umowa_o_prace extends Dokument {
     private float wynagrodzenie;
     private Role rola;
-    private Pracownik pracownik;
+    private User pracownik;
 
     public float getWynagrodzenie() {
         return wynagrodzenie;
@@ -21,11 +21,11 @@ public class Umowa_o_prace extends Dokument {
         this.rola = rola;
     }
 
-    public Pracownik getPracownik() {
+    public User getPracownik() {
         return pracownik;
     }
 
-    public void setPracownik(Pracownik pracownik) {
+    public void setPracownik(User pracownik) {
         this.pracownik = pracownik;
     }
 }

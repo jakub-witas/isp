@@ -187,10 +187,10 @@ INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, '
 INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, '', 80);
 INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, '', 100);
 --public ip included
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, '0,', 65);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, '0,', 80);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, '0,', 95);
-INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, '0,', 115);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 30, 3, '0,', 50);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 100, 30, '0,', 65);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 300, 100, '0,', 80);
+INSERT INTO isp.PAKIET_INTERNETU VALUES (nextval('isp.internet_seq'), 600, 200, '0,', 100);
 
 --TV packages
 --no multiroom
@@ -199,8 +199,8 @@ INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '', 45);
 INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '', 60);
 --multiroom included
 INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 50, '0,', 40);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '0,', 55);
-INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '0,', 70);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 90, '0,', 45);
+INSERT INTO isp.TELEWIZJA VALUES (nextval('isp.tv_seq'), 120, '0,', 60);
 
 --GSM packages
 --no roaming
@@ -208,9 +208,9 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '', 15);
 INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '', 25);
 INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '', 40);
 --roaming included
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '0,', 25);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '0,', 35);
-INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '0,', 50);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '3G', '0,', 15);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '4G', '0,', 25);
+INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '0,', 40);
 
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
@@ -220,7 +220,7 @@ INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
 
 --service contracts
-INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '2,1,0', 3, 4, 2);
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '6,1,0', 3, 4, 2);
 
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;

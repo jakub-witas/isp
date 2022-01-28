@@ -21,6 +21,8 @@ public interface DatabaseInterface {
     int getInternetPacketId(float dl, String features) throws SQLException;
     int getTvPacketId(int kanaly, String features) throws SQLException;
     int getGsmPacketId(String standard, String features) throws SQLException;
+    int sendServiceContractFromFormGetId(Umowa_usluga umowa, String uslugi) throws SQLException;
+    List<Dokument> getEmploymentContracts() throws SQLException;
 
     //issuesHandler
     int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException;
@@ -34,6 +36,7 @@ public interface DatabaseInterface {
     List<Wpis> getNotificationList() throws SQLException;
     int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanie_sieci) throws SQLException;
     List<Urzadzenie> getDevices() throws SQLException;
+    void setNotificationStatus(int id, boolean status) throws SQLException;
 
     //connectionHandler
     boolean checkConnection();

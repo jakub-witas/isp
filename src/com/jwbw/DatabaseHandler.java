@@ -71,6 +71,13 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
+    public void setNotificationStatus(int id, boolean status) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "UPDATE WPIS SET przeczytane = '" + status + "' WHERE id = '" + id + "';";
+        statement.executeUpdate(str);
+        statement.close();
+    }
+
     private List<Object> getDocumentData(int id) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str =  "SELECT * FROM DOKUMENTY WHERE ID = " + id + ";";
@@ -107,11 +114,34 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
+    public int sendServiceContractFromFormGetId(Umowa_usluga umowa, String uslugi) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "INSERT INTO DOKUMENTY (id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), '" +
+                umowa.getData_utworzenia() + "','" + umowa.getData_wygasniecia() + "');";
+        statement.executeUpdate(str);
+        str = "SELECT max(id) FROM DOKUMENTY WHERE data_utworzenie = '" + umowa.getData_utworzenia() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int dokumentId = resultSet.getInt("max");
+        str = "INSERT INTO umowa_usluga VALUES(nextval('isp.umowa_usluga_seq'), '" + uslugi + "', '" + umowa.getNabywca().getId() +
+                "', null, '" + dokumentId + "');";
+        statement.executeUpdate(str);
+
+        str = "SELECT MAX(id) FROM UMOWA_USLUGA WHERE dokument_fk = '" + dokumentId + "';";
+        resultSet = statement.executeQuery(str);
+        resultSet.next();
+        dokumentId = resultSet.getInt("max");
+
+        resultSet.close();
+        statement.close();
+        return dokumentId;
+    }
+
     public List<Dokument> getServiceContracts() throws SQLException {
         List<Dokument> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = "
-                + (Proxy.loggedUser).getId() +  ";";
+                + (Proxy.loggedUser).getId() + " AND autor IS NOT NULL" + ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Umowa_usluga usluga = new Umowa_usluga();
@@ -156,7 +186,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                 pakiet.setAdditionalFeaturesList(null);
             }
             servicesList.add(pakiet);
-        } else if(!lista.get(1).equals(0)) {
+        }
+        if(!lista.get(1).equals(0)) {
             str = "SELECT * FROM telewizja WHERE id = " + lista.get(1) + ";";
             resultSet = statement.executeQuery(str);
             resultSet.next();
@@ -171,7 +202,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                 tv.setAdditionalFeaturesList(null);
             }
             servicesList.add(tv);
-        } else if(!lista.get(2).equals(0)) {
+        }
+        if(!lista.get(2).equals(0)) {
             str = "SELECT * FROM GSM WHERE id = " + lista.get(2) + ";";
             resultSet = statement.executeQuery(str);
             resultSet.next();
@@ -646,7 +678,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public List<Pakiet_internetu> getInternetPackets() throws SQLException {
         List<Pakiet_internetu> internetList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM PAKIET_INTERNETU WHERE additional_features = ''";
+        String str = "SELECT * FROM PAKIET_INTERNETU";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Pakiet_internetu pakiet = new Pakiet_internetu();
@@ -668,7 +700,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public List<Telewizja> getTVpackets() throws SQLException {
         List<Telewizja> tvList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM TELEWIZJA WHERE additional_features = ''";
+        String str = "SELECT * FROM TELEWIZJA";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Telewizja tv = new Telewizja();
@@ -689,7 +721,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public List<GSM> getGSMpackets() throws SQLException {
         List<GSM> gsmList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM GSM WHERE additional_features = ''";
+        String str = "SELECT * FROM GSM";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             GSM gsm = new GSM();
@@ -751,6 +783,28 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return lista;
     }
 
+    public List<Dokument> getEmploymentContracts() throws SQLException {
+        List<Dokument> dokumentList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM UMOWA_PRACA WHERE pracownik = '" + Proxy.loggedUser.getId() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        while (resultSet.next()) {
+            var umowa = new Umowa_o_prace();
+            umowa.setPracownik(Proxy.loggedUser);
+            umowa.setRola(Role.getRole(resultSet.getInt("role")));
+            umowa.setWynagrodzenie(resultSet.getFloat("wynagrodzenie"));
+            umowa.setId(resultSet.getInt("id"));
+            List<Object> lista = getDocumentData(resultSet.getInt("dokument_fk"));
+            umowa.setData_utworzenia((Timestamp) lista.get(0));
+            umowa.setData_wygasniecia((Timestamp) lista.get(1));
+            umowa.setNr_dokumentu((String) lista.get(2));
+            dokumentList.add(umowa);
+        }
+        resultSet.close();
+        statement.close();
+        return dokumentList;
+    }
+
     public int registerNewUser(User user, String username, String password) throws SQLException {
         int addressId;
         if(!checkForAddress(user)) {
@@ -796,7 +850,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             user.setHome_number(lista.get(3));
 
             user.setPosiadane_urzadzenia(getDevices(user.getId()));
-            user.setDokumenty(Collections.singletonList(getDocuments(user.getId())));
+            user.setDokumenty(getDocuments(user.getId()));
 
             statement.close();
             resultSet.close();

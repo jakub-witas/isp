@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFE;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.ProfileController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="1140.0" style="-fx-background-color: #99CCFE;" stylesheets="@../pictures/PaginationStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.ProfileController">
    <children>
       <Text layoutX="480.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profil konta">
          <font>
@@ -109,48 +107,50 @@
       </Pane>
       <Pane layoutX="578.0" layoutY="88.0" prefHeight="379.0" prefWidth="270.0" style="-fx-background-color: CCE5FF;">
          <children>
+            <Pagination fx:id="ContractPagination" layoutX="-3.0" prefHeight="379.0" prefWidth="276.0" />
             <Text layoutX="100.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Umowy" wrappingWidth="72.134765625">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <Label layoutX="14.0" layoutY="74.0" prefHeight="20.0" prefWidth="101.0" text="Nazwa umowy">
+            <Label fx:id="nameLabel" layoutX="14.0" layoutY="74.0" prefHeight="20.0" prefWidth="101.0" text="Nazwa umowy">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="15.0" layoutY="103.0" prefHeight="20.0" prefWidth="153.0" text="Rodzaj umowy">
+            <Label fx:id="typeLabel" layoutX="15.0" layoutY="103.0" prefHeight="20.0" prefWidth="153.0" text="Rodzaj umowy">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="15.0" layoutY="134.0" prefHeight="20.0" prefWidth="153.0" text="Data zawarcia">
+            <Label fx:id="startDateLabel" layoutX="15.0" layoutY="134.0" prefHeight="20.0" prefWidth="153.0" text="Data zawarcia">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="189.0" prefHeight="20.0" prefWidth="139.0" text="Status">
+            <Label fx:id="statusLabel" layoutX="14.0" layoutY="189.0" prefHeight="20.0" prefWidth="139.0" text="Status">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="163.0" prefHeight="20.0" prefWidth="139.0" text="Okres umowy do">
+            <Label fx:id="endDateLabel" layoutX="14.0" layoutY="163.0" prefHeight="20.0" prefWidth="139.0" text="Okres umowy do">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="nr_umowy" layoutX="146.0" layoutY="75.0" />
-            <Label fx:id="data_zawarcia" layoutX="149.0" layoutY="161.0" prefHeight="24.0" prefWidth="95.0" />
-            <Label fx:id="data_zakonczenia" layoutX="149.0" layoutY="132.0" prefHeight="24.0" prefWidth="101.0" />
-            <Label fx:id="kwota_mc" layoutX="135.0" layoutY="193.0" prefHeight="20.0" prefWidth="95.0" />
-            <Label fx:id="status" layoutX="149.0" layoutY="187.0" prefHeight="24.0" prefWidth="101.0" />
+            <Label fx:id="nr_umowy" layoutX="146.0" layoutY="76.0" prefHeight="17.0" prefWidth="72.0" />
+            <Label fx:id="data_zakonczenia" layoutX="146.0" layoutY="161.0" prefHeight="24.0" prefWidth="95.0" />
+            <Label fx:id="data_zawarcia" layoutX="146.0" layoutY="132.0" prefHeight="24.0" prefWidth="101.0" />
+            <Label fx:id="kwota_mc" layoutX="146.0" layoutY="246.0" prefHeight="20.0" prefWidth="95.0" />
+            <Label fx:id="status" layoutX="146.0" layoutY="187.0" prefHeight="24.0" prefWidth="101.0" />
             <Label fx:id="type" layoutX="146.0" layoutY="98.0" prefHeight="30.0" prefWidth="101.0" />
             <Label fx:id="author" layoutX="146.0" layoutY="213.0" prefHeight="20.0" prefWidth="101.0" />
-            <Label layoutX="15.0" layoutY="215.0" prefHeight="20.0" prefWidth="58.0" text="Autor">
+            <Label fx:id="authorLabel" layoutX="15.0" layoutY="215.0" prefHeight="20.0" prefWidth="58.0" text="Autor">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
+            <Label fx:id="costLabel" layoutX="15.0" layoutY="247.0" text="Miesięczny koszt" />
          </children>
       </Pane>
       <Pane layoutX="856.0" layoutY="88.0" prefHeight="379.0" prefWidth="270.0" style="-fx-background-color: CCE5FF;">
@@ -183,6 +183,7 @@
             <Label fx:id="id_sn" layoutX="142.0" layoutY="147.0" prefHeight="20.0" prefWidth="117.0" text="a" />
          </children>
       </Pane>
+      <Label fx:id="noContractsLabel" layoutX="621.0" layoutY="236.0" text="Brak dokumentów do wyświetlenia" visible="false" />
 
    </children>
 </Pane>

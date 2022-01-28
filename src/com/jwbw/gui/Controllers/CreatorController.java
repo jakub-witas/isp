@@ -9,6 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +70,7 @@ public class CreatorController {
 
     private void loadInternetPackets() throws SQLException {
         List<String> stringList = new ArrayList<>();
-        for(Pakiet_internetu netList: internetList) {
+        for(Pakiet_internetu netList: internetList.subList(0, internetList.size()/2)) {
             stringList.add((int)netList.getDownload() + "/" + (int)netList.getUpload() + "Mb/s - " + netList.getCena() + "zł/mc");
         }
         ObservableList<String> observableList = FXCollections.observableList(stringList);
@@ -75,7 +79,7 @@ public class CreatorController {
 
     private void loadTvPackets() throws SQLException {
         List<String> stringList = new ArrayList<>();
-        for(Telewizja tvList: telewizjaList) {
+        for(Telewizja tvList: telewizjaList.subList(0, telewizjaList.size()/2)) {
             stringList.add(tvList.getIlosc_kanalow() + " kanałów - " + tvList.getCena() + "zł/mc");
         }
         ObservableList<String> observableList = FXCollections.observableList(stringList);
@@ -84,7 +88,7 @@ public class CreatorController {
 
     private void loadGsmPackets() throws SQLException {
         List<String> stringList = new ArrayList<>();
-        for(GSM gList: gsmList) {
+        for(GSM gList: gsmList.subList(0, gsmList.size()/2)) {
             stringList.add(gList.getStandard() + " - " + gList.getCena() + "zł/mc");
         }
         ObservableList<String> observableList = FXCollections.observableList(stringList);
@@ -114,7 +118,7 @@ public class CreatorController {
 
     @FXML
     public void onSelectPacket() {
-        Float cena = (float) 0;
+        double cena = (float) 0;
         if (comboGSM.getValue() != null)  {
             cena += gsmList.get(comboGSM.getItems().indexOf(comboGSM.getValue())).getCena();
             if(selectedGSMItems != null) {
@@ -137,42 +141,80 @@ public class CreatorController {
                     cena += TelevisionFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getPrice();
                 }
         }
-
+        if(comboTV.getValue() != null && comboInternet.getValue() != null && comboGSM != null) cena *= 0.90;
+        else if ((comboGSM.getValue() != null && comboInternet.getValue() != null) ||
+                (comboGSM.getValue() != null && comboTV.getValue() != null) ||
+                (comboTV.getValue() != null && comboInternet.getValue() != null))
+                    cena *= 0.95;
         priceCount.setText(cena + " zł");
     }
 
     public void onCreateContract() throws SQLException {
-        if(comboInternet.getValue() != null) {
-            String dl = comboInternet.getValue().substring(0, comboInternet.getValue().indexOf("/"));
-            String features = "";
-            if(selectedInternetItems != null) {
-                for(String string: selectedInternetItems) {
-                    features += InternetFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+        if (!priceCount.getText().substring(0, priceCount.getText().indexOf("z")-1).equals("0")) {
+            var umowa = new Umowa_usluga();
+            List<Object> lista = new ArrayList<>();
+            String uslugi = "";
+            if (comboInternet.getValue() != null) {
+                String dl = comboInternet.getValue().substring(0, comboInternet.getValue().indexOf("/"));
+                String features = "";
+                if (selectedInternetItems != null) {
+                    for (String string : selectedInternetItems) {
+                        features += InternetFeatures.getFeature(string.substring(0, string.indexOf("-") - 1)).getValue() + ",";
+                    }
                 }
+                uslugi += Proxy.getInternetPacketId(Float.parseFloat(dl), features) + ",";
+                lista.add(Proxy.getInternetPacket(Float.parseFloat(dl), features));
+            } else {
+                uslugi += "0,";
             }
-            System.out.println(Proxy.getInternetPacketId(Float.parseFloat(dl), features));
-        }
 
-        if (comboTV.getValue() != null) {
-            int kanały = Integer.parseInt(comboTV.getValue().substring(0, comboTV.getValue().indexOf("k")-1));
-            String features = "";
-            if(selectedTVItems != null) {
-                for(String string: selectedTVItems) {
-                    features += TelevisionFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+            if (comboTV.getValue() != null) {
+                int kanały = Integer.parseInt(comboTV.getValue().substring(0, comboTV.getValue().indexOf("k") - 1));
+                String features = "";
+                if (selectedTVItems != null) {
+                    for (String string : selectedTVItems) {
+                        features += TelevisionFeatures.getFeature(string.substring(0, string.indexOf("-") - 1)).getValue() + ",";
+                    }
                 }
+                uslugi += Proxy.getTvPacketId(kanały, features) + ",";
+                lista.add(Proxy.getTvPacket(kanały, features));
+            } else {
+                uslugi += "0,";
             }
-            System.out.println(Proxy.getTvPacketId(kanały, features));
-        }
 
-        if (comboGSM.getValue() != null) {
-            String standard = comboGSM.getValue().substring(0, comboGSM.getValue().indexOf("-")-1);
-            String features = "";
-            if(selectedGSMItems != null) {
-                for(String string: selectedGSMItems) {
-                    features += TelephoneFeatures.getFeature(string.substring(0, string.indexOf("-")-1)).getValue() + ",";
+            if (comboGSM.getValue() != null) {
+                String standard = comboGSM.getValue().substring(0, comboGSM.getValue().indexOf("-") - 1);
+                String features = "";
+                if (selectedGSMItems != null) {
+                    for (String string : selectedGSMItems) {
+                        features += TelephoneFeatures.getFeature(string.substring(0, string.indexOf("-") - 1)).getValue() + ",";
+                    }
                 }
+                uslugi += Proxy.getGsmPacketId(standard, features) + ",";
+                lista.add(Proxy.getGsmPacket(standard, features));
+            } else {
+                uslugi += "0";
             }
-            System.out.println(Proxy.getGsmPacketId(standard, features));
+
+            umowa.setAutor((String) null);
+            umowa.setNabywca(Proxy.loggedUser);
+            umowa.setData_utworzenia(Timestamp.valueOf(LocalDateTime.now().with(TemporalAdjusters.firstDayOfNextMonth())));
+            umowa.setData_wygasniecia(Timestamp.valueOf(LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).plusYears(2)));
+            umowa.setOferta(lista);
+            umowa.setId(Proxy.sendServiceContractFromFormGetId(umowa, uslugi));
+
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Powodzenie");
+            alert.setContentText("Umowa została poprawnie przekazana do zatwierdzenia.");
+            alert.showAndWait();
+
+        } else {
+            alert.setTitle("Błąd");
+            alert.setContentText("Brak usług do utworzenia umowy.");
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.showAndWait();
         }
         }
 

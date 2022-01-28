@@ -4,6 +4,7 @@ import com.jwbw.isp.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,23 @@ public class Proxy {
     public static List<GSM> gsmList;
     public static User loggedUser;
 
+    public static List<Dokument> getEmploymentContracts() throws SQLException {
+        if(loggedUser.getDokumenty() == null)
+           loggedUser.setDokumenty(Database.getEmploymentContracts());
+        if(loggedUser.getDokumenty() == null || !loggedUser.getDokumenty().containsAll(Database.getEmploymentContracts())) {
+            loggedUser.setDokumenty(Database.getEmploymentContracts());
+        }
+        return loggedUser.getDokumenty();
+    }
+
+    public static int sendServiceContractFromFormGetId(Umowa_usluga umowa, String uslugi) throws SQLException {
+        return Database.sendServiceContractFromFormGetId(umowa, uslugi);
+    }
+
+    public static void setNotificationStatus(int id, boolean status) throws SQLException {
+        Database.setNotificationStatus(id, status);
+    }
+
     public static int getInternetPacketId(float dl, String features) throws SQLException {
        if (internetList == null) {
            return Database.getInternetPacketId(dl, features);
@@ -35,6 +53,30 @@ public class Proxy {
             }
         }
         return Database.getInternetPacketId(dl, features);
+    }
+
+    public static Pakiet_internetu getInternetPacket(float dl, String features) throws SQLException {
+        if (internetList == null) {
+            internetList = Database.getInternetPackets();
+        }
+        Pakiet_internetu pack = null;
+        for(Pakiet_internetu pakiet: internetList) {
+            if (pakiet.getDownload() == dl && features.equals(""))  {
+                pack = pakiet;
+                break;
+            }
+            else {
+                List<InternetFeatures> list = new ArrayList<>();
+                for(int i=0; i< features.length()-1; i+=2) {
+                    list.add(InternetFeatures.getFeature(Integer.parseInt(features.substring(i, i+1))));
+                }
+                if (pakiet.getDownload() == dl && pakiet.getAdditionalFeaturesList() == list) {
+                    pack =  pakiet;
+                    break;
+                }
+            }
+        }
+        return pack;
     }
 
     public static int getTvPacketId(int kanaly, String features) throws SQLException {
@@ -54,6 +96,30 @@ public class Proxy {
         return Database.getTvPacketId(kanaly, features);
     }
 
+    public static Telewizja getTvPacket(int kanaly, String features) throws SQLException {
+        if (telewizjaList == null) {
+            telewizjaList = Database.getTVpackets();
+        }
+        Telewizja tv = null;
+        for(Telewizja pakiet: telewizjaList) {
+            if (pakiet.getIlosc_kanalow() == kanaly && features.equals("")) {
+                tv = pakiet;
+                break;
+            }
+            else {
+                List<TelevisionFeatures> list = new ArrayList<>();
+                for(int i=0; i< features.length()-1; i+=2) {
+                    list.add(TelevisionFeatures.getFeature(Integer.parseInt(features.substring(i, i+1))));
+                }
+                if (pakiet.getIlosc_kanalow() == kanaly && pakiet.getAdditionalFeaturesList() == list) {
+                    tv = pakiet;
+                    break;
+                }
+            }
+        }
+        return tv;
+    }
+
     public static int getGsmPacketId(String standard, String features) throws SQLException {
         if (gsmList == null) {
             return Database.getGsmPacketId(standard, features);
@@ -69,6 +135,28 @@ public class Proxy {
             }
         }
         return Database.getGsmPacketId(standard, features);
+    }
+
+    public static GSM getGsmPacket(String standard, String features) throws SQLException {
+        if (gsmList == null) {
+            gsmList = Database.getGSMpackets();
+        }
+        GSM gsm = null;
+        for(GSM pakiet: gsmList) {
+            if (Objects.equals(pakiet.getStandard(), standard) && features.equals("")) {
+                gsm = pakiet;
+            }
+            else {
+                List<TelephoneFeatures> list = new ArrayList<>();
+                for(int i=0; i< features.length()-1; i+=2) {
+                    list.add(TelephoneFeatures.getFeature(Integer.parseInt(features.substring(i, i+1))));
+                }
+                if (Objects.equals(pakiet.getStandard(), standard) && pakiet.getAdditionalFeaturesList() ==list) {
+                    gsm =  pakiet;
+                }
+            }
+        }
+        return gsm;
     }
 
     public static List<Utrzymanie_sieci>  getNetworkTicketList() throws SQLException {
@@ -92,10 +180,10 @@ public class Proxy {
         return notificationList;
     }
 
-    public static List<Object> getServiceContracts() throws SQLException {
+    public static List<Dokument> getServiceContracts() throws SQLException {
         List<Dokument> list = Database.getServiceContracts();
         if(loggedUser.getDokumenty() == null || !loggedUser.getDokumenty().containsAll(list)) {
-            loggedUser.setDokumenty(Collections.singletonList(list));
+            loggedUser.setDokumenty(list);
         }
         return loggedUser.getDokumenty();
     }
