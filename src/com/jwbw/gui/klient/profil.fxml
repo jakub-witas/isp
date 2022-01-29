@@ -99,10 +99,10 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label fx:id="home_number" layoutX="146.0" layoutY="142.0" />
-            <Label fx:id="street" layoutX="146.0" layoutY="116.0" />
-            <Label fx:id="code" layoutX="146.0" layoutY="92.0" />
-            <Label fx:id="city" layoutX="146.0" layoutY="62.0" />
+            <Label fx:id="home_number" layoutX="135.0" layoutY="142.0" />
+            <Label fx:id="street" layoutX="135.0" layoutY="116.0" />
+            <Label fx:id="code" layoutX="135.0" layoutY="92.0" />
+            <Label fx:id="city" layoutX="135.0" layoutY="62.0" />
          </children>
       </Pane>
       <Pane layoutX="578.0" layoutY="88.0" prefHeight="379.0" prefWidth="270.0" style="-fx-background-color: CCE5FF;">
@@ -155,35 +155,34 @@
       </Pane>
       <Pane layoutX="856.0" layoutY="88.0" prefHeight="379.0" prefWidth="270.0" style="-fx-background-color: CCE5FF;">
          <children>
+            <Pagination fx:id="devicesPagination" prefHeight="379.0" prefWidth="270.0" />
             <Text layoutX="91.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Urządzenia" wrappingWidth="109.134765625">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <Label layoutX="14.0" layoutY="69.0" prefHeight="30.0" prefWidth="117.0" text="Nazwa urządzenia">
+            <Label fx:id="deviceNameLabel" layoutX="14.0" layoutY="69.0" prefHeight="30.0" prefWidth="117.0" text="Nazwa urządzenia">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="18.0" layoutY="110.0" prefHeight="20.0" prefWidth="125.0" text="Producent">
+            <Label fx:id="deviceProducerLabel" layoutX="18.0" layoutY="110.0" prefHeight="20.0" prefWidth="125.0" text="Producent">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="18.0" layoutY="147.0" prefHeight="20.0" prefWidth="88.0" text="Sn">
+            <Label fx:id="deviceSnLabel" layoutX="18.0" layoutY="147.0" prefHeight="20.0" prefWidth="88.0" text="Sn">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="nr_umowy1" layoutX="146.0" layoutY="75.0" />
-            <Label fx:id="status1" layoutX="133.0" layoutY="205.0" prefHeight="42.0" prefWidth="101.0" />
-            <Label fx:id="author1" layoutX="133.0" layoutY="220.0" prefHeight="42.0" prefWidth="101.0" />
-            <Label fx:id="name_device" layoutX="142.0" layoutY="74.0" prefHeight="20.0" prefWidth="117.0" text="a" />
-            <Label fx:id="producer" layoutX="142.0" layoutY="110.0" prefHeight="20.0" prefWidth="117.0" text="a" />
-            <Label fx:id="id_sn" layoutX="142.0" layoutY="147.0" prefHeight="20.0" prefWidth="117.0" text="a" />
+            <Label fx:id="deviceName" layoutX="142.0" layoutY="74.0" prefHeight="20.0" prefWidth="117.0" />
+            <Label fx:id="deviceProducer" layoutX="142.0" layoutY="110.0" prefHeight="20.0" prefWidth="117.0" />
+            <Label fx:id="deviceSn" layoutX="142.0" layoutY="147.0" prefHeight="20.0" prefWidth="117.0" />
          </children>
       </Pane>
       <Label fx:id="noContractsLabel" layoutX="621.0" layoutY="236.0" text="Brak dokumentów do wyświetlenia" visible="false" />
+      <Label fx:id="noDevicesLabel" layoutX="910.0" layoutY="236.0" text="Brak urządzeń do wyświetlenia" visible="false" />
 
    </children>
 </Pane>

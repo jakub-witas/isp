@@ -4,6 +4,7 @@ import com.jwbw.Proxy;
 import com.jwbw.isp.Dokument;
 import com.jwbw.isp.Umowa_o_prace;
 import com.jwbw.isp.Umowa_usluga;
+import com.jwbw.isp.Urzadzenie;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,14 +33,15 @@ public class ProfileController{
 
     @FXML
     private Label id_person, name, surname, mail, phone, pesel, id_card, city, street, code, home_number,
-            nr_umowy, data_zawarcia, data_zakonczenia, kwota_mc, status, type, author,name_device,producer,
-            id_sn, noContractsLabel,  endDateLabel, nameLabel, typeLabel, statusLabel, startDateLabel, costLabel, authorLabel;
+            nr_umowy, data_zawarcia, data_zakonczenia, kwota_mc, status, type, author,deviceName, deviceNameLabel,
+        deviceSn, deviceSnLabel, deviceProducer, deviceProducerLabel, noContractsLabel,  endDateLabel, nameLabel,
+            typeLabel, statusLabel, startDateLabel, costLabel, authorLabel, noDevicesLabel;
 
     @FXML
     private Button editData;
 
     @FXML
-    private Pagination ContractPagination;
+    private Pagination ContractPagination, devicesPagination;
 
     @FXML
     private void initialize() throws SQLException {
@@ -46,11 +49,21 @@ public class ProfileController{
     }
 
     private void loadData() throws SQLException {
-        List<Dokument> lista =  Proxy.getServiceContracts();
-        List<Dokument> listapraca = Proxy.getEmploymentContracts();
-        if (listapraca.get(0) instanceof Umowa_o_prace) {
-            lista.addAll(listapraca);
+        List<Dokument> lista = new ArrayList<>();
+
+        List<Dokument> listaUsluga = Proxy.getServiceContracts();
+        if(listaUsluga != null && listaUsluga.size() > 0) {
+            if(listaUsluga.get(0) instanceof Umowa_usluga)
+            lista.addAll(listaUsluga);
         }
+
+        List<Dokument> listaPraca = Proxy.getEmploymentContracts();
+        if (listaPraca != null  && listaPraca.size() > 0) {
+            if(listaPraca.get(0) instanceof Umowa_o_prace)
+            lista.addAll(listaPraca);
+        }
+
+        List<Urzadzenie> listDevices = Proxy.getDevices();
 
         this.id_person.setText(Proxy.loggedUser.getId().toString());
         this.pesel.setText(Proxy.loggedUser.getPesel());
@@ -84,6 +97,33 @@ public class ProfileController{
             authorLabel.setVisible(false);
             noContractsLabel.setVisible(true);
         }
+
+        if(!listDevices.isEmpty()) {
+            devicesPagination.setPageCount(listDevices.size());
+            devicesPagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+            devicesPagination.setPageFactory(new Callback<Integer, Node>() {
+                @Override
+                public Node call(Integer integer) {
+                    return createPageDevices(integer, listDevices.get(integer));
+                }
+            });
+        } else {
+            deviceNameLabel.setVisible(false);
+            deviceProducerLabel.setVisible(false);
+            deviceSnLabel.setVisible(false);
+            devicesPagination.setVisible(false);
+            noDevicesLabel.setVisible(true);
+        }
+    }
+
+    private Node createPageDevices(int pageIndex, Urzadzenie urzadzenie) {
+        VBox box = new VBox();
+
+        this.deviceName.setText(urzadzenie.getNazwa());
+        this.deviceProducer.setText(urzadzenie.getProducent());
+        this.deviceSn.setText(urzadzenie.getSn());
+
+        return box;
     }
 
     private Node createPage(int pageIndex, Dokument dokument) {

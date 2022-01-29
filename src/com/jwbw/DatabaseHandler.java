@@ -423,7 +423,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         List<Urzadzenie> urzadzenieList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "select * from urzadzenie where id NOT IN (SELECT urzadzenie_fk " +
-                "FROM urzadzenie_sieciowe) AND id NOT IN (SELECT urzadzenie_fk FROM czesc_komputerowa) AND urzadzenie.wlasciciel = " +  3 + ";";
+                "FROM urzadzenie_sieciowe) AND id NOT IN (SELECT urzadzenie_fk FROM czesc_komputerowa) AND urzadzenie.wlasciciel = " +  Proxy.loggedUser.getId() + ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Urzadzenie urzadzenie = new Urzadzenie();

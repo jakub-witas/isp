@@ -63,6 +63,8 @@ public class NotificationController {
     public void handleButtonActionRead() throws SQLException {
         notificationTable.getSelectionModel().getSelectedItem().setWasRead(!notificationTable.getSelectionModel().getSelectedItem().isWasRead());
         notificationTable.refresh();
-        Proxy.setNotificationStatus(notificationTable.getSelectionModel().getSelectedItem().getId(), !notificationTable.getSelectionModel().getSelectedItem().isWasRead());
+        System.out.println(notificationTable.getSelectionModel().getSelectedItem().getId());
+        Proxy.setNotificationStatus(notificationTable.getSelectionModel().getSelectedItem().getId(),
+                notificationTable.getSelectionModel().getSelectedItem().isWasRead());
     }
 }
