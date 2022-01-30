@@ -1,7 +1,7 @@
 package com.jwbw.isp;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public enum Cennik_uslug {
     Diagnoza(0, 50),
@@ -27,6 +27,10 @@ public enum Cennik_uslug {
         return Arrays.stream(values())
                 .filter(cennikUslug -> cennikUslug.value == value)
                 .findFirst();
+    }
+
+    public static List<Cennik_uslug> getValuesList() {
+        return new ArrayList<>(EnumSet.allOf(Cennik_uslug.class));
     }
 
     public static Cennik_uslug getService(int value){

@@ -96,7 +96,7 @@ CREATE TABLE isp.URZADZENIE (
     id INTEGER PRIMARY KEY,
     nazwa VARCHAR(30) NOT NULL,
     producent VARCHAR(30) NOT NULL,
-    sn VARCHAR(20) NOT NULL,
+    sn VARCHAR(20) UNIQUE NOT NULL,
     wlasciciel INTEGER
 );
 
@@ -162,6 +162,7 @@ CREATE SEQUENCE isp.tv_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.gsm_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.urzadzenie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.urzadzenie_sieciowe_seq INCREMENT BY 1 MINVALUE 1;
+CREATE SEQUENCE isp.czesc_komputerowa_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.wpis_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zamowienie_seq INCREMENT BY 1 MINVALUE 1;
 CREATE SEQUENCE isp.zlecenie_seq INCREMENT BY 1 MINVALUE 1;
@@ -215,6 +216,7 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '0,', 40);
 --Documents
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/03/2020', 'DD/MM/YYYY'), to_timestamp('28/02/2022', 'DD/MM/YYYY'));
+INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('13/01/2021', 'DD/MM/YYYY'), to_timestamp('13/01/2021', 'DD/MM/YYYY'));
 
 --Contracts of employment
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
@@ -225,13 +227,22 @@ INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '6,1,0', 3
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2020/1' WHERE ID = 2;
+UPDATE isp.DOKUMENTY SET nr_dokumentu = 'ZAM/2022/1' WHERE ID = 3;
 
 --device
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045692346', 3);
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'X515', 'ASUS', '54678041231421', 3);
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'GTX 2060', 'GeForce', '645908423890', null);
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'Play Blue 8GB', 'Goodram', '645908423390', 3);
 
 --network device
 INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 1);
+
+--parts
+INSERT INTO isp.CZESC_KOMPUTEROWA VALUES (nextval('isp.czesc_komputerowa_seq'), 'DDR3', 'RAM', 100, 4);
+
+--orders
+INSERT INTO isp.ZAMOWIENIE VALUES (nextval('isp.zamowienie_seq'), 100, '1,', 3);
 
 --issue entry
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), 'My network says the cable is disconnected', null, 3, null);
@@ -248,4 +259,4 @@ INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zleceni
 INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 'US/2020/1', 3, 1);
 
 --ticket for hardware issue
-INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '', 0, 3, 2, 0, 2);
+INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '0,', 150, 3, 2, 1, 2);

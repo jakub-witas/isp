@@ -1,26 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="344.0" prefWidth="352.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.HardwareEditController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="613.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.HardwareEditController">
    <children>
-      <Text layoutX="16.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa urządzenia" wrappingWidth="106.552734375" />
-      <Text layoutX="16.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Koszt" wrappingWidth="95.63671875" />
-      <Label fx:id="name_device" layoutX="176.0" layoutY="56.0" prefHeight="17.0" prefWidth="167.0" text="Label" />
-      <Label fx:id="cost" layoutX="296.0" layoutY="313.0" prefHeight="17.0" prefWidth="42.0" text="Label" textAlignment="CENTER" />
-      <Text layoutX="16.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Producent" wrappingWidth="106.552734375" />
-      <Label fx:id="producer" layoutX="176.0" layoutY="83.0" prefHeight="17.0" prefWidth="167.0" text="Label" />
-      <Text fx:id="d_sn" layoutX="16.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sn" wrappingWidth="106.552734375" />
-      <Text layoutX="16.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wykonane usługi" wrappingWidth="106.552734375" />
-      <Label fx:id="id_sn" layoutX="176.0" layoutY="109.0" prefHeight="17.0" prefWidth="167.0" text="Label" />
-      <Label fx:id="services_rendered" layoutX="176.0" layoutY="156.0" prefHeight="17.0" prefWidth="167.0" text="Label" />
-      <Line endX="176.0" layoutX="162.0" layoutY="274.0" startX="-148.0" />
-      <Label fx:id="facture" layoutX="296.0" layoutY="286.0" prefHeight="17.0" prefWidth="42.0" text="Label" textAlignment="CENTER" />
-      <Text layoutX="16.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numer faktury" />
-      <Text layoutX="16.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Część komputerowa" />
-      <Label fx:id="computer_part" layoutX="176.0" layoutY="131.0" prefHeight="17.0" prefWidth="167.0" text="Label" />
+      <Text layoutX="16.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identyfikator" wrappingWidth="106.552734375" />
+      <Label fx:id="deviceId" layoutX="144.0" layoutY="41.0" prefHeight="17.0" prefWidth="167.0" />
+      <Text layoutX="16.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa urządzenia" wrappingWidth="106.552734375" />
+      <Text layoutX="16.0" layoutY="555.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Koszt" wrappingWidth="95.63671875" />
+      <Label fx:id="deviceName" layoutX="144.0" layoutY="68.0" prefHeight="17.0" prefWidth="167.0" />
+      <Label fx:id="cost" layoutX="534.0" layoutY="542.0" prefHeight="17.0" prefWidth="66.0" textAlignment="CENTER" />
+      <Text layoutX="16.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Producent" wrappingWidth="106.552734375" />
+      <Label fx:id="deviceProducer" layoutX="144.0" layoutY="95.0" prefHeight="17.0" prefWidth="167.0" />
+      <Text layoutX="16.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sn" wrappingWidth="106.552734375" />
+      <Label fx:id="deviceSn" layoutX="144.0" layoutY="121.0" prefHeight="17.0" prefWidth="167.0" />
+      <Line endX="436.0" layoutX="162.0" layoutY="509.0" startX="-148.0" />
+      <Label fx:id="orderNumber" layoutX="509.0" layoutY="515.0" prefHeight="17.0" prefWidth="91.0" textAlignment="CENTER" />
+      <Text layoutX="16.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numer zamówienia" />
+      <Text layoutX="16.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Części komputerowe" />
+      <TableView fx:id="partsTable" layoutX="12.0" layoutY="187.0" prefHeight="105.0" prefWidth="585.0">
+        <columns>
+          <TableColumn fx:id="partsName" prefWidth="150.0" text="Nazwa" />
+            <TableColumn fx:id="partsPurpose" prefWidth="100.0" text="Typ" />
+            <TableColumn fx:id="partsConnector" prefWidth="100.0" text="Port" />
+            <TableColumn fx:id="partsProducer" prefWidth="100.0" text="Producent" />
+            <TableColumn fx:id="partsSn" prefWidth="70" text="Sn" />
+          <TableColumn fx:id="partsPrice" prefWidth="63.0" text="Cena" />
+        </columns>
+      </TableView>
+      <TableView fx:id="entryTable" layoutX="12.0" layoutY="328.0" prefHeight="162.0" prefWidth="585.0">
+        <columns>
+          <TableColumn fx:id="entryId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="entryDate" prefWidth="100.0" text="Utworzono" />
+            <TableColumn fx:id="entryType" prefWidth="75.0" text="Typ" />
+            <TableColumn fx:id="entryAuthor" prefWidth="100.0" text="Autor" />
+            <TableColumn fx:id="entryDescription" prefWidth="233.0" text="Opis" />
+        </columns>
+      </TableView>
+      <Label layoutX="22.0" layoutY="305.0" text="Wpisy" />
+      <Line endX="100.0" endY="10.0" layoutX="144.0" layoutY="137.0" startX="100.0" startY="-128.0" />
+      <Label layoutX="89.0" layoutY="13.0" text="Urządzenie" />
+      <TableView fx:id="servicesTable" focusTraversable="false" layoutX="259.0" layoutY="37.0" prefHeight="117.0" prefWidth="244.0">
+        <columns>
+          <TableColumn fx:id="serviceName" prefWidth="170.0" text="Nazwa" />
+          <TableColumn fx:id="servicePrice" prefWidth="72.0" text="Cena" />
+        </columns>
+      </TableView>
+      <Label layoutX="335.0" layoutY="13.0" text="Wykonane usługi" />
+      <ComboBox fx:id="servicesCombo" layoutX="514.0" layoutY="37.0" prefHeight="25.0" prefWidth="84.0" />
+      <Button layoutX="510.0" layoutY="83.0" mnemonicParsing="false" onAction="#onAddServiceButton" prefHeight="25.0" prefWidth="91.0" text="Dodaj usługę" />
+       <Button layoutX="510.0" layoutY="128.0" mnemonicParsing="false" onAction="#onDeleteServiceButton" prefHeight="25.0" prefWidth="91.0" text="Usuń usługę" />
+      <Button fx:id="addEntryButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="298.0" mnemonicParsing="false" onAction="#onInteractEntryButton">
+          <graphic>
+              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../pictures/add-icon-button.png" />
+                  </image>
+              </ImageView>
+          </graphic>
+      </Button>
+      <Button fx:id="editEntryButton" layoutX="179.0" layoutY="298.0" mnemonicParsing="false" onAction="#onInteractEntryButton">
+       <graphic>
+           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../pictures/editicon.png" />
+               </image>
+           </ImageView>
+       </graphic>
+   </Button>
+       <Button fx:id="removeEntryButton" layoutX="214.0" layoutY="298.0" mnemonicParsing="false" onAction="#onDeleteEntryButton">
+           <graphic>
+               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                   <image>
+                       <Image url="@../pictures/remove-icon-button.png" />
+                   </image>
+               </ImageView>
+           </graphic>
+       </Button>
+       <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" mnemonicParsing="false">
+       <graphic>
+           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../pictures/add-icon-button.png" />
+               </image>
+           </ImageView>
+       </graphic>
+   </Button>
+       <Button fx:id="removeOrderButton" layoutX="179.0" layoutY="160.0" mnemonicParsing="false">
+           <graphic>
+               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                   <image>
+                       <Image url="@../pictures/remove-icon-button.png" />
+                   </image>
+               </ImageView>
+           </graphic>
+       </Button>
    </children>
 </Pane>

@@ -20,6 +20,22 @@ public class Proxy {
     public static User loggedUser;
     public static List<User> accountList;
 
+    public static boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa) {
+        return Database.removeEntry(naprawaSerwisowa);
+    }
+
+    public static boolean updateEntry(Wpis wpis) {
+        return Database.updateEntry(wpis);
+    }
+
+    public static boolean addNewEntry(int idWpisu, int idZlecenie) {
+        return Database.addNewEntry(idWpisu, idZlecenie);
+    }
+
+    public static boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa) {
+        return Database.updateHardwareTicketData(naprawaSerwisowa);
+    }
+
     public static List<Dokument> getEmploymentContracts() throws SQLException {
         if(loggedUser.getDokumenty() == null)
            loggedUser.setDokumenty(Database.getEmploymentContracts());

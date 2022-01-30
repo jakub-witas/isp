@@ -1,9 +1,6 @@
 package com.jwbw.isp;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;

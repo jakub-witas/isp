@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="223.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.InteractEntryController">
+   <children>
+      <TextArea fx:id="descriptionArea" layoutX="39.0" layoutY="57.0" prefHeight="120.0" prefWidth="341.0" promptText="Podaj opis (maksymalnie 200 znaków)" />
+      <Button layoutX="184.0" layoutY="188.0" mnemonicParsing="false" onAction="#onSendButton" text="Wyślij" />
+      <ComboBox fx:id="typeCombo" layoutX="39.0" layoutY="21.0" prefWidth="150.0" promptText="Wybierz typ" />
+   </children>
+</AnchorPane>

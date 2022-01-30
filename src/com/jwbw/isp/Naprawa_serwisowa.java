@@ -74,8 +74,19 @@ public class Naprawa_serwisowa extends Zlecenie {
 
     }
 
-    public void dodajUsluge(List<Cennik_uslug> uslugi) {
-        this.wykonane_uslugi.addAll(uslugi);
+    public void calculatePrice() {
+        float cena = 0;
+        if(wykonane_uslugi != null) {
+            for(Cennik_uslug usluga: wykonane_uslugi) {
+                cena += usluga.getPrice();
+            }
+        }
+        if(zamowienie != null) cena += zamowienie.getKwota();
+        setKoszt(cena);
+    }
+
+    public void dodajUsluge(Cennik_uslug uslugi) {
+        this.wykonane_uslugi.add(uslugi);
     }
 
     public void rozlicz() throws SQLException {

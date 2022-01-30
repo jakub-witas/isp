@@ -552,6 +552,35 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return  lista;
     }
 
+    public boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa) {
+        try {
+            String uslugi = "";
+            if(naprawaSerwisowa.getWykonane_uslugi() != null) {
+
+                for(Cennik_uslug usluga: naprawaSerwisowa.getWykonane_uslugi()) {
+                    uslugi += usluga.getValue() + ",";
+                }
+            }
+            String zamowienie = "";
+            if(naprawaSerwisowa.getZamowienie() != null) {
+                zamowienie = String.valueOf(naprawaSerwisowa.getZamowienie().getId());
+            } else{
+                zamowienie = "null";
+            }
+            Statement statement = this.connection.createStatement();
+            String str = "UPDATE isp.ZLECENIE_NAPRAWA SET uslugi = '" + uslugi + "', kwota = '" + naprawaSerwisowa.getKoszt() +
+                    "', zamowienie = '" + zamowienie + "' WHERE id = '" + naprawaSerwisowa.getId() + "';";
+
+            statement.executeUpdate(str);
+            statement.close();
+        } catch (PSQLException e) {
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public List<Naprawa_serwisowa> getHardwareTicketList() throws SQLException {
         List<Naprawa_serwisowa> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
@@ -627,6 +656,61 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
+    public boolean addNewEntry(int idWpisu, int idZlecenie) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + idZlecenie + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int idZlecenia = resultSet.getInt("zlecenie_fk");
+            str = "SELECT wpisy FROM ZLECENIE WHERE id = '" + idZlecenia + "';";
+            resultSet = statement.executeQuery(str);
+            resultSet.next();
+            String wpis = resultSet.getString("wpisy") + idWpisu + ",";
+            resultSet.close();
+            str = "UPDATE ZLECENIE SET WPISY =  '" + wpis + "' WHERE id = '" + idZlecenia + "';";
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa) {
+        try {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawaSerwisowa.getId() + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int zlecenieFk = resultSet.getInt("zlecenie_fk");
+        String wpisy = "";
+        for(Wpis wpis: naprawaSerwisowa.getWpisy()) {
+            wpisy += wpis.getId() + ",";
+        }
+        str = "UPDATE ZLECENIE SET WPISY = '" + wpisy + "' WHERE ID = '" + zlecenieFk + "';";
+        resultSet.close();
+        statement.executeUpdate(str);
+        statement.close();
+        return true;
+        } catch (SQLException e) {
+           return false;
+        }
+
+    }
+
+    public boolean updateEntry(Wpis wpis) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "UPDATE WPIS SET OPIS = '" + wpis.getOpis() + "' WHERE id = '" + wpis.getId() + "';";
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     private Zamowienie getZamowienie(int id) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM ZAMOWIENIE WHERE id = " + id + ";";
@@ -657,13 +741,13 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         ResultSet resultSet = statement.executeQuery(str);
         while (resultSet.next()) {
             Czesc_komputerowa part = new Czesc_komputerowa();
-            part.setWlasciciel(null);
             part.setKoszt(resultSet.getFloat("koszt"));
             part.setId(resultSet.getInt("id"));
             part.setPort(resultSet.getString("port"));
             part.setPrzeznaczenie(resultSet.getString("przeznaczenie"));
             Urzadzenie urzadzenie = getDevice(resultSet.getInt("urzadzenie_fk"));
             part.setWlasciciel(urzadzenie.getWlasciciel());
+            part.setProducent(urzadzenie.getProducent());
             part.setNazwa(urzadzenie.getNazwa());
             part.setSn(urzadzenie.getSn());
 

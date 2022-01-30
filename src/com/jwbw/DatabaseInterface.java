@@ -40,6 +40,12 @@ public interface DatabaseInterface {
     void setNotificationStatus(int id, boolean status) throws SQLException;
     List<User> getAccountsClients() throws SQLException;
     void setDeleteAccountStatus(int id) throws SQLException;
+    boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa);
+    boolean addNewEntry(int idWpisu, int idZlecenie);
+    boolean updateEntry(Wpis wpis);
+    boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa);
+
+
     //connectionHandler
     boolean checkConnection();
     boolean isConnected();

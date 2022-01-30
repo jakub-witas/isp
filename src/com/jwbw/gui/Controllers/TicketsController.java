@@ -1,17 +1,21 @@
 package com.jwbw.gui.Controllers;
 
 import com.jwbw.Proxy;
+import com.jwbw.gui.Controllers.Modals.HardwareEditController;
 import com.jwbw.isp.Naprawa_serwisowa;
 import com.jwbw.isp.Utrzymanie_sieci;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -25,6 +29,9 @@ import java.util.List;
 
 public class TicketsController {
 
+    private float hardwareCost;
+    public static Naprawa_serwisowa detailedNaprawaSprzetu;
+    public static Utrzymanie_sieci detailedNaprawaSieci;
     @FXML
     TableColumn<Utrzymanie_sieci, Integer> networkTabId;
     @FXML
@@ -50,6 +57,8 @@ public class TicketsController {
 
     public static List<Utrzymanie_sieci> networkTicketList = new ArrayList<>();
     public static List<Naprawa_serwisowa> hardwareTicketList = new ArrayList<>();
+
+    Alert alert = new Alert(Alert.AlertType.WARNING);
 
     @FXML
     public void initialize() throws SQLException {
@@ -102,8 +111,8 @@ public class TicketsController {
                         new ReadOnlyStringWrapper(cellData.getValue().getWpisy().get(cellData.getValue().getWpisy().size()-1).getOpis()));
 
                 hardwareTicket.getItems().add(HardwareList);
-
             }
+
         }
     }
 
@@ -111,10 +120,19 @@ public class TicketsController {
         try {
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../klient/editNetwork.fxml"));
-            stage.setTitle("Naprawy sieciowe");
+            stage.setTitle("Szczegóły naprawy");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)mouseEvent.getSource()).getScene().getWindow());
+            stage.setOnCloseRequest(windowEvent -> {
+                try {
+                    networkTicket.getItems().clear();
+                    getNetworkTicketList();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
             stage.show();
         }
         catch (IOException e) {
@@ -124,12 +142,33 @@ public class TicketsController {
 
     public void handleButtonEditHardware(MouseEvent mouseEvent) {
         try {
+            if(hardwareTicket.getSelectionModel().getSelectedItem() == null) {
+                alert.setHeaderText(null);
+                alert.setTitle("Brak zaznaczenia");
+                alert.setContentText("Nie wybrano żadnego wpisu naprawy.");
+                alert.showAndWait();
+                return;
+            }
+            detailedNaprawaSprzetu = hardwareTicket.getSelectionModel().getSelectedItem();
+            hardwareCost = detailedNaprawaSprzetu.getKoszt();
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../klient/editHardware.fxml"));
-            stage.setTitle("Naprawy sprzętowe");
+            stage.setTitle("Szczegóły naprawy");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)mouseEvent.getSource()).getScene().getWindow());
+            stage.setOnCloseRequest(windowEvent -> {
+                try {
+                    if (hardwareCost != detailedNaprawaSprzetu.getKoszt())
+                        Proxy.updateHardwareTicketData(detailedNaprawaSprzetu);
+                    detailedNaprawaSprzetu = null;
+                    hardwareTicket.getItems().clear();
+                    getHardwareTicketList();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
             stage.show();
         }
         catch (IOException e) {
