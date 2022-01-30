@@ -36,28 +36,22 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="ticketsButton" layoutX="311.0" layoutY="93.0" mnemonicParsing="false" onMouseClicked="#handleButtonTickets" prefHeight="51.0" prefWidth="270.0" style="-fx-background-color: #99CCFF;" text="Tickety sieci">
+      <Button fx:id="devicesButton" layoutX="415.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#handleButtonNotifications" prefHeight="51.0" prefWidth="370.0" style="-fx-background-color: #99CCFF;" text="Zgłoszenia">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="devicesButton" layoutX="612.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#handleButtonNaprawa" prefHeight="51.0" prefWidth="270.0" style="-fx-background-color: #99CCFF;" text="Naprawa sprzętu">
+      <Button fx:id="accountsButton" layoutX="812.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#handleButtonKonta" prefHeight="51.0" prefWidth="370.0" style="-fx-background-color: #99CCFF;" text="Konta klientów">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="accountsButton" layoutX="912.0" layoutY="93.0" mnemonicParsing="false" onMouseClicked="#handleButtonKonta" prefHeight="51.0" prefWidth="270.0" style="-fx-background-color: #99CCFF;" text="Konta klientów">
+      <Button fx:id="profileButton" layoutX="13.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#handleButtonProfile" prefHeight="51.0" prefWidth="370.0" style="-fx-background-color: #99CCFF;" text="Profil">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="profileButton" layoutX="13.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#handleButtonProfile" prefHeight="51.0" prefWidth="270.0" style="-fx-background-color: #99CCFF;" text="Profil">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Button>
-      <Line endX="-96.0" endY="94.0" layoutX="693.0" layoutY="58.0" startX="-96.0" startY="28.0" />
-      <Line endX="-96.0" endY="94.0" layoutX="394.0" layoutY="58.0" startX="-96.0" startY="28.0" />
-      <Line endX="-96.0" endY="94.0" layoutX="994.0" layoutY="59.0" startX="-96.0" startY="28.0" />
+      <Line endX="-96.0" endY="94.0" layoutX="496.0" layoutY="58.0" startX="-96.0" startY="28.0" />
+      <Line endX="-96.0" endY="94.0" layoutX="891.0" layoutY="58.0" startX="-96.0" startY="28.0" />
    </children>
 </AnchorPane>

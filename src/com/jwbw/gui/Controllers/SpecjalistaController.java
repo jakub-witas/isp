@@ -18,15 +18,12 @@ public class SpecjalistaController {
     private Pane paneSpecjalista;
 
     @FXML
-    private Button profileButton, ticketsButton, devicesButton, accountsButton;
+    private Button profileButton, devicesButton, accountsButton;
 
     @FXML
     private void initialize() {
         profileButton.setOnMouseEntered(e -> profileButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
         profileButton.setOnMouseExited(e -> profileButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
-
-        ticketsButton.setOnMouseEntered(e -> ticketsButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
-        ticketsButton.setOnMouseExited(e -> ticketsButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
 
         devicesButton.setOnMouseEntered(e -> devicesButton.setStyle("-fx-border-color: green;-fx-background-color: #99CCFF"));
         devicesButton.setOnMouseExited(e -> devicesButton.setStyle("-fx-border-color:  #99CCFF; -fx-background-color: #99CCFF"));
@@ -55,20 +52,9 @@ public class SpecjalistaController {
         paneSpecjalista.getChildren().add(pane);
     }
 
-    public void handleButtonTickets() {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../specjalista/tickets.fxml"));
-        Pane pane = null;
-        try {
-            pane = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        setScreen(pane);
-    }
-
-    public void handleButtonNaprawa() {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../specjalista/naprawa.fxml"));
-        Pane pane = null;
+    public void handleButtonNotifications() {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../klient/zgloszenia.fxml"));
+        Pane pane = new Pane();
         try {
             pane = loader.load();
         } catch (IOException e) {

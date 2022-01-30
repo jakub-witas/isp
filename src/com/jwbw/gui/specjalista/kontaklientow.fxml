@@ -3,25 +3,50 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1169.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.AccountsController">
    <children>
-      <TableView fx:id="accountsTable" editable="true" layoutX="4.0" layoutY="2.0" prefHeight="463.0" prefWidth="1158.0" style="-fx-background-color: #99CCFF;">
+      <TableView fx:id="accountsTable" editable="true" layoutX="4.0" layoutY="2.0" prefHeight="441.0" prefWidth="1158.0" style="-fx-background-color: #99CCFF;">
          <columns>
-            <TableColumn fx:id="accounts_id" prefWidth="54.0" text="id" />
-            <TableColumn fx:id="accounts_username" prefWidth="190.0" text="Nazwa użytkownika" />
-            <TableColumn fx:id="accounts_name" prefWidth="190.0" text="Imię" />
-            <TableColumn fx:id="accounts_surname" prefWidth="180.0" text="Nazwisko" />
-            <TableColumn fx:id="accounts_phone" prefWidth="180.0" text="Telefon" />
-            <TableColumn fx:id="accounts_mail" prefWidth="180.0" text="E-mail" />
-            <TableColumn fx:id="accounts_pesel" prefWidth="180.0" text="Pesel" />
+            <TableColumn fx:id="accounts_id" prefWidth="28.0" text="id" />
+            <TableColumn fx:id="accounts_username" prefWidth="130.0" text="Nazwa użytkownika" />
+            <TableColumn fx:id="accounts_name" prefWidth="130.0" text="Imię" />
+            <TableColumn fx:id="accounts_surname" prefWidth="130.0" text="Nazwisko" />
+            <TableColumn fx:id="accounts_phone" prefWidth="100.0" text="Telefon" />
+            <TableColumn fx:id="accounts_mail" prefWidth="130.0" text="E-mail" />
+            <TableColumn fx:id="accounts_pesel" prefWidth="100.0" text="Pesel" />
+            <TableColumn fx:id="accounts_city" prefWidth="100.0" text="Miasto" />
+            <TableColumn fx:id="accounts_street" prefWidth="160.0" text="Ulica" />
+            <TableColumn fx:id="accounts_code" prefWidth="75.0" text="Kod-pocztowy" />
+            <TableColumn fx:id="accounts_number" prefWidth="75.0" text="Nr domu" />
          </columns></TableView>
-      <Button fx:id="deleteButton" layoutX="444.0" layoutY="477.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="278.0" text="Usuń ">
+      <Button fx:id="deleteButton" layoutX="936.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#handleButtonDeleteClient" prefHeight="55.0" prefWidth="209.0" style="-fx-background-color: #99CCFF;;" text="Usuń">
          <font>
             <Font name="System Italic" size="18.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="editButton" layoutX="14.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#handleButtonEditClient" prefHeight="55.0" prefWidth="209.0" style="-fx-background-color: #99CCFF;;" text="Edytuj">
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/editicon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </Pane>

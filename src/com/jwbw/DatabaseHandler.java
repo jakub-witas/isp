@@ -5,7 +5,6 @@ import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DatabaseHandler extends Thread implements DatabaseInterface{
@@ -770,11 +769,43 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             user.setPhone(resultSet.getString("phone"));
             user.setMail(resultSet.getString("mail"));
             user.setPesel(resultSet.getString("pesel"));
+            List<String> lista = getUserAddresInfo(resultSet.getInt("address"));
+
+            user.setCity(lista.get(0));
+            user.setStreet(lista.get(1));
+            user.setCode(lista.get(2));
+            user.setHome_number(lista.get(3));
             accountsList.add(user);
         }
         resultSet.close();
         statement.close();
         return accountsList;
+    }
+
+    public void setDeleteAccountStatus(int id) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "DELETE FROM USERS WHERE id = '" + id + "';";
+        statement.executeUpdate(str);
+        statement.close();
+    }
+
+    public List<Dokument> getContractClient() throws SQLException {
+        List<Dokument> contractList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM UMOWA_USLUGA WHERE nabywca = '" + 3 + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            var umowa = new Umowa_usluga();
+            umowa.setId(resultSet.getInt("id"));
+            //umowa.setAutor(resultSet.getString("name"));
+            List<Object> lista1 = getDocumentData(resultSet.getInt("dokument_fk"));
+            umowa.setData_utworzenia((Timestamp) lista1.get(0));
+            umowa.setData_wygasniecia((Timestamp) lista1.get(1));
+            contractList.add(umowa);
+        }
+        resultSet.close();
+        statement.close();
+        return contractList;
     }
 
     private List<Wpis> getEntries(String wpisy) throws SQLException {

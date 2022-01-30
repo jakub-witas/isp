@@ -4,10 +4,8 @@ import com.jwbw.isp.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +18,7 @@ public class Proxy {
     public static List<Telewizja> telewizjaList;
     public static List<GSM> gsmList;
     public static User loggedUser;
+    public static List<User> accountList;
 
     public static List<Dokument> getEmploymentContracts() throws SQLException {
         if(loggedUser.getDokumenty() == null)
@@ -36,6 +35,10 @@ public class Proxy {
 
     public static void setNotificationStatus(int id, boolean status) throws SQLException {
         Database.setNotificationStatus(id, status);
+    }
+
+    public static void setDeleteAccountStatus(int id) throws SQLException {
+        Database.setDeleteAccountStatus(id);
     }
 
     public static int getInternetPacketId(float dl, String features) throws SQLException {
@@ -272,7 +275,14 @@ public class Proxy {
     }
 
     public static List<User> getAccountsClients() throws SQLException {
-        return Database.getAccountsClients();
+        if(accountList == null) {
+            accountList = Database.getAccountsClients();
+        }
+        return accountList;
+    }
+
+    public static List<Dokument> getContractClient() throws SQLException {
+        return Database.getContractClient();
     }
 
     //connectionHandler
