@@ -155,7 +155,8 @@ public class Controller implements Initializable {
                 case OWNER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../wlasciciel/wlasciciel.fxml")));
                 case CLIENT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../klient/klient.fxml")));
                 case ACCOUNTANT -> scene = new Scene(FXMLLoader.load(getClass().getResource("../ksiegowa/ksiegowa.fxml")));
-                case SPECIALIST -> scene = new Scene(FXMLLoader.load(getClass().getResource("../specjalista/specjalista.fxml")));
+                case JUNIOR_SPECIALIST, MID_SPECIALIST, SENIOR_SPECIALIST ->
+                        scene = new Scene(FXMLLoader.load(getClass().getResource("../specjalista/specjalista.fxml")));
                 case OFFICE_WORKER -> scene = new Scene(FXMLLoader.load(getClass().getResource("../pracownik_biurowy/pracownik_biurowy.fxml")));
                 default -> throw new IllegalStateException("Unexpected value: " + user.getRole());
             }
@@ -270,7 +271,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        Proxy.resetProxyData();
     }
 
 

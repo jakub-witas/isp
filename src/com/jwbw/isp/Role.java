@@ -5,10 +5,13 @@ import java.util.Optional;
 
 public enum Role {
     OWNER(0),
-    SPECIALIST(1),
-    CLIENT(2),
-    ACCOUNTANT(3),
-    OFFICE_WORKER(4);
+    JUNIOR_SPECIALIST(1),
+    MID_SPECIALIST(2),
+    SENIOR_SPECIALIST(3),
+    CLIENT(4),
+    ACCOUNTANT(5),
+    OFFICE_WORKER(6),
+    ;
 
     private final int value;
 
@@ -26,16 +29,22 @@ public enum Role {
                 return Role.OWNER;
             }
             case 1 -> {
-                return Role.SPECIALIST;
-            }
-            case 2 -> {
-                return Role.CLIENT;
-            }
-            case 3 -> {
-                return Role.ACCOUNTANT;
+                return Role.JUNIOR_SPECIALIST;
             }
             case 4 -> {
+                return Role.CLIENT;
+            }
+            case 5 -> {
+                return Role.ACCOUNTANT;
+            }
+            case 6 -> {
                 return Role.OFFICE_WORKER;
+            }
+            case 2 -> {
+                return Role.MID_SPECIALIST;
+            }
+            case 3 -> {
+                return Role.SENIOR_SPECIALIST;
             }
             default -> {
                 return null;
@@ -52,19 +61,25 @@ public enum Role {
 
         switch (value) {
             case 0 -> {
-                return "Owner";
+                return "Właściciel";
             }
             case 1 -> {
-                return "Specialist";
-            }
-            case 2 -> {
-                return "Client";
-            }
-            case 3 -> {
-                return "Accountant";
+                return "Młodszy specjalista";
             }
             case 4 -> {
-                return "Office worker";
+                return "Klient";
+            }
+            case 5 -> {
+                return "Księgowy";
+            }
+            case 6 -> {
+                return "Pracownik biurowy";
+            }
+            case 2 -> {
+                return "Specjalista";
+            }
+            case 3 -> {
+                return "Starszy specjalista";
             }
             default -> {
                 return "UNKNOWN";

@@ -121,7 +121,8 @@ CREATE TABLE isp.ZLECENIE (
   id INTEGER PRIMARY KEY,
   creation_date TIMESTAMP NOT NULL,
   close_date TIMESTAMP,
-  wpisy VARCHAR(20)
+  wpisy VARCHAR(20),
+  level INTEGER NOT NULL
 );
 
 CREATE TABLE isp.ZLECENIE_SIEC (
@@ -176,10 +177,11 @@ INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Pan
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/607', '25-109');
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/606', '25-109');
 --Users
-INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678909', '123456789', 0, 1);
-INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin2', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678902', '123456789', 1, 2);
-INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin3', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678903', '123456789', 2, 3);
-INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek', 'Jakistam', '999999999', 'mail@mail.here', '12345678904', '123456789', 3, 4);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin', 'admin', 'Mirek', 'Darkowski', '999999999', 'mail@mail.here', '12345678909', '123456789', 0, 1);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin2', 'admin', 'Mirek', 'Kowalski', '999999999', 'mail@mail.here', '12345678902', '123456789', 1, 2);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin3', 'admin', 'Mirek', 'Jakimowicz', '999999999', 'mail@mail.here', '12345678903', '123456789', 4, 3);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek', 'Piotrowski', '999999999', 'mail@mail.here', '12345678904', '123456789', 5, 4);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin5', 'admin', 'Mirek', 'Domaszewski', '999999999', 'mail@mail.here', '12345678904', '123456789', 2, 4);
 
 --Internet packages
 --no public ip
@@ -252,8 +254,8 @@ INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'Okay, so we probably need to replace your router. Do you agree on 15/01?', null, 2, null);
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'You have date to confirm.', false, 2, 3);
 --issue
-INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '1,3,4,5,6,');
-INSERT INTO isp.ZLECENIE (id, creation_date, wpisy) values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), '2,');
+INSERT INTO isp.ZLECENIE values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), null, '1,3,4,5,6,', 1);
+INSERT INTO isp.ZLECENIE values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), null, '2,', 1);
 
 --ticket for network issue
 INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 'US/2020/1', 3, 1);

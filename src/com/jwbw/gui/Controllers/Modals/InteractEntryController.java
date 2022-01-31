@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,22 +25,21 @@ public class InteractEntryController {
 
     Alert alert = new Alert(Alert.AlertType.WARNING);
 
-    //private int klientId;
-
     public void initialize() {
-       typeCombo.setItems(FXCollections.observableList(List.of("Wpis", "Powiadomienie")));
+        List<String> stringList = new ArrayList<>();
+        stringList.add("Wpis");
+        stringList.add("Powiadomienie");
+       typeCombo.setItems(FXCollections.observableList(stringList));
     }
 
     public void setData(Wpis wpis) {
         if (wpis != null) {
             descriptionArea.setText(wpis.getOpis());
-            typeCombo.setVisible(false);
+            typeCombo.setDisable(true);
         } else if (Proxy.loggedUser.getRole().equals(Role.CLIENT)) {
-            typeCombo.setVisible(false);
+            typeCombo.setDisable(true);
+            typeCombo.getSelectionModel().select(0);
         }
-//        else {
-//            this.klientId = klientId;
-//        }
     }
     public void onSendButton() throws SQLException {
         if(descriptionArea.getText().length() >= 200) {
@@ -52,15 +52,21 @@ public class InteractEntryController {
         if (HardwareEditController.interactedEntry != null) {
             HardwareEditController.interactedEntry.setOpis(descriptionArea.getText());
         } else {
+            if(typeCombo.getValue() == null) {
+                alert.setHeaderText(null);
+                alert.setTitle("Brak typu");
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setContentText("Nie zaznaczono typu wiadomości.");
+                alert.showAndWait();
+                return;
+            }
+
             if (typeCombo.getValue().equals("Wpis")) {
                 var wpis = new Wpis(Proxy.loggedUser, descriptionArea.getText());
                 HardwareEditController.naprawaSerwisowa.getWpisy().add(wpis);
                 Proxy.addNewEntry(wpis.getId(), HardwareEditController.naprawaSerwisowa.getId());
             } else {
-                var user = new User();
-                //user.setId(klientId);
-                user.setId(3);
-                var wpis = new Wpis(Proxy.loggedUser, user, descriptionArea.getText(), false);
+                var wpis = new Wpis(Proxy.loggedUser, HardwareEditController.naprawaSerwisowa.getWlasciciel(), descriptionArea.getText(), false);
                 HardwareEditController.naprawaSerwisowa.getWpisy().add(wpis);
                 Proxy.addNewEntry(wpis.getId(), HardwareEditController.naprawaSerwisowa.getId());
             }

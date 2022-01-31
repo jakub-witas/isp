@@ -33,7 +33,7 @@ public interface DatabaseInterface {
     int sendPowiadomienieGetId(Wpis wpis) throws SQLException;
     int sendFakturaGetId(Faktura faktura) throws SQLException;
     List<Utrzymanie_sieci>  getNetworkTicketList() throws SQLException;
-    List<Naprawa_serwisowa> getHardwareTicketList() throws SQLException;
+    List<Naprawa_serwisowa> getHardwareTicketList(Role role) throws SQLException;
     List<Wpis> getNotificationList() throws SQLException;
     int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanie_sieci) throws SQLException;
     List<Urzadzenie> getDevices() throws SQLException;

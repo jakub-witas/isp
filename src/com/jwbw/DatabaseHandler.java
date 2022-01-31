@@ -581,25 +581,44 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
-    public List<Naprawa_serwisowa> getHardwareTicketList() throws SQLException {
+    public List<Naprawa_serwisowa> getHardwareTicketList(Role role) throws SQLException {
         List<Naprawa_serwisowa> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT *  FROM ZLECENIE_NAPRAWA WHERE wlasciciel = "
-                + Proxy.loggedUser.getId() +  ";";
+        String str = "";
+        if(role == Role.CLIENT) {
+            str = "SELECT *  FROM ZLECENIE_NAPRAWA WHERE wlasciciel = "
+                    + Proxy.loggedUser.getId() + ";";
+        } else {
+            str = "SELECT * FROM ZLECENIE_NAPRAWA WHERE zlecenie_fk IN (SELECT id FROM ZLECENIE WHERE level = '" + role.getValue() + "');";
+        }
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Naprawa_serwisowa naprawaSerwisowa = new Naprawa_serwisowa();
             naprawaSerwisowa.setId(resultSet.getInt("id"));
-            naprawaSerwisowa.setWlasciciel(Proxy.loggedUser);
 
-            List<Urzadzenie> klientDevice = Proxy.loggedUser.getPosiadane_urzadzenia();
-            if(klientDevice != null) {
-                for (Urzadzenie device : klientDevice) {
-                    if (device.getId() == resultSet.getInt("urzadzenie") && !(device instanceof Urzadzenie_sieciowe)) {
-                        naprawaSerwisowa.setUrzadzenie_naprawiane(device);
+            if(role == Role.CLIENT) {
+                naprawaSerwisowa.setWlasciciel(Proxy.loggedUser);
+                List<Urzadzenie> klientDevice = Proxy.loggedUser.getPosiadane_urzadzenia();
+                if(klientDevice != null) {
+                    for (Urzadzenie device : klientDevice) {
+                        if (device.getId() == resultSet.getInt("urzadzenie") && !(device instanceof Urzadzenie_sieciowe) && !(device instanceof Czesc_komputerowa)) {
+                            naprawaSerwisowa.setUrzadzenie_naprawiane(device);
+                        }
                     }
                 }
+            } else {
+                Statement statement1 = this.connection.createStatement();
+                var owner = new User();
+                str = "SELECT username, password FROM USERS WHERE id = '" + resultSet.getInt("wlasciciel") + "';";
+                ResultSet resultSet1 = statement1.executeQuery(str);
+                resultSet1.next();
+                owner = fetchUserData(resultSet1.getString("username"), resultSet1.getString("password"));
+                naprawaSerwisowa.setWlasciciel(owner);
+                naprawaSerwisowa.setUrzadzenie_naprawiane(getDevice(resultSet.getInt("urzadzenie")));
+                resultSet1.close();
+                statement1.close();
             }
+
             naprawaSerwisowa.setKoszt(resultSet.getFloat("kwota"));
             if(resultSet.getInt("zamowienie") != 0) {
                 naprawaSerwisowa.setZamowienie(getZamowienie(resultSet.getInt("zamowienie")));
@@ -617,6 +636,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             naprawaSerwisowa.setWpisy(listaWpisy);
             lista.add(naprawaSerwisowa);
         }
+        resultSet.close();
+        statement.close();
         return  lista;
     }
 

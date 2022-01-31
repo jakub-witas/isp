@@ -20,6 +20,14 @@ public class Proxy {
     public static User loggedUser;
     public static List<User> accountList;
 
+    public static void resetProxyData() {
+        naprawySprzetu = null;
+        naprawySieci = null;
+        notificationList = null;
+        loggedUser = null;
+        accountList = null;
+    }
+
     public static boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa) {
         return Database.removeEntry(naprawaSerwisowa);
     }
@@ -187,7 +195,7 @@ public class Proxy {
 
     public static List<Naprawa_serwisowa> getHardwareTicketList() throws SQLException {
         if(naprawySprzetu == null) {
-            naprawySprzetu = FXCollections.observableList(Database.getHardwareTicketList());
+            naprawySprzetu = FXCollections.observableList(Database.getHardwareTicketList(Proxy.loggedUser.getRole()));
         }
         return naprawySprzetu;
     }

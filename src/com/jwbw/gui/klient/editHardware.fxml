@@ -52,8 +52,8 @@
       </TableView>
       <Label layoutX="335.0" layoutY="13.0" text="Wykonane usługi" />
       <ComboBox fx:id="servicesCombo" layoutX="514.0" layoutY="37.0" prefHeight="25.0" prefWidth="84.0" />
-      <Button layoutX="510.0" layoutY="83.0" mnemonicParsing="false" onAction="#onAddServiceButton" prefHeight="25.0" prefWidth="91.0" text="Dodaj usługę" />
-       <Button layoutX="510.0" layoutY="128.0" mnemonicParsing="false" onAction="#onDeleteServiceButton" prefHeight="25.0" prefWidth="91.0" text="Usuń usługę" />
+      <Button fx:id="addServiceButton" layoutX="510.0" layoutY="83.0" mnemonicParsing="false" onAction="#onAddServiceButton" prefHeight="25.0" prefWidth="91.0" text="Dodaj usługę" />
+       <Button fx:id="removeServiceButton" layoutX="510.0" layoutY="128.0" mnemonicParsing="false" onAction="#onDeleteServiceButton" prefHeight="25.0" prefWidth="91.0" text="Usuń usługę" />
       <Button fx:id="addEntryButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="298.0" mnemonicParsing="false" onAction="#onInteractEntryButton">
           <graphic>
               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
@@ -83,7 +83,7 @@
        </Button>
        <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" mnemonicParsing="false">
        <graphic>
-           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+           <ImageView  fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
                    <Image url="@../pictures/add-icon-button.png" />
                </image>

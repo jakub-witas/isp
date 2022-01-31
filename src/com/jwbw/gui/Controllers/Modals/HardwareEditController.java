@@ -2,10 +2,7 @@ package com.jwbw.gui.Controllers.Modals;
 
 import com.jwbw.Proxy;
 import com.jwbw.gui.Controllers.TicketsController;
-import com.jwbw.isp.Cennik_uslug;
-import com.jwbw.isp.Czesc_komputerowa;
-import com.jwbw.isp.Naprawa_serwisowa;
-import com.jwbw.isp.Wpis;
+import com.jwbw.isp.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -24,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class HardwareEditController {
 
@@ -54,7 +52,7 @@ public class HardwareEditController {
     private ComboBox<Cennik_uslug> servicesCombo;
 
     @FXML
-    private Button addEntryButton, removeEntryButton, editEntryButton, addOrderButton, removeOrderButton;
+    private Button addEntryButton, removeEntryButton, editEntryButton, addOrderButton, removeOrderButton, addServiceButton, removeServiceButton;
 
     public static Naprawa_serwisowa naprawaSerwisowa = null;
 
@@ -86,6 +84,14 @@ public class HardwareEditController {
             loadPartsTable();
         } else {
             orderNumber.setText("Brak");
+        }
+
+        if(Proxy.loggedUser.getRole() == Role.CLIENT) {
+            servicesCombo.setDisable(true);
+            addServiceButton.setDisable(true);
+            removeServiceButton.setDisable(true);
+            addOrderButton.setDisable(true);
+            removeOrderButton.setDisable(true);
         }
     }
 
@@ -119,10 +125,17 @@ public class HardwareEditController {
                     alert.setContentText("Brak wpisu do edycji");
                     alert.showAndWait();
                     return;
+                } else if (entryTable.getSelectionModel().getSelectedItem().getAutor().getId() != Proxy.loggedUser.getId()) {
+                    alert.setAlertType(Alert.AlertType.WARNING);
+                    alert.setTitle("Błąd edycji");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wpis został utworzony przez kogoś innego - nie możesz go edytować.");
+                    alert.showAndWait();
+                    return;
                 }
                 interactedEntry = entryTable.getSelectionModel().getSelectedItem();
 
-                controller.setData(entryTable.getSelectionModel().getSelectedItem());
+                controller.setData(interactedEntry);
                 stage.setTitle("Edycja wpisu");
             } else {
                 stage.setTitle("Dodanie wpisu");
@@ -153,7 +166,12 @@ public class HardwareEditController {
             alert.setTitle("Brak zaznaczenia");
             alert.setContentText("Nie wybrano wpisu do usunięcia");
             alert.showAndWait();
-        } else {
+        } else if (!Objects.equals(entryTable.getSelectionModel().getSelectedItem().getAutor().getId(), Proxy.loggedUser.getId())) {
+            alert.setTitle("Błąd usuwania");
+            alert.setContentText("Wybrany wpis został dodany przez kogoś innego. Nie możesz go usunąć.");
+            alert.showAndWait();
+        }
+        else {
             naprawaSerwisowa.getWpisy().remove(entryTable.getSelectionModel().getSelectedItem());
             Proxy.removeEntry(naprawaSerwisowa);
             entryTable.getItems().clear();
