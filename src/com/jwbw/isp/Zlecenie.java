@@ -9,6 +9,15 @@ public abstract class Zlecenie {
     protected Timestamp data_utworzenia;
     protected Timestamp data_wykonania;
     protected List<Wpis> wpisy;
+    protected int poziom;
+
+    public int getPoziom() {
+        return poziom;
+    }
+
+    public void setPoziom(int poziom) {
+        this.poziom = poziom;
+    }
 
     public int getId() {
         return id;
@@ -19,7 +28,7 @@ public abstract class Zlecenie {
     }
 
 
-    public Date getData_utworzenia() {
+    public Timestamp getData_utworzenia() {
         return data_utworzenia;
     }
 
@@ -31,7 +40,7 @@ public abstract class Zlecenie {
         this.data_wykonania = data_wykonania;
     }
 
-    public Date getData_wykonania() {
+    public Timestamp getData_wykonania() {
         return data_wykonania;
     }
 

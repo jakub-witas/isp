@@ -6,6 +6,7 @@ import com.jwbw.isp.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,8 +19,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +32,7 @@ public class HardwareEditController {
 
     public static Wpis interactedEntry;
     @FXML
-    private Label deviceName, deviceProducer, deviceSn, deviceId, cost, orderNumber;
+    private Label deviceName, deviceProducer, deviceSn, deviceId, cost, orderNumber, levelLabel, levelLabelLabel;
 
     @FXML
     private TableView<Wpis> entryTable;
@@ -52,7 +56,8 @@ public class HardwareEditController {
     private ComboBox<Cennik_uslug> servicesCombo;
 
     @FXML
-    private Button addEntryButton, removeEntryButton, editEntryButton, addOrderButton, removeOrderButton, addServiceButton, removeServiceButton;
+    private Button addEntryButton, removeEntryButton, editEntryButton, addOrderButton, removeOrderButton, addServiceButton,
+            removeServiceButton, upgradeLevelButton, closeIssueButton;
 
     public static Naprawa_serwisowa naprawaSerwisowa = null;
 
@@ -75,23 +80,121 @@ public class HardwareEditController {
         servicesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         naprawaSerwisowa = TicketsController.detailedNaprawaSprzetu;
         this.cost.setText(naprawaSerwisowa.getKoszt() + " zł");
+        this.levelLabel.setText(String.valueOf(naprawaSerwisowa.getPoziom()));
         loadDeviceData();
         loadServicesTable();
         loadEntriesTable();
         loadServicesComboData();
         if(naprawaSerwisowa.getZamowienie() != null) {
-            orderNumber.setText(naprawaSerwisowa.getZamowienie().getNr_dokumentu());
+            //orderNumber.setText(naprawaSerwisowa.getZamowienie().getNr_dokumentu());
             loadPartsTable();
         } else {
             orderNumber.setText("Brak");
         }
 
         if(Proxy.loggedUser.getRole() == Role.CLIENT) {
-            servicesCombo.setDisable(true);
-            addServiceButton.setDisable(true);
-            removeServiceButton.setDisable(true);
-            addOrderButton.setDisable(true);
-            removeOrderButton.setDisable(true);
+            disableButtonsForClient();
+        }
+
+        if(naprawaSerwisowa.getData_wykonania()!= null) {
+            disableAllButtons(true);
+        }
+    }
+
+    private void disableAllButtons(boolean value) {
+        servicesCombo.setDisable(value);
+        addServiceButton.setDisable(value);
+        removeServiceButton.setDisable(value);
+        addOrderButton.setDisable(value);
+        removeOrderButton.setDisable(value);
+        upgradeLevelButton.setDisable(value);
+        addEntryButton.setDisable(value);
+        editEntryButton.setDisable(value);
+        removeEntryButton.setDisable(value);
+        closeIssueButton.setText("Otwórz naprawę");
+    }
+
+    private void disableButtonsForClient() {
+        servicesCombo.setDisable(true);
+        addServiceButton.setDisable(true);
+        removeServiceButton.setDisable(true);
+        addOrderButton.setDisable(true);
+        removeOrderButton.setDisable(true);
+        upgradeLevelButton.setDisable(true);
+        upgradeLevelButton.setVisible(false);
+        levelLabel.setVisible(false);
+        levelLabelLabel.setVisible(false);
+        closeIssueButton.setDisable(true);
+        closeIssueButton.setVisible(false);
+    }
+
+    public void onCloseIssueButton() {
+        if(naprawaSerwisowa.getData_wykonania() == null) {
+            naprawaSerwisowa.setData_wykonania(Timestamp.valueOf(LocalDateTime.now()));
+            if (Proxy.closeHardwareIssueTicket(naprawaSerwisowa)) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("Powodzenie");
+                alert.setContentText("Naprawa została pomyślnie zakończona.");
+                alert.showAndWait();
+                disableAllButtons(true);
+            } else {
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Coś poszło nie tak.");
+                alert.showAndWait();
+                naprawaSerwisowa.setData_wykonania(null);
+            }
+        } else {
+            Timestamp closeDate = naprawaSerwisowa.getData_wykonania();
+            naprawaSerwisowa.setData_wykonania(null);
+            if (Proxy.closeHardwareIssueTicket(naprawaSerwisowa)) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("Powodzenie");
+                alert.setContentText("Naprawa została pomyślnie otworzona.");
+                alert.showAndWait();
+                disableAllButtons(false);
+            } else {
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Coś poszło nie tak.");
+                alert.showAndWait();
+                naprawaSerwisowa.setData_wykonania(closeDate);
+            }
+        }
+    }
+
+
+    public void onChangeLevelButton() {
+        if(naprawaSerwisowa.getPoziom() >= 3) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setTitle("Niepowodzenie");
+            alert.setContentText("Zlecenie znajduje się już na najwyższym dostępnym poziomie.");
+            alert.showAndWait();
+        } else {
+
+            naprawaSerwisowa.setPoziom(naprawaSerwisowa.getPoziom() + 1);
+            if (Proxy.upgradeIssueLevel(naprawaSerwisowa)) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("Powodzenie");
+                alert.setContentText("Zlecenie zostało pomyślnie przekazane do specjalistów z wyższym poziomem umiejętności." +
+                        "Nastąpi zamnięcie okna.");
+                alert.showAndWait();
+                Proxy.naprawySprzetu.remove(naprawaSerwisowa);
+                closeWindow();
+            } else {
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setTitle("Niepowodzenie");
+                alert.setContentText("Coś poszło nie tak.");
+                alert.showAndWait();
+                naprawaSerwisowa.setPoziom(naprawaSerwisowa.getPoziom()-1);
+            }
         }
     }
 
@@ -109,6 +212,34 @@ public class HardwareEditController {
         cost.setText(naprawaSerwisowa.getKoszt() + " zł");
         servicesTable.getItems().clear();
         loadServicesTable();
+    }
+
+    public void onAddOrderButton(ActionEvent event) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../klient/Panes/CreateOrder.fxml"));
+            stage.setScene(new Scene(loader.load()));
+            CreateOrderController controller = loader.getController();
+            controller.loadData(naprawaSerwisowa);
+            stage.setResizable(false);
+            stage.setTitle("Nowe zamówienie");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            stage.setOnCloseRequest(windowEvent -> {
+                naprawaSerwisowa.calculatePrice();
+                cost.setText(naprawaSerwisowa.getKoszt() + " zł");
+                Proxy.updateHardwareTicketData(naprawaSerwisowa);
+                partsTable.getItems().clear();
+                loadPartsTable();
+            });
+            stage.show();
+        } catch (IOException e) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setTitle("Niepowodzenie");
+            alert.setHeaderText(null);
+            alert.setContentText("Brak części do dodania.");
+            alert.showAndWait();
+        }
     }
 
     public void onInteractEntryButton(ActionEvent event) {
@@ -156,7 +287,11 @@ public class HardwareEditController {
             stage.show();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setTitle("Niepowodzenie");
+            alert.setHeaderText(null);
+            alert.setContentText("Coś poszło nie tak, nie można otworzyć okna.");
+            alert.showAndWait();
         }
     }
 
@@ -193,16 +328,65 @@ public class HardwareEditController {
     }
 
     private void loadPartsTable() {
-        if(naprawaSerwisowa.getZamowienie().getCzesci() != null) {
-            for(Czesc_komputerowa czesc: naprawaSerwisowa.getZamowienie().getCzesci()) {
-                partsName.setCellValueFactory(new PropertyValueFactory<>("nazwa"));
-                partsConnector.setCellValueFactory(new PropertyValueFactory<>("port"));
-                partsPrice.setCellValueFactory(new PropertyValueFactory<>("koszt"));
-                partsProducer.setCellValueFactory(new PropertyValueFactory<>("producent"));
-                partsSn.setCellValueFactory(new PropertyValueFactory<>("sn"));
-                partsPurpose.setCellValueFactory(new PropertyValueFactory<>("przeznaczenie"));
-                partsTable.getItems().add(czesc);
+        if(naprawaSerwisowa.getZamowienie().size() > 0) {
+            for(Zamowienie zamowienie: naprawaSerwisowa.getZamowienie()) {
+                for (Czesc_komputerowa czesc : zamowienie.getCzesci()) {
+                    partsName.setCellValueFactory(new PropertyValueFactory<>("nazwa"));
+                    partsConnector.setCellValueFactory(new PropertyValueFactory<>("port"));
+                    partsPrice.setCellValueFactory(new PropertyValueFactory<>("koszt"));
+                    partsProducer.setCellValueFactory(new PropertyValueFactory<>("producent"));
+                    partsSn.setCellValueFactory(new PropertyValueFactory<>("sn"));
+                    partsPurpose.setCellValueFactory(new PropertyValueFactory<>("przeznaczenie"));
+                    partsTable.getItems().add(czesc);
+                }
             }
+        }
+    }
+
+    public void onRemoveOrderButton() {
+        if(partsTable.getSelectionModel().getSelectedItem() == null) {
+            alert.setHeaderText(null);
+            alert.setTitle("Brak zaznaczenia");
+            alert.setContentText("Nie wybrano części do usunięcia");
+            alert.showAndWait();
+        } else {
+            for(Zamowienie zamowienie: naprawaSerwisowa.getZamowienie()) {
+                for(Czesc_komputerowa czesc: zamowienie.getCzesci()) {
+                    if(czesc == partsTable.getSelectionModel().getSelectedItem()) {
+                         if(!Proxy.updatePartsOwner(czesc)) {
+                             alert.setHeaderText(null);
+                             alert.setTitle("Nieoczekiwany błąd");
+                             alert.setContentText("Coś poszło nie tak.");
+                             alert.showAndWait();
+                             return;
+                         }
+                        zamowienie.getCzesci().remove(czesc);
+                         zamowienie.calculatePrice();
+                        naprawaSerwisowa.calculatePrice();
+                        cost.setText(naprawaSerwisowa.getKoszt() + " zł");
+                        break;
+                    }
+                }
+                if( zamowienie.getCzesci().size() == 0) {
+                    if(!Proxy.removeOrderFromIssue(naprawaSerwisowa, zamowienie.getId())) {
+                        alert.setHeaderText(null);
+                        alert.setTitle("Nieoczekiwany błąd");
+                        alert.setContentText("Coś poszło nie tak.");
+                        alert.showAndWait();
+                        return;
+                    }
+                    naprawaSerwisowa.getZamowienie().remove(zamowienie);
+                    break;
+                }
+            }
+
+            partsTable.getItems().clear();
+            loadPartsTable();
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Powodzenie");
+            alert.setContentText("Usuwanie zakończone pomyślnie.");
+            alert.showAndWait();
         }
     }
 
@@ -252,4 +436,16 @@ public class HardwareEditController {
         deviceSn.setText(naprawaSerwisowa.getUrzadzenie_naprawiane().getSn());
     }
 
+    @FXML
+    private void closeWindow() {
+
+        Stage window = (Stage) addOrderButton.getScene().getWindow();
+        window.fireEvent(
+                new javafx.stage.WindowEvent(
+                        window,
+                        WindowEvent.WINDOW_CLOSE_REQUEST
+                )
+        );
+
+    }
 }

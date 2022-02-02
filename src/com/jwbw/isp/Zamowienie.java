@@ -23,6 +23,16 @@ public class Zamowienie extends Dokument {
 
     public Zamowienie() {}
 
+    public void calculatePrice() {
+        float kwota = 0;
+        if(getCzesci() != null && !getCzesci().isEmpty()) {
+            for (Czesc_komputerowa czesc : getCzesci()) {
+               kwota += czesc.getKoszt();
+            }
+        }
+        setKwota(kwota);
+    }
+
     public List<Czesc_komputerowa> getCzesci() {
         return czesci;
     }

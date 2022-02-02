@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" fx:controller="com.jwbw.gui.Controllers.Modals.CreateOrderController"
+            xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="partsTable" layoutX="21.0" layoutY="20.0" prefHeight="226.0" prefWidth="594.0">
+          <columns>
+              <TableColumn fx:id="partsName" prefWidth="150.0" text="Nazwa" />
+              <TableColumn fx:id="partsPurpose" prefWidth="100.0" text="Typ" />
+              <TableColumn fx:id="partsConnector" prefWidth="100.0" text="Port" />
+              <TableColumn fx:id="partsProducer" prefWidth="100.0" text="Producent" />
+              <TableColumn fx:id="partsSn" prefWidth="79" text="Sn" />
+              <TableColumn fx:id="partsPrice" prefWidth="63.0" text="Cena" />
+          </columns>
+      </TableView>
+      <Button layoutX="292.0" layoutY="261.0" mnemonicParsing="false" onAction="#onAddZamowienieButton" text="Button" />
+   </children>
+</AnchorPane>

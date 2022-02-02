@@ -6,6 +6,7 @@ import org.postgresql.util.PSQLException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DatabaseHandler extends Thread implements DatabaseInterface{
     private final String databaseUrl;
@@ -275,28 +276,44 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     }
 
     public int sendZamowienieGetId(Zamowienie zamowienie) throws SQLException {
-        StringBuilder czesci = null;
+        String czesci = "";
         List<Czesc_komputerowa> lista = zamowienie.getCzesci();
-        assert false;
 
         for(Czesc_komputerowa czesc : lista) {
-            czesci.append(czesc.getId() + ',');
+            czesci += czesc.getId() + ",";
         }
 
         Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO ZAMOWIENIE(id, creation_date, dueto_date, kwota, czesci) VALUES (nextval('zamowienie_seq'), '"
-                + zamowienie.getData_utworzenia() + "', '" + zamowienie.getData_wygasniecia() + "', '"
-                + zamowienie.getKwota() + "', '"+ czesci.toString() + "')";
+        String str = "INSERT INTO DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES(nextval('isp.dokument_seq'), '" + zamowienie.getData_utworzenia() +
+                "', '" + zamowienie.getData_wygasniecia() + "');";
 
         statement.executeUpdate(str);
-        str = "SELECT MAX(ID) FROM ZAMOWIENIE WHERE creation_date = '" + zamowienie.getData_utworzenia() + "';";
+        str = "SELECT max(id) FROM DOKUMENTY WHERE data_utworzenie = '" + zamowienie.getData_utworzenia() + "';";
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
-        String id = resultSet.getString("max");
+        int dokumentId = resultSet.getInt("max");
+        str = "INSERT INTO ZAMOWIENIE VALUES(nextval('isp.zamowienie_seq'), '" + zamowienie.getKwota() + "', '" + czesci + "','" +
+                dokumentId + "');";
+        statement.executeUpdate(str);
+        str = "SELECT count(*) FROM dokumenty WHERE nr_dokumentu like 'ZAM%' AND EXTRACT(YEAR FROM data_utworzenie) = '" +
+                zamowienie.getData_utworzenia().toLocalDateTime().getYear() + "';";
+        resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int counter = resultSet.getInt("count");
+        counter++;
+        System.out.println(zamowienie.getData_utworzenia().toLocalDateTime().getYear());
+        str = "UPDATE DOKUMENTY SET nr_dokumentu = 'ZAM/" +  zamowienie.getData_utworzenia().toLocalDateTime().getYear() + "/" + counter +
+                "' WHERE id = '" + dokumentId + "';";
+        statement.executeUpdate(str);
+        zamowienie.setNr_dokumentu("ZAM/" + zamowienie.getData_utworzenia().toLocalDateTime().getYear() + "/" + counter);
+        str = "SELECT ID FROM ZAMOWIENIE WHERE dokument_fk = '" + dokumentId + "';";
+        resultSet = statement.executeQuery(str);
+        resultSet.next();
+        int id = resultSet.getInt("id");
 
         statement.close();
         resultSet.close();
-        return Integer.parseInt(id);
+        return id;
     }
 
     public int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanieSieci) throws SQLException {
@@ -468,22 +485,22 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
-    public int sendFakturaGetId(Faktura faktura) throws SQLException {
-        Statement statement = this.connection.createStatement();
-        String str = "INSERT INTO FAKTURY(id, creation_date, dueto_date, kwota, nabywca) VALUES (nextval('faktury_seq'), '"
-                + faktura.getData_utworzenia() + "', '" + faktura.getData_wygasniecia() + "', '" + faktura.getKwota() + "','"
-                + faktura.getNabywca().getId() + "')";
-
-        statement.executeUpdate(str);
-        str = "SELECT MAX(ID) FROM FAKTURY WHERE creation_date = '" + faktura.getData_utworzenia() + "';";
-        ResultSet resultSet = statement.executeQuery(str);
-        resultSet.next();
-        String id = resultSet.getString("max");
-
-        statement.close();
-        resultSet.close();
-        return Integer.parseInt(id);
-    }
+//    public int sendFakturaGetId(Faktura faktura) throws SQLException {
+//        Statement statement = this.connection.createStatement();
+//        String str = "INSERT INTO FAKTURY(id, creation_date, dueto_date, kwota, nabywca) VALUES (nextval('faktury_seq'), '"
+//                + faktura.getData_utworzenia() + "', '" + faktura.getData_wygasniecia() + "', '" + faktura.getKwota() + "','"
+//                + faktura.getNabywca().getId() + "')";
+//
+//        statement.executeUpdate(str);
+//        str = "SELECT MAX(ID) FROM FAKTURY WHERE creation_date = '" + faktura.getData_utworzenia() + "';";
+//        ResultSet resultSet = statement.executeQuery(str);
+//        resultSet.next();
+//        String id = resultSet.getString("max");
+//
+//        statement.close();
+//        resultSet.close();
+//        return Integer.parseInt(id);
+//    }
 
     private boolean checkForAddress(User user) throws SQLException {
         Statement statement = this.connection.createStatement();
@@ -552,6 +569,51 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return  lista;
     }
 
+    public List<Czesc_komputerowa> getUnownedPartsList() throws SQLException {
+        List<Czesc_komputerowa> partsList = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM CZESC_KOMPUTEROWA WHERE urzadzenie_fk IN ( SELECT id FROM URZADZENIE WHERE wlasciciel IS NULL);";
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            var czesc = new Czesc_komputerowa();
+            czesc.setId(resultSet.getInt("id"));
+            czesc.setPort(resultSet.getString("port"));
+            czesc.setPrzeznaczenie(resultSet.getString("przeznaczenie"));
+            czesc.setKoszt(resultSet.getFloat("koszt"));
+            Urzadzenie urzadzenie = getDevice(resultSet.getInt("urzadzenie_fk"));
+            czesc.setWlasciciel(null);
+            czesc.setProducent(urzadzenie.getProducent());
+            czesc.setNazwa(urzadzenie.getNazwa());
+            czesc.setSn(urzadzenie.getSn());
+            partsList.add(czesc);
+        }
+        resultSet.close();
+        statement.close();
+        return partsList;
+    }
+
+    public boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawa.getId() + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int zlecenieId = resultSet.getInt("zlecenie_fk");
+            resultSet.close();
+            if(naprawa.getData_wykonania() != null) {
+                str = "UPDATE ZLECENIE SET close_date = '" + naprawa.getData_wykonania() + "' WHERE id = '" + zlecenieId + "';";
+            } else {
+                str = "UPDATE ZLECENIE SET close_date = null WHERE id = '" + zlecenieId + "';";
+            }
+
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa) {
         try {
             String uslugi = "";
@@ -563,7 +625,9 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             }
             String zamowienie = "";
             if(naprawaSerwisowa.getZamowienie() != null) {
-                zamowienie = String.valueOf(naprawaSerwisowa.getZamowienie().getId());
+                for(Zamowienie zam: naprawaSerwisowa.getZamowienie()) {
+                    zamowienie += zam.getId() + ",";
+                }
             } else{
                 zamowienie = "null";
             }
@@ -620,10 +684,11 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             }
 
             naprawaSerwisowa.setKoszt(resultSet.getFloat("kwota"));
-            if(resultSet.getInt("zamowienie") != 0) {
-                naprawaSerwisowa.setZamowienie(getZamowienie(resultSet.getInt("zamowienie")));
+            if(resultSet.getString("zamowienie") != null) {
+                if (!Objects.equals(resultSet.getString("zamowienie"), "")) {
+                    naprawaSerwisowa.setZamowienie(getZamowienie(resultSet.getString("zamowienie")));
+                }
             }
-
             String services = resultSet.getString("uslugi");
             if(!services.isEmpty()) {
                 naprawaSerwisowa.setWykonane_uslugi(getServiceEnum(services));
@@ -634,11 +699,37 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             naprawaSerwisowa.setData_wykonania((Timestamp) listaZlecenie.get(1));
             List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
             naprawaSerwisowa.setWpisy(listaWpisy);
+            naprawaSerwisowa.setPoziom((int)listaZlecenie.get(3));
             lista.add(naprawaSerwisowa);
         }
         resultSet.close();
         statement.close();
         return  lista;
+    }
+
+    public boolean upgradeIssueLevel(Zlecenie zlecenie) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "";
+            if (zlecenie instanceof Naprawa_serwisowa) {
+                str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE ID = '" + zlecenie.getId() + "';";
+            } else if (zlecenie instanceof Utrzymanie_sieci) {
+                str = "SELECT zlecenie_fk FROM ZLECENIE_SIEC WHERE ID = '" + zlecenie.getId() + "';";
+            } else {
+                return false;
+            }
+
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int idZlecenie = resultSet.getInt("zlecenie_fk");
+            str = "UPDATE ZLECENIE SET level = '" + zlecenie.getPoziom() + "' WHERE id = '" + idZlecenie + "';";
+            statement.executeUpdate(str);
+            resultSet.close();
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public int getInternetPacketId(float dl, String features) throws SQLException {
@@ -720,6 +811,57 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
     }
 
+    public boolean removeOrderFromIssue(Naprawa_serwisowa naprawa, int zamowienieId) {
+        try {
+            String zamowienia = "";
+            for(Zamowienie zamowienie: naprawa.getZamowienie()) {
+                if(zamowienie.getId() == zamowienieId) continue;
+                zamowienia += zamowienie.getId() + ",";
+            }
+            Statement statement = this.connection.createStatement();
+            String str = "UPDATE ZLECENIE_NAPRAWA SET ZAMOWIENIE = '" + zamowienia + "' WHERE id = '" + naprawa.getId() + "';";
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean addPartsOwner(Czesc_komputerowa czesc) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT urzadzenie_fk FROM CZESC_KOMPUTEROWA WHERE id = '" + czesc.getId() + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int deviceId = resultSet.getInt("urzadzenie_fk");
+            resultSet.close();
+            str = "UPDATE URZADZENIE SET wlasciciel = '" + czesc.getWlasciciel().getId() + "' WHERE id = '" + deviceId + "';";
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean updatePartsOwner(Czesc_komputerowa czesc) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT urzadzenie_fk FROM CZESC_KOMPUTEROWA WHERE id = '" + czesc.getId() + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            int deviceId = resultSet.getInt("urzadzenie_fk");
+            resultSet.close();
+            str = "UPDATE URZADZENIE SET wlasciciel = null WHERE id = '" + deviceId + "';";
+            statement.executeUpdate(str);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public boolean updateEntry(Wpis wpis) {
         try {
             Statement statement = this.connection.createStatement();
@@ -732,26 +874,29 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         }
     }
 
-    private Zamowienie getZamowienie(int id) throws SQLException {
+    private List<Zamowienie> getZamowienie(String id) throws SQLException {
+        String zamowienia = getIdListForSelect(id);
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM ZAMOWIENIE WHERE id = " + id + ";";
+        String str = "SELECT * FROM ZAMOWIENIE WHERE id IN ( '" + zamowienia + "');";
         ResultSet resultSet = statement.executeQuery(str);
-        resultSet.next();
-        Zamowienie zamowienie = new Zamowienie();
-        zamowienie.setId(resultSet.getInt("id"));
-        zamowienie.setKwota(resultSet.getFloat("kwota"));
-        String czesci = resultSet.getString("czesci");
-        if(!czesci.equals("")) {
-            zamowienie.setCzesci(getPartsList(czesci));
+        List<Zamowienie> zamowienieList = new ArrayList<>();
+        while(resultSet.next()) {
+            Zamowienie zamowienie = new Zamowienie();
+            zamowienie.setId(resultSet.getInt("id"));
+            zamowienie.setKwota(resultSet.getFloat("kwota"));
+            String czesci = resultSet.getString("czesci");
+            if (!czesci.equals("")) {
+                zamowienie.setCzesci(getPartsList(czesci));
+            }
+            List<Object> doc = getDocumentData(resultSet.getInt("dokument_fk"));
+            zamowienie.setData_utworzenia((Timestamp) doc.get(0));
+            zamowienie.setData_wygasniecia((Timestamp) doc.get(1));
+            zamowienie.setNr_dokumentu((String) doc.get(2));
+            zamowienieList.add(zamowienie);
         }
-        List<Object> doc = getDocumentData(resultSet.getInt("dokument_fk"));
-        zamowienie.setData_utworzenia((Timestamp) doc.get(0));
-        zamowienie.setData_wygasniecia((Timestamp) doc.get(1));
-        zamowienie.setNr_dokumentu((String) doc.get(2));
-
         resultSet.close();
         statement.close();
-        return zamowienie;
+        return zamowienieList;
     }
 
     private List<Czesc_komputerowa> getPartsList(String czesci) throws SQLException {
@@ -935,6 +1080,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         lista.add(resultSet.getTimestamp("creation_date"));
         lista.add(resultSet.getTimestamp("close_date"));
         lista.add(resultSet.getString("wpisy"));
+        lista.add(resultSet.getInt("level"));
         resultSet.close();
         statement.close();
         return lista;
@@ -1011,7 +1157,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
             statement.close();
             resultSet.close();
-            logger.userLoggedIn(user.getId());
+            //logger.userLoggedIn(user.getId());
             return user;
     }
 
@@ -1073,11 +1219,11 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     private List<Urzadzenie> getDevices(int id) throws SQLException {
         List<Urzadzenie> urzadzenieList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM URZADZENIE WHERE wlasciciel = " + id + ";";
+        String str = "SELECT * FROM URZADZENIE WHERE wlasciciel = '" + id + "' AND id NOT IN (SELECT urzadzenie_fk FROM CZESC_KOMPUTEROWA); ";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Statement statement1 = this.connection.createStatement();
-            String str1 = "SELECT * FROM URZADZENIE_SIECIOWE WHERE id = " + resultSet.getInt("id") + ";";
+            String str1 = "SELECT * FROM URZADZENIE_SIECIOWE WHERE urzadzenie_fk = " + resultSet.getInt("id") + ";";
             ResultSet resultSet1 = statement1.executeQuery(str1);
             if(resultSet1.next()) {
                 Urzadzenie_sieciowe urzadzenie = new Urzadzenie_sieciowe();

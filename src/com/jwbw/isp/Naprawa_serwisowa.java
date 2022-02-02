@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Naprawa_serwisowa extends Zlecenie {
     private Urzadzenie urzadzenie_naprawiane;
-    private Zamowienie zamowienie;
+    private List<Zamowienie> zamowienie;
     private List<Cennik_uslug> wykonane_uslugi;
     private float koszt;
     private User wlasciciel;
@@ -81,7 +81,11 @@ public class Naprawa_serwisowa extends Zlecenie {
                 cena += usluga.getPrice();
             }
         }
-        if(zamowienie != null) cena += zamowienie.getKwota();
+        if(zamowienie != null) {
+            for(Zamowienie zamowienie: zamowienie) {
+                cena += zamowienie.getKwota();
+            }
+        }
         setKoszt(cena);
     }
 
@@ -100,7 +104,7 @@ public class Naprawa_serwisowa extends Zlecenie {
 
     public void dodajZamowienie(float kwota, List<Czesc_komputerowa>czesci) throws SQLException {
         Zamowienie zamowienie = new Zamowienie(kwota, czesci);
-        this.setZamowienie(zamowienie);
+        this.getZamowienie().add(zamowienie);
     }
 
     public Urzadzenie getUrzadzenie_naprawiane() {
@@ -111,11 +115,11 @@ public class Naprawa_serwisowa extends Zlecenie {
         this.urzadzenie_naprawiane = urzadzenie_naprawiane;
     }
 
-    public Zamowienie getZamowienie() {
+    public List<Zamowienie> getZamowienie() {
         return zamowienie;
     }
 
-    public void setZamowienie(Zamowienie zamowienie) {
+    public void setZamowienie(List<Zamowienie> zamowienie) {
         this.zamowienie = zamowienie;
     }
 

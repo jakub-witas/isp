@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="613.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.HardwareEditController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="613.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jwbw.gui.Controllers.Modals.HardwareEditController">
    <children>
       <Text layoutX="16.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identyfikator" wrappingWidth="106.552734375" />
       <Label fx:id="deviceId" layoutX="144.0" layoutY="41.0" prefHeight="17.0" prefWidth="167.0" />
@@ -81,16 +81,16 @@
                </ImageView>
            </graphic>
        </Button>
-       <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" mnemonicParsing="false">
+       <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" onAction="#onAddOrderButton" mnemonicParsing="false">
        <graphic>
-           <ImageView  fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
                    <Image url="@../pictures/add-icon-button.png" />
                </image>
            </ImageView>
        </graphic>
    </Button>
-       <Button fx:id="removeOrderButton" layoutX="179.0" layoutY="160.0" mnemonicParsing="false">
+       <Button fx:id="removeOrderButton" layoutX="179.0" layoutY="160.0" mnemonicParsing="false" onAction="#onRemoveOrderButton">
            <graphic>
                <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                    <image>
@@ -99,5 +99,9 @@
                </ImageView>
            </graphic>
        </Button>
+      <Button fx:id="upgradeLevelButton" layoutX="245.0" layoutY="560.0" mnemonicParsing="false" onAction="#onChangeLevelButton" text="Przekaż poziom wyżej" />
+      <Label fx:id="levelLabelLabel" layoutX="16.0" layoutY="564.0" text="Poziom" />
+      <Label fx:id="levelLabel" layoutX="553.0" layoutY="564.0" />
+      <Button fx:id="closeIssueButton" layoutX="257.0" layoutY="519.0" mnemonicParsing="false" onAction="#onCloseIssueButton" text="Zamknij naprawę" />
    </children>
 </Pane>

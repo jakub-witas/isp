@@ -4,6 +4,7 @@ import com.jwbw.isp.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,26 @@ public class Proxy {
     public static List<GSM> gsmList;
     public static User loggedUser;
     public static List<User> accountList;
+
+    public static List<Czesc_komputerowa> getUnownedPartsList() throws SQLException {
+        return Database.getUnownedPartsList();
+    }
+
+    public static boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa) {
+        return Database.closeHardwareIssueTicket(naprawa);
+    }
+
+    public static boolean removeOrderFromIssue(Naprawa_serwisowa naprawa, int zamowienieId) {
+        return Database.removeOrderFromIssue(naprawa, zamowienieId);
+    }
+
+    public static boolean updatePartsOwner(Czesc_komputerowa czescKomputerowa) {
+        return Database.updatePartsOwner(czescKomputerowa);
+    }
+
+    public static boolean upgradeIssueLevel(Zlecenie zlecenie) {
+        return Database.upgradeIssueLevel(zlecenie);
+    }
 
     public static void resetProxyData() {
         naprawySprzetu = null;
@@ -283,9 +304,13 @@ public class Proxy {
         return Database.sendPowiadomienieGetId(wpis);
     }
 
-    public static int sendFakturaGetId(Faktura faktura) throws SQLException {
-        return Database.sendFakturaGetId(faktura);
+    public static boolean addPartsOwner(Czesc_komputerowa czesc) {
+        return Database.addPartsOwner(czesc);
     }
+
+//    public static int sendFakturaGetId(Faktura faktura) throws SQLException {
+//        return Database.sendFakturaGetId(faktura);
+//    }
 
     public static int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanie_sieci) throws SQLException {
         return Database.sendNaprawaSieciGetId(utrzymanie_sieci);

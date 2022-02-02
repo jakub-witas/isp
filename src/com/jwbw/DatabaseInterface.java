@@ -31,7 +31,7 @@ public interface DatabaseInterface {
     int sendUrzadzenieGetId(Urzadzenie urzadzenie) throws SQLException;
     int sendWpisGetId(Wpis wpis) throws SQLException;
     int sendPowiadomienieGetId(Wpis wpis) throws SQLException;
-    int sendFakturaGetId(Faktura faktura) throws SQLException;
+    //int sendFakturaGetId(Faktura faktura) throws SQLException;
     List<Utrzymanie_sieci>  getNetworkTicketList() throws SQLException;
     List<Naprawa_serwisowa> getHardwareTicketList(Role role) throws SQLException;
     List<Wpis> getNotificationList() throws SQLException;
@@ -44,6 +44,12 @@ public interface DatabaseInterface {
     boolean addNewEntry(int idWpisu, int idZlecenie);
     boolean updateEntry(Wpis wpis);
     boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa);
+    boolean upgradeIssueLevel(Zlecenie zlecenie);
+    boolean updatePartsOwner(Czesc_komputerowa czesc);
+    boolean removeOrderFromIssue(Naprawa_serwisowa naprawa, int zamowienieId);
+    boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa);
+    List<Czesc_komputerowa> getUnownedPartsList() throws SQLException;
+    boolean addPartsOwner(Czesc_komputerowa czesc);
 
 
     //connectionHandler

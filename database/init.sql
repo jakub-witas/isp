@@ -138,7 +138,7 @@ CREATE TABLE isp.ZLECENIE_NAPRAWA (
     kwota NUMERIC,
     wlasciciel INTEGER REFERENCES isp.USERS(id),
     urzadzenie INTEGER REFERENCES isp.URZADZENIE(id),
-    zamowienie INTEGER,
+    zamowienie VARCHAR(20),
     zlecenie_fk INTEGER REFERENCES isp.ZLECENIE(id)
 );
 
@@ -172,16 +172,20 @@ CREATE SEQUENCE isp.zlecenie_naprawa_seq INCREMENT BY 1 MINVALUE 1;
 
 --Addresses
 INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/609', '25-109');
-INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/610', '25-109');
-INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/608', '25-109');
-INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/607', '25-109');
-INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'aleja Panstwa polskiego', '15/606', '25-109');
+INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'IX wiekow', '115', '25-109');
+INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'Warszawska', '12/43', '25-109');
+INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'Tarczowa', '172', '25-109');
+INSERT INTO isp.ADDRESS VALUES (nextval('isp.address_seq'), 'Kielce', 'Solidarnosci', '13', '25-109');
 --Users
 INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin', 'admin', 'Mirek', 'Darkowski', '999999999', 'mail@mail.here', '12345678909', '123456789', 0, 1);
 INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin2', 'admin', 'Mirek', 'Kowalski', '999999999', 'mail@mail.here', '12345678902', '123456789', 1, 2);
 INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin3', 'admin', 'Mirek', 'Jakimowicz', '999999999', 'mail@mail.here', '12345678903', '123456789', 4, 3);
-INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek', 'Piotrowski', '999999999', 'mail@mail.here', '12345678904', '123456789', 5, 4);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin4', 'admin', 'Mirek', 'Piotrowski', '999999999', 'mail@mail.here', '12345678904', '123456789', 3, 4);
 INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin5', 'admin', 'Mirek', 'Domaszewski', '999999999', 'mail@mail.here', '12345678904', '123456789', 2, 4);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin6', 'admin', 'Mirek', 'Kuta', '999999999', 'mail@mail.here', '12345678903', '123456789', 4, 3);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin7', 'admin', 'Mirek', 'Dawidowski', '999999999', 'mail@mail.here', '12345678903', '123456789', 4, 5);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin8', 'admin', 'Mirek', 'Rutowicz', '999999999', 'mail@mail.here', '12345678903', '123456789', 4, 1);
+INSERT INTO isp.USERS VALUES (nextval('isp.user_seq'), 'admin9', 'admin', 'Kamila', 'Adamowicz', '999999999', 'mail@mail.here', '12345678903', '123456789', 5, 2);
 
 --Internet packages
 --no public ip
@@ -219,29 +223,36 @@ INSERT INTO isp.GSM VALUES (nextval('isp.gsm_seq'), '5G', '0,', 40);
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2021', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/03/2020', 'DD/MM/YYYY'), to_timestamp('28/02/2022', 'DD/MM/YYYY'));
 INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('13/01/2021', 'DD/MM/YYYY'), to_timestamp('13/01/2021', 'DD/MM/YYYY'));
+INSERT INTO isp.DOKUMENTY(id, data_utworzenie, data_wygasniecia) VALUES (nextval('isp.dokument_seq'), to_timestamp('01/01/2022', 'DD/MM/YYYY'), to_timestamp('31/12/2023', 'DD/MM/YYYY'));
+
 
 --Contracts of employment
 INSERT INTO isp.UMOWA_PRACA VALUES (nextval('isp.umowa_praca_seq'), 4000, 1, 2, 1);
 
 --service contracts
-INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '6,1,0', 3, 4, 2);
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '6,1,0', 3, 9, 2);
+INSERT INTO isp.UMOWA_USLUGA VALUES (nextval('isp.umowa_usluga_seq'), '3,0,0', 6, 9, 4);
 
 --updating document with document number
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'UOP/2021/1' WHERE ID = 1;
 UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2020/1' WHERE ID = 2;
-UPDATE isp.DOKUMENTY SET nr_dokumentu = 'ZAM/2022/1' WHERE ID = 3;
+UPDATE isp.DOKUMENTY SET nr_dokumentu = 'ZAM/2021/1' WHERE ID = 3;
+UPDATE isp.DOKUMENTY SET nr_dokumentu = 'US/2022/1' WHERE ID = 4;
 
 --device
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045692346', 3);
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'X515', 'ASUS', '54678041231421', 3);
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'GTX 2060', 'GeForce', '645908423890', null);
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'Play Blue 8GB', 'Goodram', '645908423390', 3);
+INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045612137', 6);
 
 --network device
 INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 1);
+INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.16', '1Gb', false, 5);
 
 --parts
 INSERT INTO isp.CZESC_KOMPUTEROWA VALUES (nextval('isp.czesc_komputerowa_seq'), 'DDR3', 'RAM', 100, 4);
+INSERT INTO isp.CZESC_KOMPUTEROWA VALUES (nextval('isp.czesc_komputerowa_seq'), 'PCI-E x16', 'Karta Graficzna', 2500, 3);
 
 --orders
 INSERT INTO isp.ZAMOWIENIE VALUES (nextval('isp.zamowienie_seq'), 100, '1,', 3);
@@ -253,12 +264,15 @@ INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('11/01/2022', 
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'I did it all and it still would not work, but i have a connection directly from your cable', null, 3, null);
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'Okay, so we probably need to replace your router. Do you agree on 15/01?', null, 2, null);
 INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('12/01/2022', 'DD/MM/YYYY'), 'You have date to confirm.', false, 2, 3);
+INSERT INTO isp.WPIS VALUES(nextval('isp.wpis_seq'), to_timestamp('25/01/2022', 'DD/MM/YYYY'), 'Entry entry entry entry.', null, 6, null);
 --issue
 INSERT INTO isp.ZLECENIE values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), null, '1,3,4,5,6,', 1);
 INSERT INTO isp.ZLECENIE values (nextval('isp.zlecenie_seq'), to_timestamp('10/01/2022', 'DD/MM/YYYY'), null, '2,', 1);
+INSERT INTO isp.ZLECENIE values (nextval('isp.zlecenie_seq'), to_timestamp('25/01/2022', 'DD/MM/YYYY'), null, '7,', 2);
 
 --ticket for network issue
 INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 'US/2020/1', 3, 1);
+INSERT  INTO isp.ZLECENIE_SIEC VALUES (nextval('isp.zlecenie_siec_seq'), 'US/2022/1', 6, 3);
 
 --ticket for hardware issue
-INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '0,', 150, 3, 2, 1, 2);
+INSERT INTO isp.ZLECENIE_NAPRAWA VALUES (nextval('isp.zlecenie_naprawa_seq'), '0,', 150, 3, 2, '1,', 2);
