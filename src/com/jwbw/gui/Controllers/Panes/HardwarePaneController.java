@@ -3,10 +3,7 @@ package com.jwbw.gui.Controllers.Panes;
 import com.jwbw.Main;
 import com.jwbw.Proxy;
 import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.Dokument;
-import com.jwbw.isp.Naprawa_serwisowa;
-import com.jwbw.isp.Urzadzenie;
-import com.jwbw.isp.Utrzymanie_sieci;
+import com.jwbw.isp.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -48,6 +45,7 @@ public class HardwarePaneController {
     private void fillData() {
         List<String> devList = new ArrayList<>();
         for(Urzadzenie deviceList: urzadzenieList) {
+            if(!(deviceList instanceof Urzadzenie_sieciowe) && !(deviceList instanceof Czesc_komputerowa))
             devList.add(deviceList.getProducent() + " " + deviceList.getNazwa());
         }
         ObservableList<String> observableList = FXCollections.observableList(devList);

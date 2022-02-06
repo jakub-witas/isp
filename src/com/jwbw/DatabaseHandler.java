@@ -319,7 +319,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public int sendNaprawaSieciGetId(Utrzymanie_sieci utrzymanieSieci) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "INSERT INTO ZLECENIE VALUES (nextval('isp.zlecenie_seq'), '" + utrzymanieSieci.getData_utworzenia() + "', null, '" +
-                utrzymanieSieci.getWpisy().get(0).getId() + ",');";
+                utrzymanieSieci.getWpisy().get(0).getId() + ",', 1);";
         statement.executeUpdate(str);
 
         str = "SELECT MAX(id) FROM ZLECENIE WHERE creation_date = '" + utrzymanieSieci.getData_utworzenia() + "';";
@@ -344,7 +344,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public int sendNaprawaGetId(Naprawa_serwisowa naprawa) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "INSERT INTO ZLECENIE VALUES (nextval('isp.zlecenie_seq'), '" + naprawa.getData_utworzenia() + "', null, '" +
-                naprawa.getWpisy().get(0).getId() + ",');";
+                naprawa.getWpisy().get(0).getId() + ",', 1);";
         statement.executeUpdate(str);
 
         str = "SELECT MAX(id) FROM ZLECENIE WHERE creation_date = '" + naprawa.getData_utworzenia() + "';";
