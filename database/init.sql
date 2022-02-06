@@ -104,6 +104,7 @@ CREATE TABLE isp.URZADZENIE_SIECIOWE (
     id INTEGER PRIMARY KEY,
     wlan BOOLEAN NOT NULL,
     ip_address VARCHAR(19),
+    umowa VARCHAR(15),
     przepustowosc VARCHAR(10) NOT NULL,
     czy_dostepne BOOLEAN NOT NULL,
     urzadzenie_fk INTEGER REFERENCES isp.URZADZENIE(id)
@@ -247,8 +248,8 @@ INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'Play Blue 8GB
 INSERT INTO isp.URZADZENIE VALUES (nextval('isp.urzadzenie_seq'), 'archer c6', 'TP-Link', '23469045612137', 6);
 
 --network device
-INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15', '1Gb', false, 1);
-INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.16', '1Gb', false, 5);
+INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.15','US/2020/1' , '1Gb', false, 1);
+INSERT INTO isp.URZADZENIE_SIECIOWE VALUES (nextval('isp.urzadzenie_sieciowe_seq'), true, '156.11.23.16', 'US/2022/1', '1Gb', false, 5);
 
 --parts
 INSERT INTO isp.CZESC_KOMPUTEROWA VALUES (nextval('isp.czesc_komputerowa_seq'), 'DDR3', 'RAM', 100, 4);

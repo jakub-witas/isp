@@ -12,9 +12,10 @@ public interface DatabaseInterface {
     User fetchUserData(String username, String password) throws SQLException;
     boolean checkForExistingUser(String username);
     boolean authenticateUser(String username, String password) throws SQLException;
+    User fetchUserData(int id) throws SQLException;
 
     //servicesHandler
-    List<Dokument> getServiceContracts() throws SQLException;
+    List<Dokument> getServiceContracts(int id) throws SQLException;
     List<Pakiet_internetu> getInternetPackets() throws SQLException;
     List<GSM> getGSMpackets() throws SQLException;
     List<Telewizja> getTVpackets() throws SQLException;
@@ -41,15 +42,16 @@ public interface DatabaseInterface {
     List<User> getAccountsClients() throws SQLException;
     void setDeleteAccountStatus(int id) throws SQLException;
     boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa);
-    boolean addNewEntry(int idWpisu, int idZlecenie);
+    boolean addNewEntry(int idWpisu, int idZlecenie, int mode);
     boolean updateEntry(Wpis wpis);
-    boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa);
+    boolean removeEntry(Zlecenie naprawa);
     boolean upgradeIssueLevel(Zlecenie zlecenie);
     boolean updatePartsOwner(Czesc_komputerowa czesc);
     boolean removeOrderFromIssue(Naprawa_serwisowa naprawa, int zamowienieId);
-    boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa);
+    boolean closeIssueTicket(Zlecenie naprawa);
     List<Czesc_komputerowa> getUnownedPartsList() throws SQLException;
     boolean addPartsOwner(Czesc_komputerowa czesc);
+    Urzadzenie_sieciowe getNetworkDevice(String nrUmowy);
 
 
     //connectionHandler

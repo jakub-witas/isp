@@ -6,6 +6,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
     private boolean wlan;
     private String przepustowosc;
     private String ip_address;
+    private String nrUmowy;
     private boolean czy_dostepne;
     private User wlasciciel;
 
@@ -20,6 +21,14 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.setWlan(wlan);
         this.setWlasciciel(null);
         //this.setId(Main.Database.sendUrzadzenieSiecioweGetId(this));
+    }
+
+    public String getNrUmowy() {
+        return nrUmowy;
+    }
+
+    public void setNrUmowy(String nrUmowy) {
+        this.nrUmowy = nrUmowy;
     }
 
     public Urzadzenie_sieciowe() {}

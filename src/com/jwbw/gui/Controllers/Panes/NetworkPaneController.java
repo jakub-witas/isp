@@ -29,7 +29,7 @@ public class NetworkPaneController {
     @FXML
     public void initialize() throws SQLException {
                 List<String> docList = new ArrayList<>();
-                for(Object dokumentList: Proxy.getServiceContracts()) {
+                for(Object dokumentList: Proxy.getServiceContracts(Proxy.loggedUser.getId())) {
                     docList.add(((Dokument)dokumentList).getNr_dokumentu());
                 }
                 ObservableList<String> observableList = FXCollections.observableList(docList);

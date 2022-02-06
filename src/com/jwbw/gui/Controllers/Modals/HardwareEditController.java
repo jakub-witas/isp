@@ -86,7 +86,6 @@ public class HardwareEditController {
         loadEntriesTable();
         loadServicesComboData();
         if(naprawaSerwisowa.getZamowienie() != null) {
-            //orderNumber.setText(naprawaSerwisowa.getZamowienie().getNr_dokumentu());
             loadPartsTable();
         } else {
             orderNumber.setText("Brak");
@@ -131,7 +130,7 @@ public class HardwareEditController {
     public void onCloseIssueButton() {
         if(naprawaSerwisowa.getData_wykonania() == null) {
             naprawaSerwisowa.setData_wykonania(Timestamp.valueOf(LocalDateTime.now()));
-            if (Proxy.closeHardwareIssueTicket(naprawaSerwisowa)) {
+            if (Proxy.closeIssueTicket(naprawaSerwisowa)) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
                 alert.setTitle("Powodzenie");
@@ -149,7 +148,7 @@ public class HardwareEditController {
         } else {
             Timestamp closeDate = naprawaSerwisowa.getData_wykonania();
             naprawaSerwisowa.setData_wykonania(null);
-            if (Proxy.closeHardwareIssueTicket(naprawaSerwisowa)) {
+            if (Proxy.closeIssueTicket(naprawaSerwisowa)) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
                 alert.setTitle("Powodzenie");
@@ -266,11 +265,11 @@ public class HardwareEditController {
                 }
                 interactedEntry = entryTable.getSelectionModel().getSelectedItem();
 
-                controller.setData(interactedEntry);
+                controller.setData(interactedEntry, naprawaSerwisowa);
                 stage.setTitle("Edycja wpisu");
             } else {
                 stage.setTitle("Dodanie wpisu");
-                controller.setData(null);
+                controller.setData(null, naprawaSerwisowa);
             }
 
             stage.setResizable(false);
@@ -297,6 +296,7 @@ public class HardwareEditController {
 
     public void onDeleteEntryButton() {
         if(entryTable.getSelectionModel().getSelectedItem() == null) {
+            alert.setAlertType(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setTitle("Brak zaznaczenia");
             alert.setContentText("Nie wybrano wpisu do usunięcia");

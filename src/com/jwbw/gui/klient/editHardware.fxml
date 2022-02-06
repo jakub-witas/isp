@@ -11,16 +11,14 @@
       <Text layoutX="16.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identyfikator" wrappingWidth="106.552734375" />
       <Label fx:id="deviceId" layoutX="144.0" layoutY="41.0" prefHeight="17.0" prefWidth="167.0" />
       <Text layoutX="16.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa urządzenia" wrappingWidth="106.552734375" />
-      <Text layoutX="16.0" layoutY="555.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Koszt" wrappingWidth="95.63671875" />
+      <Text layoutX="16.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Koszt" wrappingWidth="95.63671875" />
       <Label fx:id="deviceName" layoutX="144.0" layoutY="68.0" prefHeight="17.0" prefWidth="167.0" />
-      <Label fx:id="cost" layoutX="534.0" layoutY="542.0" prefHeight="17.0" prefWidth="66.0" textAlignment="CENTER" />
+      <Label fx:id="cost" layoutX="535.0" layoutY="523.0" prefHeight="17.0" prefWidth="66.0" textAlignment="CENTER" />
       <Text layoutX="16.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Producent" wrappingWidth="106.552734375" />
       <Label fx:id="deviceProducer" layoutX="144.0" layoutY="95.0" prefHeight="17.0" prefWidth="167.0" />
       <Text layoutX="16.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sn" wrappingWidth="106.552734375" />
       <Label fx:id="deviceSn" layoutX="144.0" layoutY="121.0" prefHeight="17.0" prefWidth="167.0" />
       <Line endX="436.0" layoutX="162.0" layoutY="509.0" startX="-148.0" />
-      <Label fx:id="orderNumber" layoutX="509.0" layoutY="515.0" prefHeight="17.0" prefWidth="91.0" textAlignment="CENTER" />
-      <Text layoutX="16.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numer zamówienia" />
       <Text layoutX="16.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Części komputerowe" />
       <TableView fx:id="partsTable" layoutX="12.0" layoutY="187.0" prefHeight="105.0" prefWidth="585.0">
         <columns>
@@ -81,7 +79,7 @@
                </ImageView>
            </graphic>
        </Button>
-       <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" onAction="#onAddOrderButton" mnemonicParsing="false">
+       <Button fx:id="addOrderButton" accessibleText="Dodaj wpis" layoutX="144.0" layoutY="160.0" mnemonicParsing="false" onAction="#onAddOrderButton">
        <graphic>
            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>

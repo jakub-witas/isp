@@ -137,11 +137,11 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return dokumentId;
     }
 
-    public List<Dokument> getServiceContracts() throws SQLException {
+    public List<Dokument> getServiceContracts(int id) throws SQLException {
         List<Dokument> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
         String str = "SELECT *  FROM UMOWA_USLUGA WHERE nabywca = "
-                + (Proxy.loggedUser).getId() + " AND autor IS NOT NULL" + ";";
+                + id + " AND autor IS NOT NULL" + ";";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             Umowa_usluga usluga = new Umowa_usluga();
@@ -421,7 +421,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
             user.setName(name.get(0));
             user.setSurname(name.get(1));
             wpis.setAutor(user);
-            if(resultSet.getString("odbiorca") != null) {
+            if(!Objects.equals(resultSet.getString("odbiorca"), "")) {
                 User user1 = new User();
                 user1.setId(resultSet.getInt("odbiorca"));
                 name = getAuthorName(user.getId());
@@ -429,6 +429,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                 user1.setSurname(name.get(1));
                 wpis.setOdbiorca(user1);
                 wpis.setWasRead(resultSet.getBoolean("przeczytane"));
+            } else {
+                wpis.setOdbiorca(null);
             }
 
             wpisList.add(wpis);
@@ -548,26 +550,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
-    public List<Utrzymanie_sieci> getNetworkTicketList() throws SQLException {
-        List<Utrzymanie_sieci> lista = new ArrayList<>();
-        Statement statement = this.connection.createStatement();
-        String str = "SELECT *  FROM ZLECENIE_SIEC WHERE klient = "
-                + Proxy.loggedUser.getId() +  ";";
-        ResultSet resultSet = statement.executeQuery(str);
-        while(resultSet.next()) {
-            Utrzymanie_sieci utrzymanieSieci = new Utrzymanie_sieci();
-            utrzymanieSieci.setId(resultSet.getInt("id"));
-            utrzymanieSieci.setKlient(Proxy.loggedUser);
-            utrzymanieSieci.setNr_umowy(resultSet.getString("umowa"));
-            List<Object> listaZlecenie = getZlecenieData(resultSet.getInt("zlecenie_fk"));
-            utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
-            utrzymanieSieci.setData_wykonania((Timestamp) listaZlecenie.get(1));
-            List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
-            utrzymanieSieci.setWpisy(listaWpisy);
-            lista.add(utrzymanieSieci);
-        }
-        return  lista;
-    }
+
 
     public List<Czesc_komputerowa> getUnownedPartsList() throws SQLException {
         List<Czesc_komputerowa> partsList = new ArrayList<>();
@@ -592,10 +575,15 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return partsList;
     }
 
-    public boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa) {
+    public boolean closeIssueTicket(Zlecenie naprawa) {
         try {
             Statement statement = this.connection.createStatement();
-            String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawa.getId() + "';";
+            String str = "";
+            if(naprawa instanceof Naprawa_serwisowa){
+                str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawa.getId() + "';";
+            } else {
+                str = "SELECT zlecenie_fk FROM ZLECENIE_SIEC WHERE id = '" + naprawa.getId() + "';";
+            }
             ResultSet resultSet = statement.executeQuery(str);
             resultSet.next();
             int zlecenieId = resultSet.getInt("zlecenie_fk");
@@ -645,6 +633,64 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
+    public Urzadzenie_sieciowe getNetworkDevice(String nrUmowy) {
+        try {
+            if(nrUmowy == null || nrUmowy.equals("")) return null;
+
+            Statement statement = this.connection.createStatement();
+            String str = "SELECT * FROM URZADZENIE_SIECIOWE WHERE umowa = '" + nrUmowy + "';";
+            ResultSet resultSet = statement.executeQuery(str);
+            resultSet.next();
+            var urzadzenie = new Urzadzenie_sieciowe();
+            urzadzenie.setNrUmowy(resultSet.getString("umowa"));
+            urzadzenie.setId(resultSet.getInt("id"));
+            urzadzenie.setWlan(resultSet.getBoolean("wlan"));
+            urzadzenie.setIp_address(resultSet.getString("ip_address"));
+            urzadzenie.setPrzepustowosc(resultSet.getString("przepustowosc"));
+            urzadzenie.setCzy_dostepne(resultSet.getBoolean("czy_dostepne"));
+            Urzadzenie temp = getDevice(resultSet.getInt("urzadzenie_fk"));
+            urzadzenie.setProducent(temp.getProducent());
+            urzadzenie.setSn(temp.getSn());
+            urzadzenie.setWlasciciel(temp.getWlasciciel());
+            urzadzenie.setNazwa(temp.getNazwa());
+            return urzadzenie;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<Utrzymanie_sieci> getNetworkTicketList() throws SQLException {
+        List<Utrzymanie_sieci> lista = new ArrayList<>();
+        Statement statement = this.connection.createStatement();
+        String str = "";
+        if(Proxy.loggedUser.getRole() == Role.CLIENT) {
+            str = "SELECT *  FROM ZLECENIE_SIEC WHERE klient = "
+                    + Proxy.loggedUser.getId() + ";";
+        }else {
+            str = "SELECT * FROM ZLECENIE_SIEC WHERE zlecenie_fk IN (SELECT id FROM ZLECENIE WHERE level = '" + Proxy.loggedUser.getRole().getValue() + "');";
+        }
+        ResultSet resultSet = statement.executeQuery(str);
+        while(resultSet.next()) {
+            Utrzymanie_sieci utrzymanieSieci = new Utrzymanie_sieci();
+            utrzymanieSieci.setId(resultSet.getInt("id"));
+            if(Proxy.loggedUser.getRole() == Role.CLIENT) {
+                utrzymanieSieci.setKlient(Proxy.loggedUser);
+            } else {
+                utrzymanieSieci.setKlient(fetchUserData(resultSet.getInt("klient")));
+            }
+
+            utrzymanieSieci.setNr_umowy(resultSet.getString("umowa"));
+            List<Object> listaZlecenie = getZlecenieData(resultSet.getInt("zlecenie_fk"));
+            utrzymanieSieci.setData_utworzenia((Timestamp) listaZlecenie.get(0));
+            utrzymanieSieci.setData_wykonania((Timestamp) listaZlecenie.get(1));
+            List<Wpis> listaWpisy = getEntries((String) listaZlecenie.get(2));
+            utrzymanieSieci.setWpisy(listaWpisy);
+            utrzymanieSieci.setPoziom((int)listaZlecenie.get(3));
+            lista.add(utrzymanieSieci);
+        }
+        return  lista;
+    }
+
     public List<Naprawa_serwisowa> getHardwareTicketList(Role role) throws SQLException {
         List<Naprawa_serwisowa> lista = new ArrayList<>();
         Statement statement = this.connection.createStatement();
@@ -671,16 +717,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                     }
                 }
             } else {
-                Statement statement1 = this.connection.createStatement();
-                var owner = new User();
-                str = "SELECT username, password FROM USERS WHERE id = '" + resultSet.getInt("wlasciciel") + "';";
-                ResultSet resultSet1 = statement1.executeQuery(str);
-                resultSet1.next();
-                owner = fetchUserData(resultSet1.getString("username"), resultSet1.getString("password"));
-                naprawaSerwisowa.setWlasciciel(owner);
+                naprawaSerwisowa.setWlasciciel(fetchUserData(resultSet.getInt("wlasciciel")));
                 naprawaSerwisowa.setUrzadzenie_naprawiane(getDevice(resultSet.getInt("urzadzenie")));
-                resultSet1.close();
-                statement1.close();
             }
 
             naprawaSerwisowa.setKoszt(resultSet.getFloat("kwota"));
@@ -768,10 +806,16 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
-    public boolean addNewEntry(int idWpisu, int idZlecenie) {
+    public boolean addNewEntry(int idWpisu, int idZlecenie, int mode) {
         try {
             Statement statement = this.connection.createStatement();
-            String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + idZlecenie + "';";
+            String str = "";
+            if(mode == 1) {
+                str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + idZlecenie + "';";
+            } else if (mode == 2){
+                str = "SELECT zlecenie_fk FROM ZLECENIE_SIEC WHERE id = '" + idZlecenie + "';";
+            } else return false;
+
             ResultSet resultSet = statement.executeQuery(str);
             resultSet.next();
             int idZlecenia = resultSet.getInt("zlecenie_fk");
@@ -789,15 +833,22 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         }
     }
 
-    public boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa) {
+    public boolean removeEntry(Zlecenie naprawa) {
         try {
         Statement statement = this.connection.createStatement();
-        String str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawaSerwisowa.getId() + "';";
+        String str = "";
+
+        if(naprawa instanceof Naprawa_serwisowa) {
+            str = "SELECT zlecenie_fk FROM ZLECENIE_NAPRAWA WHERE id = '" + naprawa.getId() + "';";
+        } else if(naprawa instanceof Utrzymanie_sieci) {
+            str = "SELECT zlecenie_fk FROM ZLECENIE_SIEC WHERE id = '" + naprawa.getId() + "';";
+        }
+
         ResultSet resultSet = statement.executeQuery(str);
         resultSet.next();
         int zlecenieFk = resultSet.getInt("zlecenie_fk");
         String wpisy = "";
-        for(Wpis wpis: naprawaSerwisowa.getWpisy()) {
+        for(Wpis wpis: naprawa.getWpisy()) {
             wpisy += wpis.getId() + ",";
         }
         str = "UPDATE ZLECENIE SET WPISY = '" + wpisy + "' WHERE ID = '" + zlecenieFk + "';";
@@ -998,7 +1049,8 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         urzadzenie.setNazwa(resultSet.getString("nazwa"));
         urzadzenie.setProducent(resultSet.getString("producent"));
         urzadzenie.setSn(resultSet.getString("sn"));
-        urzadzenie.setWlasciciel(Proxy.loggedUser);
+        //urzadzenie.setWlasciciel(Proxy.loggedUser);
+        urzadzenie.setWlasciciel(fetchUserData(resultSet.getInt("wlasciciel")));
 
         resultSet.close();
         statement.close();
@@ -1131,6 +1183,35 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return id;
     }
 
+    public User fetchUserData(int id) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        String str = "SELECT * FROM USERS WHERE id = '" + id + "';";
+        ResultSet resultSet = statement.executeQuery(str);
+        resultSet.next();
+        User user = new User();
+        user.setId(resultSet.getInt("id"));
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
+        user.setId_card(resultSet.getString("ID_card"));
+        user.setMail(resultSet.getString("mail"));
+        user.setPesel(resultSet.getString("pesel"));
+        user.setPhone(resultSet.getString("phone"));
+        user.setRole(Role.getRole(resultSet.getInt("role")));
+        List<String> lista = getUserAddresInfo(resultSet.getInt("address"));
+
+        user.setCity(lista.get(0));
+        user.setStreet(lista.get(1));
+        user.setCode(lista.get(2));
+        user.setHome_number(lista.get(3));
+
+        user.setPosiadane_urzadzenia(getDevices(user.getId()));
+        user.setDokumenty(getServiceContracts(id));
+
+        statement.close();
+        resultSet.close();
+        return user;
+    }
+
     public User fetchUserData(String username, String password) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
@@ -1154,10 +1235,10 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
             user.setPosiadane_urzadzenia(getDevices(user.getId()));
             user.setDokumenty(getDocuments(user.getId()));
+            user.getDokumenty().addAll(getServiceContracts(resultSet.getInt("id")));
 
             statement.close();
             resultSet.close();
-            //logger.userLoggedIn(user.getId());
             return user;
     }
 
@@ -1233,6 +1314,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
                 urzadzenie.setIp_address(resultSet1.getString("ip_address"));
                 urzadzenie.setId(resultSet1.getInt("id"));
                 urzadzenie.setWlasciciel(Proxy.loggedUser);
+                urzadzenie.setNrUmowy(resultSet1.getString("umowa"));
                 urzadzenie.setNazwa(resultSet.getString("nazwa"));
                 urzadzenie.setSn(resultSet.getString("sn"));
                 urzadzenie.setProducent(resultSet.getString("producent"));

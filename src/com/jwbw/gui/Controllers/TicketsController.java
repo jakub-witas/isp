@@ -118,6 +118,14 @@ public class TicketsController {
 
     public void handleButtonEditNetwork(MouseEvent mouseEvent) {
         try {
+            if(networkTicket.getSelectionModel().getSelectedItem() == null) {
+                alert.setHeaderText(null);
+                alert.setTitle("Brak zaznaczenia");
+                alert.setContentText("Nie wybrano żadnego wpisu naprawy.");
+                alert.showAndWait();
+                return;
+            }
+            detailedNaprawaSieci = networkTicket.getSelectionModel().getSelectedItem();
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("../klient/editNetwork.fxml"));
             stage.setTitle("Szczegóły naprawy");

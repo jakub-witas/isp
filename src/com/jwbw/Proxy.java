@@ -21,12 +21,26 @@ public class Proxy {
     public static User loggedUser;
     public static List<User> accountList;
 
+    public static Urzadzenie_sieciowe getNetworkDevice(String nrUmowy) {
+        if(loggedUser.getRole() == Role.CLIENT) {
+            if (loggedUser.getPosiadane_urzadzenia() != null) {
+                for (Urzadzenie urzadzenie : loggedUser.getPosiadane_urzadzenia()) {
+                    if (urzadzenie instanceof Urzadzenie_sieciowe) {
+                        if (((Urzadzenie_sieciowe) urzadzenie).getNrUmowy().equals(nrUmowy))
+                            return (Urzadzenie_sieciowe) urzadzenie;
+                    }
+                }
+            }
+        }
+        return Database.getNetworkDevice(nrUmowy);
+    }
+
     public static List<Czesc_komputerowa> getUnownedPartsList() throws SQLException {
         return Database.getUnownedPartsList();
     }
 
-    public static boolean closeHardwareIssueTicket(Naprawa_serwisowa naprawa) {
-        return Database.closeHardwareIssueTicket(naprawa);
+    public static boolean closeIssueTicket(Zlecenie naprawa) {
+        return Database.closeIssueTicket(naprawa);
     }
 
     public static boolean removeOrderFromIssue(Naprawa_serwisowa naprawa, int zamowienieId) {
@@ -49,16 +63,16 @@ public class Proxy {
         accountList = null;
     }
 
-    public static boolean removeEntry(Naprawa_serwisowa naprawaSerwisowa) {
-        return Database.removeEntry(naprawaSerwisowa);
+    public static boolean removeEntry(Zlecenie naprawa) {
+        return Database.removeEntry(naprawa);
     }
 
     public static boolean updateEntry(Wpis wpis) {
         return Database.updateEntry(wpis);
     }
 
-    public static boolean addNewEntry(int idWpisu, int idZlecenie) {
-        return Database.addNewEntry(idWpisu, idZlecenie);
+    public static boolean addNewEntry(int idWpisu, int idZlecenie, int mode) {
+        return Database.addNewEntry(idWpisu, idZlecenie, mode);
     }
 
     public static boolean updateHardwareTicketData(Naprawa_serwisowa naprawaSerwisowa) {
@@ -228,12 +242,13 @@ public class Proxy {
         return notificationList;
     }
 
-    public static List<Dokument> getServiceContracts() throws SQLException {
-        List<Dokument> list = Database.getServiceContracts();
-        if(loggedUser.getDokumenty() == null || !loggedUser.getDokumenty().containsAll(list)) {
-            loggedUser.setDokumenty(list);
-        }
-        return loggedUser.getDokumenty();
+    public static List<Dokument> getServiceContracts(int id) throws SQLException {
+        //List<Dokument> list = Database.getServiceContracts(id);
+//        if(loggedUser.getDokumenty() == null || !loggedUser.getDokumenty().containsAll(list)) {
+//            loggedUser.setDokumenty(list);
+//        }
+//        return loggedUser.getDokumenty();
+        return Database.getServiceContracts(id);
     }
 
     public static List<Pakiet_internetu> getInternetPackets() throws SQLException {

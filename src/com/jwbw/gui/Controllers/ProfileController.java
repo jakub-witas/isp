@@ -51,7 +51,7 @@ public class ProfileController{
     private void loadData() throws SQLException {
         List<Dokument> lista = new ArrayList<>();
 
-        List<Dokument> listaUsluga = Proxy.getServiceContracts();
+        List<Dokument> listaUsluga = Proxy.getServiceContracts(Proxy.loggedUser.getId());
         if(listaUsluga != null && listaUsluga.size() > 0) {
             if(listaUsluga.get(0) instanceof Umowa_usluga)
             lista.addAll(listaUsluga);
