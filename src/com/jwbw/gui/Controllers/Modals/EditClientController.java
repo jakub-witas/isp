@@ -1,29 +1,45 @@
 package com.jwbw.gui.Controllers.Modals;
 
+import com.jwbw.Proxy;
+import com.jwbw.gui.Controllers.AccountsController;
+import com.jwbw.isp.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.sql.SQLException;
+
 public class EditClientController {
 
     @FXML
-    private TextField editedLogin, editedPassword, editedName, editedSurname, editedMail, editedPhone;
+    private TextField editedLogin, editedName, editedSurname, editedMail, editedPhone;
 
     @FXML
     private TextField editedCity, editedStreet, editedCode, editedNumber;
 
+    public static User userEdit = null;
+
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
+        userEdit = AccountsController.detailedUser;
         loadData();
     }
 
-    private void loadData() {
-     //   this.editedLogin.setText(Proxy.accountList);
+    private void loadData(){
+       this.editedSurname.setText(userEdit.getSurname());
+       this.editedLogin.setText(userEdit.getUsername());
+       this.editedName.setText(userEdit.getName());
+       this.editedMail.setText(userEdit.getMail());
+       this.editedPhone.setText(userEdit.getPhone());
+       this.editedCity.setText(userEdit.getCity());
+       this.editedStreet.setText(userEdit.getStreet());
+       this.editedCode.setText(userEdit.getCode());
+       this.editedNumber.setText(userEdit.getHome_number());
     }
 
-    public void onConfirmButtonClick() {
+    public void onConfirmButtonClick() throws SQLException {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(null);
         alert.setTitle("Powiadomienie");
@@ -47,36 +63,43 @@ public class EditClientController {
         }
 
         updateClientData();
-      //  if (!Proxy.updateUserContractData()) {
-        //    alert.setContentText("Aktualizacja danych nie powiodła się.");
-      //      alert.showAndWait();
-     //   } else {
-      //      alert.setAlertType(Alert.AlertType.INFORMATION);
-      //      alert.setContentText("Aktualizacja danych powiodła się.");
-      //      alert.showAndWait();
-      //      closeWindow();
-     //   }
+        if (!Proxy.updateAccountClient(userEdit)) {
+            alert.setContentText("Aktualizacja danych nie powiodła się.");
+            alert.showAndWait();
+        } else {
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("Aktualizacja danych powiodła się.");
+            alert.showAndWait();
+            closeWindow();
+        }
     }
 
     @FXML
-    private void updateClientData() {
-
+    private void updateClientData() throws SQLException {
+        userEdit.setName(editedName.getText());
+        userEdit.setUsername(editedLogin.getText());
+        userEdit.setSurname(editedSurname.getText());
+        userEdit.setPhone(editedPhone.getText());
+        userEdit.setMail(editedMail.getText());
+        userEdit.setHome_number(editedNumber.getText());
+        userEdit.setCity(editedCity.getText());
+        userEdit.setCode(editedCode.getText());
+        userEdit.setStreet(editedStreet.getText());
+        Proxy.updateAccountClient(userEdit);
     }
 
     @FXML
     private boolean areAllFilled() {
         return editedMail.getText() != null && editedName.getText() != null && editedSurname.getText() != null
                 && editedCity.getText() != null && editedPhone.getText() != null && editedLogin.getText() != null
-                && editedPassword.getText() != null && editedStreet.getText() != null && editedCode.getText() != null
-                && editedNumber.getText() != null;
+                && editedStreet.getText() != null && editedCode.getText() != null && editedNumber.getText() != null;
     }
 
     @FXML
     private boolean ifContainsSings(CharSequence sign) {
         return editedMail.getText().contains(sign) || editedName.getText().contains(sign) || editedSurname.getText().contains(sign)
                 || editedCity.getText().contains(sign) || editedPhone.getText().contains(sign) || editedLogin.getText().contains(sign)
-                || editedPassword.getText().contains(sign) || editedStreet.getText().contains(sign) || editedCode.getText().contains(sign)
-                || editedNumber.getText().contains(sign);
+                || editedCode.getText().contains(sign) || editedNumber.getText().contains(sign);
     }
 
     public static boolean isNumeric(String strNum) {

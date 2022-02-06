@@ -71,6 +71,27 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         return true;
     }
 
+    public boolean updateAccountClient(User user) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String str, str1;
+            str = "UPDATE isp.USERS SET name = '" + user.getName() + "', surname = '" + user.getSurname() +
+                    "', phone = '" + user.getPhone() +
+            "', username = '" + user.getUsername()
+                    + "', mail = '" + user.getMail() + "' WHERE id = '" + user.getId() + "';";
+            str1 = "UPDATE isp.ADDRESS SET city = '" + user.getCity() + "', street = '" + user.getStreet() +
+                    "', house_number = '" + user.getHome_number() +
+                    "', code = '" + user.getCode()
+                    + "' WHERE id = '" + user.getId() + "';";
+            statement.executeUpdate(str);
+            statement.executeUpdate(str1);
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public void setNotificationStatus(int id, boolean status) throws SQLException {
         Statement statement = this.connection.createStatement();
         String str = "UPDATE WPIS SET przeczytane = '" + status + "' WHERE id = '" + id + "';";
@@ -1060,7 +1081,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
     public List<User> getAccountsClients() throws SQLException {
         List<User> accountsList = new ArrayList<>();
         Statement statement = this.connection.createStatement();
-        String str = "SELECT * FROM USERS WHERE role = '" + 2 + "';";
+        String str = "SELECT * FROM USERS WHERE role = '" + 4 + "';";
         ResultSet resultSet = statement.executeQuery(str);
         while(resultSet.next()) {
             User user = new User();

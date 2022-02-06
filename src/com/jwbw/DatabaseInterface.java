@@ -7,6 +7,7 @@ import java.util.List;
 public interface DatabaseInterface {
     //userHandler
     boolean updateUserContractData(Object user) throws SQLException;
+    boolean updateAccountClient(User user) throws SQLException;
     boolean updateUserAddressData(Object user) throws SQLException;
     int registerNewUser(User user, String username, String password) throws SQLException;
     User fetchUserData(String username, String password) throws SQLException;

@@ -1,9 +1,6 @@
 package com.jwbw.gui.Controllers.Modals;
 
-import com.jwbw.Main;
 import com.jwbw.Proxy;
-import com.jwbw.gui.InterfaceMain;
-import com.jwbw.isp.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,6 +9,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.sql.SQLException;
+
+import static com.jwbw.Proxy.loggedUser;
 
 public class AddressEditController {
     @FXML
@@ -23,10 +22,10 @@ public class AddressEditController {
     }
 
     private void loadData() {
-        this.editedCity.setText(Proxy.loggedUser.getCity());
-        this.editedStreet.setText(Proxy.loggedUser.getStreet());
-        this.editedCode.setText(Proxy.loggedUser.getCode());
-        this.editedNumber.setText(Proxy.loggedUser.getHome_number());
+        this.editedCity.setText(loggedUser.getCity());
+        this.editedStreet.setText(loggedUser.getStreet());
+        this.editedCode.setText(loggedUser.getCode());
+        this.editedNumber.setText(loggedUser.getHome_number());
     }
 
     public void onConfirmButtonClick(ActionEvent actionEvent) throws SQLException {
@@ -56,10 +55,10 @@ public class AddressEditController {
 
     @FXML
     private void updateClientData() {
-        (Proxy.loggedUser).setCity(editedCity.getText());
-        (Proxy.loggedUser).setStreet(editedStreet.getText());
-        (Proxy.loggedUser).setHome_number(editedNumber.getText());
-        (Proxy.loggedUser).setCode(editedCode.getText());
+        (loggedUser).setCity(editedCity.getText());
+        (loggedUser).setStreet(editedStreet.getText());
+        (loggedUser).setHome_number(editedNumber.getText());
+        (loggedUser).setCode(editedCode.getText());
     }
 
     @FXML

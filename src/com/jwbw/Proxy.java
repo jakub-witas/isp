@@ -4,7 +4,6 @@ import com.jwbw.isp.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ public class Proxy {
     public static List<Telewizja> telewizjaList;
     public static List<GSM> gsmList;
     public static User loggedUser;
+    public static User user;
     public static List<User> accountList;
 
     public static Urzadzenie_sieciowe getNetworkDevice(String nrUmowy) {
@@ -276,6 +276,10 @@ public class Proxy {
        return Database.updateUserContractData(loggedUser);
     }
 
+    public static boolean updateAccountClient(User user) throws SQLException {
+        return Database.updateAccountClient(user);
+    }
+
     public static boolean updateUserAddressData() throws SQLException {
         return Database.updateUserAddressData(loggedUser);
     }
@@ -356,4 +360,5 @@ public class Proxy {
     public static boolean isConnected() {
         return Database.isConnected();
     }
+
 }

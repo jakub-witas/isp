@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountsController {
@@ -31,6 +32,9 @@ public class AccountsController {
 
     @FXML
     private Button deleteButton, editButton;
+
+    public static User detailedUser;
+    public static List<User> accountList = new ArrayList<>();
 
     @FXML
     public void initialize() throws SQLException {
@@ -90,6 +94,7 @@ public class AccountsController {
         if(accountsTable.getSelectionModel().getSelectedItem() != null) {
             accountsTable.getSelectionModel().getSelectedItem().setId(accountsTable.getSelectionModel().getSelectedItem().getId());
             Proxy.setDeleteAccountStatus(accountsTable.getSelectionModel().getSelectedItem().getId());
+            accountsTable.getItems().clear();
             accountsTable.refresh();
         }else{
             alert.setContentText("Wybierz klienta, którego chcesz usunąć");
@@ -104,13 +109,7 @@ public class AccountsController {
         alert.setTitle("Powiadomienie");
 
         if(accountsTable.getSelectionModel().getSelectedItem() != null) {
-               TablePosition pos = accountsTable.getSelectionModel().getSelectedCells().get(0);
-               int row= pos.getRow();
-               TableColumn col = pos.getTableColumn();
-               String data = (String) col.getCellObservableValue(row).getValue();
-               System.out.println(data);
-
-
+               detailedUser = accountsTable.getSelectionModel().getSelectedItem();
 
             try {
                 Stage stage = new Stage();
@@ -121,11 +120,13 @@ public class AccountsController {
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(this.editButton.getScene().getWindow());
                 stage.setOnCloseRequest(event -> {
-                    //  try {
-                    //    getAccountsList();
-                    //  } catch (SQLException throwables) {
-                    //     throwables.printStackTrace();
-                    //  }
+                     try {
+                         accountsTable.getItems().clear();
+                         getAccountsList();
+                     } catch (SQLException e) {
+                         e.printStackTrace();
+                      }
+
                 });
                 stage.show();
             } catch (IOException e) {
@@ -134,9 +135,7 @@ public class AccountsController {
         }else{
             alert.setContentText("Wybierz klienta, którego chcesz edytować");
             alert.showAndWait();
-        }
-        /*
+       }
 
-        */
     }
 }
