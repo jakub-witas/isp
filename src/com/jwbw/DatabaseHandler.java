@@ -57,6 +57,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
     public boolean updateUserContractData(Object user) throws SQLException {
         try {
+            if(user == null) return false;
             Statement statement = this.connection.createStatement();
             String str;
                 str = "UPDATE isp.USERS SET name = '" + ((User) user).getName() + "', surname = '" + ((User) user).getSurname() +
@@ -65,10 +66,10 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
 
             statement.executeUpdate(str);
             statement.close();
+            return true;
         } catch (PSQLException e) {
             return false;
         }
-        return true;
     }
 
     public boolean updateAccountClient(User user) {

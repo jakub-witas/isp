@@ -1,5 +1,7 @@
 package com.jwbw.isp;
 
+import com.jwbw.Proxy;
+
 import java.sql.SQLException;
 
 public class Urzadzenie_sieciowe extends Urzadzenie {
@@ -20,7 +22,7 @@ public class Urzadzenie_sieciowe extends Urzadzenie {
         this.setPrzepustowosc(przepustowosc);
         this.setWlan(wlan);
         this.setWlasciciel(null);
-        //this.setId(Main.Database.sendUrzadzenieSiecioweGetId(this));
+        //this.setId(Proxy.sendUrzadzenieSiecioweGetId(this));
     }
 
     public String getNrUmowy() {

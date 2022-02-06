@@ -16,6 +16,7 @@ public class Naprawa_serwisowa extends Zlecenie {
     private float koszt;
     private User wlasciciel;
 
+
     public static void utworzZlecenieFormularz(Urzadzenie urzadzenie, String nazwa, String producent, String sn, User klient, String description) throws SQLException {
         Naprawa_serwisowa naprawa = new Naprawa_serwisowa();
         naprawa.setKoszt(0);
