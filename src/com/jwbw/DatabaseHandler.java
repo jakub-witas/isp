@@ -1192,7 +1192,7 @@ public class DatabaseHandler extends Thread implements DatabaseInterface{
         Statement statement = this.connection.createStatement();
         String str = "INSERT INTO USERS VALUES (nextval('user_seq'), '" + username + "', '" + password +  "', '" +
                 user.getName() + "', '" + user.getSurname() + "', '" + user.getPhone() + "', '" + user.getMail() + "', '" +
-                user.getPesel() + "', '" + user.getId_card() + "', 2, " + addressId + ");";
+                user.getPesel() + "', '" + user.getId_card() + "', 4, " + addressId + ");";
        statement.executeUpdate(str);
 
         str = "SELECT MAX(ID) FROM USERS WHERE username = '" + username + "' AND password = '" + password + "';";
